@@ -1,0 +1,10 @@
+node_modules
+.next
+out
+playwright-report
+test-results
+PRD_history_of_intelligence.md
+Prompt_Implementation.md
+public/diagrams/world-land.json
+package-lock.json
+next-env.d.ts

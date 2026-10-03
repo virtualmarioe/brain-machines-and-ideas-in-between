@@ -1,0 +1,22 @@
+import type { Metadata } from 'next';
+import { headers } from 'next/headers';
+import './globals.css';
+export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://127.0.0.1:3000'),
+  title: 'The Intelligence Atlas',
+  description:
+    'Explore the connected histories of neuroscience, computation and artificial intelligence through time, geography and original sources.',
+  icons: { icon: '/favicon.svg' },
+};
+const themeScript = `(function(){try{var t=localStorage.getItem('atlas-theme');document.documentElement.dataset.theme=['light','dark','system'].includes(t)?t:'system';}catch(e){document.documentElement.dataset.theme='system';}})()`;
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = (await headers()).get('x-atlas-locale') || 'en';
+  return (
+    <html lang={locale || 'en'} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
