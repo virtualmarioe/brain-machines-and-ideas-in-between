@@ -26,7 +26,8 @@ The production server uses the same port as the development server, so stop the 
 - Search across localized descriptions, people, concepts, tags, institutions, source titles, and DOIs.
 - Domain and date filters, responsive timeline clustering, graph pan/zoom/drag, direct/two-step neighborhoods, and ancestry tracing.
 - A draggable graph overview strip, keyboard navigation, and a fit-all view for long historical lineages.
-- Semitransparent graph and map previews on hover or keyboard focus, with institutions, countries, coordinates, and recorded location years on map cards. Nearby map markers are separated with lines to their recorded sites.
+- Glass previews on hover or keyboard focus across graph nodes, graph and map connections, and timeline markers. Map cards include institutions, countries, coordinates, and recorded location years. Connection cards show evidence and confidence; timeline cards show recorded temporal relationships and calendar-year gaps. Nearby map markers are separated with lines to their recorded sites.
+- A shareable People filter exposes the existing person category independently of scientific domains. Person dates identify contributions, not lifetimes.
 - Story chapters, exploration mode, and trace mode.
 - English, German, and Spanish content and interface labels from the first implementation.
 - Shareable entity routes that restore the selected discovery, filters, time range, and mode.

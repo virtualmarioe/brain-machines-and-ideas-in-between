@@ -5,6 +5,7 @@ export interface ExplorationState {
   mode: 'explore' | 'story' | 'trace';
   query: string;
   domain: Domain | 'all';
+  category: 'all' | 'person';
   from: number;
   to: number;
   scope: 'all' | '1' | '2' | 'ancestry';
@@ -18,9 +19,12 @@ export function parseExploration(
   entities: HistoricalEntity[],
   routeId?: string,
 ): ExplorationState {
-  const selected = [routeId, params.get('node'), 'hubel-wiesel', entities[0]?.id].find((id) =>
-    entities.some((e) => e.id === id),
-  )!;
+  const category = params.get('category') === 'person' ? 'person' : 'all';
+  const candidates = category === 'person' ? entities.filter((e) => e.type === 'person') : entities;
+  const selected =
+    [routeId, params.get('node'), 'hubel-wiesel', candidates[0]?.id, entities[0]?.id].find((id) =>
+      candidates.some((e) => e.id === id),
+    ) ?? entities[0]?.id;
   const from = Number(params.get('from') ?? 1870),
     to = Number(params.get('to') ?? 2026);
   const validRange =
@@ -31,6 +35,7 @@ export function parseExploration(
   return {
     selected,
     locale,
+    category,
     mode: mode === 'story' || mode === 'trace' ? mode : 'explore',
     query: (params.get('q') || '').slice(0, 200),
     domain: ['neuroscience', 'mathematics', 'computing', 'learning', 'neuroai'].includes(
@@ -50,6 +55,7 @@ export function explorationUrl(state: ExplorationState, entities: HistoricalEnti
   const params = new URLSearchParams();
   if (state.mode !== 'explore') params.set('mode', state.mode);
   if (state.query) params.set('q', state.query);
+  if (state.category === 'person') params.set('category', 'person');
   if (state.domain !== 'all') params.set('domain', state.domain);
   if (state.from !== 1870) params.set('from', String(state.from));
   if (state.to !== 2026) params.set('to', String(state.to));

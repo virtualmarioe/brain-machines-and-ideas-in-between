@@ -5,6 +5,7 @@ import { chronological, yearOf } from '@/lib/graph';
 import { t } from '@/content/translations/ui';
 import { Icon } from '@/components/ui/Icon';
 import Modal from '@/components/ui/Modal';
+import { TimelinePreview, useTimelinePreview } from '@/components/ui/TimelinePreview';
 export const MIN_YEAR = 1870,
   MAX_YEAR = 2026;
 export type YearRange = [number, number];
@@ -45,6 +46,10 @@ export default function Timeline({
   locale: Locale;
   nobel: boolean;
 }) {
+  const preview = useTimelinePreview();
+  const dismissPreview = preview.dismiss;
+  const [from, to] = range;
+  useEffect(() => dismissPreview(), [entities, selected, from, to, dismissPreview]);
   const span = range[1] - range[0];
   const step = span > 100 ? 20 : span > 30 ? 10 : span > 12 ? 5 : 1;
   const ticks = Array.from(
@@ -125,18 +130,21 @@ export default function Timeline({
           return (
             <button
               key={entity.id}
+              {...preview.triggerProps(
+                { entities: group.entities, selected: entities.find((e) => e.id === selected) },
+                group.entities.map((e) => e.id).join(','),
+              )}
               aria-label={label}
               aria-pressed={active}
               className={`time-event domain-${entity.domain} ${active ? 'selected' : ''} ${multiple ? 'clustered' : ''}`}
               style={{ left: group.x, top: 22 }}
-              onClick={() => (multiple ? setCluster(group.entities) : onSelect(entity.id))}
+              onClick={() => {
+                preview.dismiss();
+                if (multiple) setCluster(group.entities);
+                else onSelect(entity.id);
+              }}
             >
               {multiple && <span className="cluster-count">{group.entities.length}</span>}
-              <span className="time-tooltip">
-                {multiple
-                  ? `${yearOf(entity)}–${yearOf(group.entities.at(-1)!)} · ${group.entities.length}`
-                  : label}
-              </span>
             </button>
           );
         })}
@@ -144,9 +152,16 @@ export default function Timeline({
           awardYears.map((year) => (
             <button
               key={`nobel-${year}`}
+              {...preview.triggerProps(
+                { entities: awards.filter((e) => e.nobel!.year === year), awardYear: year },
+                `award-${year}`,
+              )}
               className="nobel-event"
               style={{ left: `${((year - range[0]) / span) * 100}%`, top: 74 }}
-              onClick={() => setCluster(awards.filter((e) => e.nobel!.year === year))}
+              onClick={() => {
+                preview.dismiss();
+                setCluster(awards.filter((e) => e.nobel!.year === year));
+              }}
               aria-label={`${year} · ${t('nobel', locale)}`}
             >
               ◇
@@ -177,6 +192,7 @@ export default function Timeline({
           />
         </label>
       </div>
+      <TimelinePreview preview={preview} locale={locale} />
       {cluster && (
         <Modal title={t('cluster', locale)} locale={locale} onClose={() => setCluster(null)}>
           <p>{t('clusterHelp', locale)}</p>

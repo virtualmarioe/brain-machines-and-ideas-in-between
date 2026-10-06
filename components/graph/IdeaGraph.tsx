@@ -7,6 +7,7 @@ import { Icon } from '@/components/ui/Icon';
 import GraphOverview from './GraphOverview';
 import { graphBounds, fitGraph } from '@/lib/graph/viewport';
 import { NodePreview, useNodePreview } from '@/components/ui/NodePreview';
+import { ConnectionPreview, useConnectionPreview } from '@/components/ui/ConnectionPreview';
 type Point = { x: number; y: number };
 export default function IdeaGraph({
   entities,
@@ -28,6 +29,7 @@ export default function IdeaGraph({
   const [view, setView] = useState({ x: 0, y: 0, scale: 1 });
   const [positions, setPositions] = useState<Record<string, Point>>({});
   const preview = useNodePreview();
+  const connectionPreview = useConnectionPreview();
   const drag = useRef<{ id: string; x: number; y: number; origin: Point; moved: boolean } | null>(
     null,
   );
@@ -64,7 +66,13 @@ export default function IdeaGraph({
     );
   }
   const focusX = focusAtScale(view.scale);
-  const edges = relationships.filter((edge) => nodes.has(edge.source) && nodes.has(edge.target));
+  const edges = relationships
+    .filter((edge) => nodes.has(edge.source) && nodes.has(edge.target))
+    .sort(
+      (a, b) =>
+        Number(a.source === selected || a.target === selected) -
+        Number(b.source === selected || b.target === selected),
+    );
   const bounds = graphBounds([...nodes.values()]);
   const related = new Set(
     edges
@@ -80,6 +88,7 @@ export default function IdeaGraph({
     if (event.button !== 0) return;
     event.stopPropagation();
     preview.dismiss();
+    connectionPreview.dismiss();
     const p = point(event);
     drag.current = {
       id,
@@ -173,6 +182,14 @@ export default function IdeaGraph({
             {edges.map((edge) => {
               const a = nodes.get(edge.source)!,
                 b = nodes.get(edge.target)!;
+              const previewProps = connectionPreview.triggerProps(
+                {
+                  edge,
+                  source: entities.find((e) => e.id === edge.source)!,
+                  target: entities.find((e) => e.id === edge.target)!,
+                },
+                edge.id,
+              );
               const active = edge.source === selected || edge.target === selected;
               const path = `M${a.x + 13},${a.y} C${a.x + (b.x - a.x) * 0.6},${a.y} ${b.x - (b.x - a.x) * 0.6},${b.y} ${b.x - 16},${b.y}`;
               return (
@@ -190,6 +207,8 @@ export default function IdeaGraph({
                     markerEnd="url(#edge-arrow)"
                   />
                   <path
+                    {...previewProps}
+                    data-edge-id={edge.id}
                     d={path}
                     stroke="transparent"
                     strokeWidth="14"
@@ -198,6 +217,7 @@ export default function IdeaGraph({
                     role="button"
                     aria-label={`${relationLabels[edge.type][locale]}: ${entities.find((e) => e.id === edge.source)?.title[locale]} → ${entities.find((e) => e.id === edge.target)?.title[locale]}`}
                     onFocus={(event) => {
+                      previewProps.onFocus(event);
                       if (event.currentTarget.matches(':focus-visible'))
                         setView((v) => ({
                           ...v,
@@ -206,16 +226,19 @@ export default function IdeaGraph({
                         }));
                     }}
                     onPointerDown={(e) => e.stopPropagation()}
-                    onClick={() => onEdge(edge)}
+                    onClick={() => {
+                      connectionPreview.dismiss();
+                      onEdge(edge);
+                    }}
                     onKeyDown={(e) => {
+                      previewProps.onKeyDown(e);
                       if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
+                        connectionPreview.dismiss();
                         onEdge(edge);
                       }
                     }}
-                  >
-                    <title>{`${relationLabels[edge.type][locale]}: ${edge.description[locale]}`}</title>
-                  </path>
+                  />
                 </g>
               );
             })}
@@ -299,6 +322,7 @@ export default function IdeaGraph({
         locale={locale}
         onNavigate={(left) => {
           preview.dismiss();
+          connectionPreview.dismiss();
           setView((v) => ({
             ...v,
             x: focusX - left * v.scale,
@@ -307,6 +331,7 @@ export default function IdeaGraph({
         }}
         onFit={() => {
           preview.dismiss();
+          connectionPreview.dismiss();
           const fitted = fitGraph(bounds, viewportWidth, 340);
           setView({ ...fitted, x: fitted.x + focusAtScale(fitted.scale) });
         }}
@@ -323,6 +348,7 @@ export default function IdeaGraph({
         </span>
       </div>
       <NodePreview preview={preview} locale={locale} />
+      <ConnectionPreview preview={connectionPreview} locale={locale} />
     </section>
   );
 }

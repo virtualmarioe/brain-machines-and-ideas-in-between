@@ -1,20 +1,16 @@
 .node-preview {
   position: fixed;
   z-index: 80;
-  width: 320px;
+  width: 24rem;
   max-width: calc(100vw - 24px);
-  max-height: min(560px, calc(100dvh - 24px));
+  max-height: min(40rem, calc(100dvh - 24px));
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 17px 19px 13px;
-  border: 1px solid color-mix(in srgb, var(--domain) 40%, var(--border));
-  border-top: 3px solid var(--domain);
+  border-color: color-mix(in srgb, var(--domain, var(--accent)) 40%, var(--border));
+  border-top: 3px solid var(--domain, var(--accent));
   border-radius: 10px;
-  background: color-mix(in srgb, var(--elevated) 92%, transparent);
   color: var(--text);
-  box-shadow: var(--shadow);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
   line-height: 1.5;
   pointer-events: auto;
 }
@@ -69,8 +65,18 @@
   color: var(--muted);
   font-size: var(--text-caption);
 }
-@media (prefers-reduced-transparency: reduce) {
-  .node-preview {
-    background: var(--elevated);
-  }
+.preview-section-title {
+  font-size: var(--text-small);
+  margin: var(--space-4) 0 var(--space-2);
+}
+.preview-list {
+  padding-left: var(--space-4);
+  margin: var(--space-2) 0;
+  font-size: var(--text-small);
+}
+.preview-list li + li {
+  margin-top: var(--space-3);
+}
+.node-preview :is(p, li, h3, dd) {
+  overflow-wrap: anywhere;
 }

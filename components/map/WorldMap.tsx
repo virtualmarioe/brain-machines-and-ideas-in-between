@@ -2,7 +2,8 @@
 import { useRef, useState } from 'react';
 import { landPath, project } from '@/lib/map';
 import type { HistoricalEntity, HistoricalRelationship, Locale } from '@/types/history';
-import { t } from '@/content/translations/ui';
+import { t, relationLabels } from '@/content/translations/ui';
+import { ConnectionPreview, useConnectionPreview } from '@/components/ui/ConnectionPreview';
 import { Icon } from '@/components/ui/Icon';
 import { NodePreview, useNodePreview } from '@/components/ui/NodePreview';
 import { separateMapPins } from '@/lib/map-pins';
@@ -12,6 +13,7 @@ export default function WorldMap({
   selected,
   locale,
   onSelect,
+  onEdge,
   nobel = false,
 }: {
   entities: HistoricalEntity[];
@@ -19,6 +21,7 @@ export default function WorldMap({
   selected: string;
   locale: Locale;
   onSelect: (id: string) => void;
+  onEdge: (edge: HistoricalRelationship) => void;
   nobel?: boolean;
 }) {
   const [scale, setScale] = useState(1);
@@ -30,6 +33,7 @@ export default function WorldMap({
   const edges = relationships.filter((e) => e.source === selected || e.target === selected);
   const lookup = new Map(entities.map((e) => [e.id, e]));
   const preview = useNodePreview();
+  const connectionPreview = useConnectionPreview();
   const pins = entities.flatMap((entity) =>
     entity.locations.map((location, locIndex) => {
       const [x, y] = project(location.lon, location.lat);
@@ -76,6 +80,7 @@ export default function WorldMap({
         onPointerDown={(e) => {
           if (e.button !== 0) return;
           preview.dismiss();
+          connectionPreview.dismiss();
           const matrix = e.currentTarget.getScreenCTM();
           if (!matrix) return;
           const point = new DOMPoint(e.clientX, e.clientY).matrixTransform(matrix.inverse());
@@ -115,16 +120,56 @@ export default function WorldMap({
             if (!a || !b) return null;
             const [x1, y1] = project(a.lon, a.lat),
               [x2, y2] = project(b.lon, b.lat);
+            const path = `M${x1} ${y1} Q${(x1 + x2) / 2} ${Math.min(y1, y2) - Math.min(80, Math.abs(x1 - x2) * 0.3)} ${x2} ${y2}`;
+            const source = lookup.get(edge.source)!;
+            const target = lookup.get(edge.target)!;
+            const previewProps = connectionPreview.triggerProps(
+              { edge, source, target, map: true },
+              edge.id,
+            );
             return (
-              <path
-                key={edge.id}
-                d={`M${x1} ${y1} Q${(x1 + x2) / 2} ${Math.min(y1, y2) - Math.min(80, Math.abs(x1 - x2) * 0.3)} ${x2} ${y2}`}
-                fill="none"
-                stroke="var(--accent)"
-                strokeWidth="1.2"
-                strokeDasharray="4 4"
-                opacity=".65"
-              />
+              <g key={edge.id} className="map-edge">
+                <path
+                  d={path}
+                  fill="none"
+                  stroke="var(--accent)"
+                  strokeWidth="1.2"
+                  strokeDasharray="4 4"
+                  opacity=".65"
+                />
+                <path
+                  {...previewProps}
+                  data-edge-id={edge.id}
+                  d={path}
+                  fill="none"
+                  stroke="transparent"
+                  strokeWidth={14 / scale}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`${relationLabels[edge.type][locale]}: ${source.title[locale]} → ${target.title[locale]}`}
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onFocus={(event) => {
+                    previewProps.onFocus(event);
+                    if (event.currentTarget.matches(':focus-visible'))
+                      setOffset({
+                        x: 360 - ((x1 + x2) / 2) * scale - (scale === 1 ? 0 : 360 - cx * scale),
+                        y: 147 - ((y1 + y2) / 2) * scale - (scale === 1 ? -10 : 147 - cy * scale),
+                      });
+                  }}
+                  onClick={() => {
+                    connectionPreview.dismiss();
+                    onEdge(edge);
+                  }}
+                  onKeyDown={(event) => {
+                    previewProps.onKeyDown(event);
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      connectionPreview.dismiss();
+                      onEdge(edge);
+                    }
+                  }}
+                />
+              </g>
             );
           })}
           {pins.map(({ entity, location, locIndex, x: actualX, y: actualY }, index) => {
@@ -216,6 +261,7 @@ export default function WorldMap({
         <span>Natural Earth</span>
       </div>
       <NodePreview preview={preview} locale={locale} />
+      <ConnectionPreview preview={connectionPreview} locale={locale} />
     </section>
   );
 }

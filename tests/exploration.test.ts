@@ -14,12 +14,20 @@ describe('exploration URL and time state', () => {
       mode: 'explore',
       query: '',
       domain: 'all',
+      category: 'all',
       from: 1870,
       to: 2026,
       scope: 'all',
       nobel: false,
       context: false,
     });
+  });
+  it('restores the People category and selects an existing person node', () => {
+    const state = parse('category=person');
+    expect(entities.find((e) => e.id === state.selected)?.type).toBe('person');
+    const url = new URL(explorationUrl(state, entities), 'https://atlas.example');
+    expect(url.searchParams.get('category')).toBe('person');
+    expect(parse('category=unknown').category).toBe('all');
   });
   it('prioritizes a valid entity route over a node query parameter', () => {
     expect(parse('node=alexnet', 'cajal').selected).toBe('cajal');
@@ -49,6 +57,7 @@ describe('exploration URL and time state', () => {
     expect(parse('mode=unknown&domain=unknown&scope=999&nobel=true&context=false')).toMatchObject({
       mode: 'explore',
       domain: 'all',
+      category: 'all',
       scope: 'all',
       nobel: false,
       context: false,

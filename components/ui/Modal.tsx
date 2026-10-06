@@ -23,6 +23,7 @@ export default function Modal({
   useEffect(() => {
     const dialog = ref.current;
     const returnTarget = opener.current;
+    window.dispatchEvent(new CustomEvent('atlas-preview-open'));
     dialog?.showModal();
     const previous = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -35,7 +36,7 @@ export default function Modal({
   return (
     <dialog
       ref={ref}
-      className={`modal ${wide ? 'modal-wide' : ''}`}
+      className={`modal glass-surface ${wide ? 'modal-wide' : ''}`}
       aria-labelledby="modal-title"
       onCancel={onClose}
       onClick={(e) => {

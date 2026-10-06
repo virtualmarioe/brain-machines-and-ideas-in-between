@@ -79,6 +79,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
     const matching = searchEntities(entities, next.query, next.locale, references).filter(
       (e) =>
         (next.domain === 'all' || e.domain === next.domain) &&
+        (next.category === 'all' || e.type === next.category) &&
         yearOf(e) >= next.from &&
         yearOf(e) <= next.to,
     );
@@ -96,6 +97,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
     update(
       {
         selected: id,
+        category: state.category === 'person' && entity.type !== 'person' ? 'all' : state.category,
         query: searchEntities([entity], state.query, locale, references).length ? state.query : '',
         domain: state.domain === 'all' || state.domain === entity.domain ? state.domain : 'all',
         from: Math.min(state.from, yearOf(entity)),
@@ -112,10 +114,11 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
       searchEntities(entities, state.query, locale, references).filter(
         (e) =>
           (state.domain === 'all' || e.domain === state.domain) &&
+          (state.category === 'all' || e.type === state.category) &&
           yearOf(e) >= state.from &&
           yearOf(e) <= state.to,
       ),
-    [state.query, state.domain, state.from, state.to, locale],
+    [state.query, state.domain, state.category, state.from, state.to, locale],
   );
   const selected = filtered.find((e) => e.id === state.selected) ?? filtered[0];
   usePageMetadata(locale, selected, state.mode);
@@ -131,7 +134,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
       );
       return filtered.filter((e) => path.has(e.id));
     }
-    if (state.scope !== 'all' || compact) {
+    if (state.scope !== 'all' || (compact && state.category !== 'person')) {
       const path = traverse(
         id,
         relationships.filter((r) => state.context || r.type !== 'historical-context'),
@@ -140,7 +143,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
       return filtered.filter((e) => path.has(e.id));
     }
     return filtered;
-  }, [filtered, selected, state.scope, state.mode, state.context, compact]);
+  }, [filtered, selected, state.scope, state.mode, state.context, state.category, compact]);
   const graphIds = new Set(graphEntities.map((e) => e.id));
   const graphEdges = relationships.filter(
     (r) =>
@@ -149,7 +152,14 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
       (state.context || r.type !== 'historical-context'),
   );
   function resetFilters() {
-    update({ domain: 'all', query: '', from: MIN_YEAR, to: MAX_YEAR, scope: 'all' });
+    update({
+      category: 'all',
+      domain: 'all',
+      query: '',
+      from: MIN_YEAR,
+      to: MAX_YEAR,
+      scope: 'all',
+    });
   }
   const readingPanel = selected ? (
     <EntityPanel
@@ -174,6 +184,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
             event.preventDefault();
             update({
               mode: 'explore',
+              category: 'all',
               domain: 'all',
               query: '',
               from: MIN_YEAR,
@@ -204,11 +215,18 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
                         from: MIN_YEAR,
                         to: MAX_YEAR,
                         query: '',
+                        category: 'all' as const,
                         domain: 'all' as const,
                         scope: 'all' as const,
                       }
                     : mode === 'trace'
-                      ? { query: '', domain: 'all' as const, from: MIN_YEAR, to: MAX_YEAR }
+                      ? {
+                          category: 'all' as const,
+                          query: '',
+                          domain: 'all' as const,
+                          from: MIN_YEAR,
+                          to: MAX_YEAR,
+                        }
                       : {}),
                 })
               }
@@ -271,6 +289,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
               update({
                 mode: 'story',
                 selected: story[0],
+                category: 'all',
                 domain: 'all',
                 query: '',
                 from: MIN_YEAR,
@@ -392,6 +411,26 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
         )}
         <div className="atlas-workspace" id="discoveries">
           <aside className="discovery-sidebar">
+            <div className="node-category">
+              <label htmlFor="node-category">{t('nodeCategory', locale)}</label>
+              <select
+                id="node-category"
+                value={state.category}
+                onChange={(event) =>
+                  update({
+                    category: event.target.value as ExplorationState['category'],
+                    scope: 'all',
+                    mode: 'explore',
+                  })
+                }
+              >
+                <option value="all">{t('allDiscoveries', locale)}</option>
+                <option value="person">
+                  {t('persons', locale)} ({entities.filter((e) => e.type === 'person').length})
+                </option>
+              </select>
+              {state.category === 'person' && <p>{t('personDates', locale)}</p>}
+            </div>
             <div className="domain-filters">
               <h2 className="eyebrow">{t('domains', locale)}</h2>
               <button
@@ -480,6 +519,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
                     <span>+</span>
                   </summary>
                   <WorldMap
+                    onEdge={setEdge}
                     nobel={state.nobel}
                     entities={graphEntities}
                     relationships={graphEdges}
@@ -504,7 +544,9 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
         </div>
         <Timeline
           entities={searchEntities(entities, state.query, locale, references).filter(
-            (e) => state.domain === 'all' || e.domain === state.domain,
+            (e) =>
+              (state.domain === 'all' || e.domain === state.domain) &&
+              (state.category === 'all' || e.type === state.category),
           )}
           selected={selected?.id || ''}
           range={[state.from, state.to]}

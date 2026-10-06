@@ -1,0 +1,32 @@
+/* Every floating card shares one material; opaque fallback remains usable. */
+.glass-surface {
+  --muted: var(--text);
+  --domain-ink: var(--text);
+  background: var(--elevated);
+  border: 1px solid color-mix(in srgb, var(--text) 18%, transparent);
+  box-shadow:
+    0 18px 55px color-mix(in srgb, var(--neutral-black) 20%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--neutral-figure) 45%, transparent);
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-surface {
+    background: color-mix(in srgb, var(--elevated) 82%, transparent);
+    -webkit-backdrop-filter: blur(24px) saturate(1.25);
+    backdrop-filter: blur(24px) saturate(1.25);
+  }
+}
+.glass-surface .node-preview-meta {
+  color: var(--text);
+}
+.glass-surface .modal-header {
+  background: color-mix(in srgb, var(--elevated) 75%, transparent);
+  backdrop-filter: blur(20px);
+}
+@media (prefers-reduced-transparency: reduce), (forced-colors: active), print {
+  .glass-surface,
+  .glass-surface .modal-header {
+    background: var(--elevated);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}

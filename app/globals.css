@@ -924,24 +924,6 @@ input[type='range'] {
   outline: 1px solid var(--domain-ink);
   z-index: 3;
 }
-.time-tooltip {
-  display: none;
-  position: absolute;
-  bottom: 22px;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  background: var(--text);
-  color: var(--surface);
-  font-size: var(--text-caption);
-  padding: 7px 9px;
-  border-radius: 2px;
-  z-index: 6;
-}
-.time-event:hover .time-tooltip,
-.time-event:focus-visible .time-tooltip {
-  display: block;
-}
 .nobel-event {
   position: absolute;
   transform: translateX(-50%);
@@ -1772,11 +1754,6 @@ footer button {
   .range-inputs label {
     width: 100%;
   }
-  .time-tooltip {
-    max-width: 13rem;
-    white-space: normal;
-    width: max-content;
-  }
   .open-question {
     display: block;
     padding-block: var(--space-6);
@@ -1950,5 +1927,42 @@ footer button {
   }
   .open-question {
     order: 5;
+  }
+}
+.node-category {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+.node-category label {
+  font-size: var(--text-caption);
+  color: var(--muted);
+  font-weight: 600;
+}
+.node-category select {
+  width: 100%;
+  min-height: var(--control-size);
+  padding: var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: var(--text-label);
+}
+.node-category p {
+  margin: 0;
+  font-size: var(--text-small);
+  color: var(--muted);
+}
+.map-edge path[role='button'] {
+  cursor: pointer;
+}
+.map-edge:focus-within > path:first-child,
+.map-edge:hover > path:first-child {
+  stroke-width: 2.5;
+  opacity: 1;
+}
+@container atlas (max-width: 75rem) {
+  .node-category {
+    max-width: 30rem;
   }
 }
