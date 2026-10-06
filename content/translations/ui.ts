@@ -33,6 +33,28 @@ export const ui = {
   story: text('Story', 'Geschichte', 'Historia'),
   explore: text('Explore', 'Erkunden', 'Explorar'),
   trace: text('Trace an idea', 'Idee verfolgen', 'Seguir una idea'),
+  modeNavigation: text('Ways to explore', 'Wege durch den Atlas', 'Formas de explorar'),
+  storyPurpose: text('Guided narrative', 'Geführte Erzählung', 'Recorrido guiado'),
+  explorePurpose: text('Open discovery', 'Freie Erkundung', 'Exploración libre'),
+  tracePurpose: text('Conceptual genealogy', 'Ideengeschichte', 'Genealogía conceptual'),
+  storyHelp: text(
+    'Read one chapter at a time. Follow how observations became models, and how models opened new questions.',
+    'Lesen Sie Kapitel für Kapitel, wie Beobachtungen zu Modellen wurden und Modelle neue Fragen eröffneten.',
+    'Lee capítulo a capítulo cómo las observaciones se convirtieron en modelos y los modelos abrieron nuevas preguntas.',
+  ),
+  exploreTitle: text(
+    'Choose your own path.',
+    'Finden Sie Ihren eigenen Weg.',
+    'Elige tu propio camino.',
+  ),
+  exploreHelp: text(
+    'Start with a discovery, follow its connections, or search for a question that interests you.',
+    'Beginnen Sie mit einer Entdeckung, folgen Sie ihren Verbindungen oder suchen Sie nach einer Frage, die Sie interessiert.',
+    'Empieza con un descubrimiento, sigue sus conexiones o busca una pregunta que te interese.',
+  ),
+  exploreSelect: text('Select a discovery', 'Entdeckung wählen', 'Elegir un descubrimiento'),
+  exploreConnect: text('Follow a connection', 'Verbindung folgen', 'Seguir una conexión'),
+  exploreEvidence: text('Examine the evidence', 'Belege untersuchen', 'Examinar la evidencia'),
   startStory: text('Begin the story', 'Geschichte beginnen', 'Empezar la historia'),
   search: text(
     'Search people, ideas, places…',

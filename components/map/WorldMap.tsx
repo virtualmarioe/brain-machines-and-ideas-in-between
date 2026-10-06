@@ -41,7 +41,7 @@ export default function WorldMap({
     <section className="map-section" aria-label={t('map', locale)} data-selected={selected}>
       <div className="viz-heading">
         <div>
-          <span className="eyebrow">02 / {t('map', locale)}</span>
+          <h2 className="eyebrow">02 / {t('map', locale)}</h2>
           <p>{center ? `${center.name} · ${center.institution}` : t('noLocation', locale)}</p>
         </div>
         <div className="zoom-tools">

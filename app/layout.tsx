@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import { scientificColorVariables } from '../lib/colors';
 import type { CSSProperties } from 'react';
 import './colors.css';
+import './design-system.css';
 import './globals.css';
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://127.0.0.1:3000'),

@@ -40,6 +40,12 @@ The current corpus contains 35 discoveries, 45 documented relationships, 55 refe
 
 A discovery date identifies the specific contribution, not a person's lifetime. Geographic curves represent documented relationships between research locations, not personal travel itineraries. Artificial-network components are called units; a neuron is a biological cell.
 
+## Visual design system
+
+Shared typography, spacing, reading measures, and control tokens live in `app/design-system.css`. Story emphasizes the narrative with chapter progress, Explore supports open discovery, and Trace frames each selection as a genealogy. All three share the same scientific palette and component language. Responsive layouts reorganize filters, text, and visualizations from phones through ultrawide displays.
+
+See [the visual review](docs/VISUAL_REVIEW.md) for findings, implementation decisions, and validation coverage.
+
 ## Scientific color system
 
 The palette is centralized in `lib/colors.ts`, with UI and print roles in `app/colors.css`. Computing uses blue, neuroscience teal, mathematics orange, learning violet, and NeuroAI coral across the graph, map, timeline, and discovery cards. White and neutral gray surfaces keep the data prominent. Contrast-adjusted text variants preserve category identity in light and dark themes.

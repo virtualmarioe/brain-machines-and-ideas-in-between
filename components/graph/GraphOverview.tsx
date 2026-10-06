@@ -48,9 +48,11 @@ export default function GraphOverview({
   const drag = useRef<{ grabOffset: number } | null>(null);
   const width = bounds.right - bounds.left;
   const height = bounds.bottom - bounds.top;
-  const maxLeft = Math.max(bounds.left, bounds.right - viewport.width);
+  // Fit calculations can leave a subpixel remainder after dividing by the zoom scale.
+  const fullyVisible = viewport.width >= width - 0.01;
+  const maxLeft = fullyVisible ? bounds.left : Math.max(bounds.left, bounds.right - viewport.width);
   const left = clampGraphLeft(viewport.left, viewport.width, bounds);
-  const fraction = Math.min(1, viewport.width / width);
+  const fraction = fullyVisible ? 1 : viewport.width / width;
   const value = maxLeft === bounds.left ? 0 : (left - bounds.left) / (maxLeft - bounds.left);
   const lookup = new Map(nodes.map((node) => [node.id, node]));
   const x = (world: number) => ((world - bounds.left) / width) * 1000;

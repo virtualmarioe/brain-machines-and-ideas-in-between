@@ -19,7 +19,7 @@
 .scidemo-eyebrow {
   margin: 0 0 0.55rem;
   color: var(--accent);
-  font-size: 0.62rem;
+  font-size: var(--text-label);
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -46,7 +46,7 @@
   font: inherit;
   padding: 0.65rem 0.85rem;
   cursor: pointer;
-  min-height: 38px;
+  min-height: var(--control-size);
 }
 .scidemo button:hover {
   border-color: var(--accent);
@@ -61,7 +61,7 @@
 }
 .scidemo .scidemo-reset {
   flex-shrink: 0;
-  font-size: 0.7rem;
+  font-size: var(--text-label);
   padding: 0.4rem 0.6rem;
 }
 .scidemo-two-column {
@@ -124,7 +124,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.6rem 1rem;
-  font-size: 0.65rem;
+  font-size: var(--text-label);
   color: var(--muted);
 }
 .scidemo-legend span {
@@ -165,7 +165,7 @@
   align-items: baseline;
 }
 .scidemo-control label {
-  font-size: 0.74rem;
+  font-size: var(--text-label);
   color: var(--muted);
 }
 .scidemo-control output {
@@ -207,7 +207,7 @@
   gap: 0.35rem;
 }
 .scidemo-result span {
-  font-size: 0.65rem;
+  font-size: var(--text-label);
   color: var(--muted);
 }
 .scidemo-result strong {
@@ -231,7 +231,7 @@
   padding: 0.15rem 0 0.15rem 0.9rem;
   border-left: 2px solid var(--accent);
   color: var(--muted);
-  font-size: 0.75rem;
+  font-size: var(--text-label);
   line-height: 1.7;
 }
 .scidemo-note strong {
@@ -254,13 +254,13 @@
   min-width: 0;
 }
 .scidemo-comparison h4 {
-  font-size: 0.75rem;
+  font-size: var(--text-label);
   font-weight: 600;
   margin: 0;
 }
 .scidemo-comparison p,
 .scidemo-comparison span {
-  font-size: 0.65rem;
+  font-size: var(--text-label);
   color: var(--muted);
   line-height: 1.6;
 }
@@ -282,7 +282,7 @@
 .scidemo-control select {
   width: 100%;
   min-width: 0;
-  font-size: 0.75rem;
+  font-size: var(--text-label);
   padding: 0.45rem 0.5rem;
 }
 .scidemo-convolution-grids {
@@ -301,13 +301,13 @@
   justify-content: space-between;
   gap: 0.3rem;
   margin-bottom: 0.65rem;
-  font-size: 0.7rem;
+  font-size: var(--text-label);
   color: var(--text);
 }
 .scidemo figcaption span {
   color: var(--muted);
   font:
-    0.65rem ui-monospace,
+    var(--text-caption) ui-monospace,
     SFMono-Regular,
     Consolas,
     monospace;
@@ -344,7 +344,7 @@
   padding: 0;
   border-radius: 3px;
   font:
-    0.56rem ui-monospace,
+    var(--text-caption) ui-monospace,
     SFMono-Regular,
     Consolas,
     monospace;
@@ -359,7 +359,7 @@
   margin-top: 1rem;
   padding-top: 0.8rem;
   border-top: 1px solid var(--border);
-  font-size: 0.74rem;
+  font-size: var(--text-label);
 }
 .scidemo-details summary {
   cursor: pointer;
@@ -456,7 +456,7 @@
   gap: 0.5rem;
 }
 .scidemo-actions button {
-  font-size: 0.7rem;
+  font-size: var(--text-label);
 }
 .scidemo-actions .scidemo-primary {
   background: var(--action-fill);
@@ -504,8 +504,8 @@
     margin: 0.2rem auto;
   }
   .scidemo .scidemo-response-cell {
-    font-size: 0.7rem;
-    min-height: 38px;
+    font-size: var(--text-label);
+    min-height: var(--control-size);
   }
   .scidemo-train-controls {
     flex-wrap: wrap;
@@ -550,7 +550,7 @@
   display: flex;
   justify-content: space-between;
   gap: 0.75rem;
-  font-size: 0.75rem;
+  font-size: var(--text-label);
 }
 .concept-bar strong {
   font-variant-numeric: tabular-nums;
@@ -663,7 +663,7 @@
 .concept-samples span {
   text-align: center;
   font:
-    0.7rem/1.7 ui-monospace,
+    var(--text-caption)/1.7 ui-monospace,
     monospace;
   border-radius: 3px;
   border: 1px solid var(--border);
@@ -708,11 +708,11 @@
   text-align: center;
 }
 .concept-object-grid small {
-  font-size: 0.65rem;
+  font-size: var(--text-label);
   line-height: 1.5;
 }
 .concept-object-grid > div > span:last-child {
-  font-size: 0.67rem;
+  font-size: var(--text-label);
 }
 .concept-object-grid .concept-object-selected {
   border-color: var(--accent);
@@ -748,7 +748,7 @@
 }
 .scidemo-color-legend {
   margin-block: 0.65rem;
-  font-size: 0.65rem;
+  font-size: var(--text-label);
   color: var(--muted);
 }
 .scidemo-color-legend > i {

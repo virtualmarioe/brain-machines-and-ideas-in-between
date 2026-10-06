@@ -44,12 +44,12 @@ export default function IdeaGraph({
     return () => observer.disconnect();
   }, []);
   const ordered = chronological(entities);
-  const width = Math.max(viewportWidth, Math.ceil(ordered.length / 3) * 175 + 80);
+  const width = Math.max(viewportWidth, Math.ceil(ordered.length / 3) * 210 + 100);
   const nodes = new Map(
     ordered.map((node, index) => [
       node.id,
       positions[node.id] ?? {
-        x: ordered.length <= 3 ? viewportWidth / 2 : 80 + Math.floor(index / 3) * 175,
+        x: ordered.length <= 3 ? viewportWidth / 2 : 100 + Math.floor(index / 3) * 210,
         y: 68 + (index % 3) * 94,
       },
     ]),
@@ -112,7 +112,7 @@ export default function IdeaGraph({
     <section className="graph-section" aria-label={t('graph', locale)}>
       <div className="viz-heading">
         <div>
-          <span className="eyebrow">01 / {t('graph', locale)}</span>
+          <h2 className="eyebrow">01 / {t('graph', locale)}</h2>
           <p>{t('graphHint', locale)}</p>
         </div>
         <div className="zoom-tools">

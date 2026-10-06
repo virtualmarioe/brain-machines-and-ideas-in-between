@@ -151,8 +151,18 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
   function resetFilters() {
     update({ domain: 'all', query: '', from: MIN_YEAR, to: MAX_YEAR, scope: 'all' });
   }
+  const readingPanel = selected ? (
+    <EntityPanel
+      key={selected.id}
+      entity={selected}
+      locale={locale}
+      onSelect={select}
+      onDemo={setDemo}
+      nobel={state.nobel}
+    />
+  ) : null;
   return (
-    <>
+    <div className="atlas-shell" data-mode={state.mode}>
       <a href="#discoveries" className="skip-link">
         {t('skip', locale)}
       </a>
@@ -178,11 +188,13 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
             <small>{t('tagline', locale)}</small>
           </span>
         </a>
-        <nav className="primary-nav" aria-label={t('explore', locale)}>
+        <nav className="primary-nav" aria-label={t('modeNavigation', locale)}>
           {(['story', 'explore', 'trace'] as const).map((mode) => (
             <button
               key={mode}
               className={state.mode === mode ? 'active' : ''}
+              aria-pressed={state.mode === mode}
+              title={t(`${mode}Purpose`, locale)}
               onClick={() =>
                 update({
                   mode,
@@ -201,6 +213,10 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
                 })
               }
             >
+              <Icon
+                name={mode === 'story' ? 'book' : mode === 'trace' ? 'network' : 'globe'}
+                size={18}
+              />
               {t(mode, locale)}
             </button>
           ))}
@@ -297,36 +313,52 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
           </div>
         </div>
         {state.mode === 'story' && (
-          <section className="story-banner">
+          <section className="story-banner mode-guide" aria-labelledby="mode-title">
             <div>
+              <p className="mode-purpose">
+                <Icon name="book" />
+                {t('storyPurpose', locale)}
+              </p>
               <span className="eyebrow">
                 {t('chapter', locale)} {String(chapter + 1).padStart(2, '0')} / {story.length}
               </span>
-              <h2>{t('storyTitle', locale)}</h2>
+              <h2 id="mode-title">{t('storyTitle', locale)}</h2>
+              <p className="mode-description">{t('storyHelp', locale)}</p>
             </div>
-            <div className="story-pagination">
-              <button
-                disabled={chapter === 0}
-                onClick={() => select(story[chapter - 1])}
-                aria-label={t('previous', locale)}
-              >
-                ←
-              </button>
-              <span>{entities.find((e) => e.id === story[chapter])?.title[locale]}</span>
-              <button
-                disabled={chapter === story.length - 1}
-                onClick={() => select(story[chapter + 1])}
-              >
-                {t('next', locale)} <Icon name="arrow" size={16} />
-              </button>
+            <div className="story-chapter-controls">
+              <progress
+                className="story-progress"
+                max={story.length}
+                value={chapter + 1}
+                aria-label={t('chapter', locale)}
+              />
+              <div className="story-pagination">
+                <button
+                  disabled={chapter === 0}
+                  onClick={() => select(story[chapter - 1])}
+                  aria-label={t('previous', locale)}
+                >
+                  ←
+                </button>
+                <span>{entities.find((e) => e.id === story[chapter])?.title[locale]}</span>
+                <button
+                  disabled={chapter === story.length - 1}
+                  onClick={() => select(story[chapter + 1])}
+                >
+                  {t('next', locale)} <Icon name="arrow" size={16} />
+                </button>
+              </div>
             </div>
           </section>
         )}
         {state.mode === 'trace' && (
-          <section className="trace-banner">
+          <section className="trace-banner mode-guide" aria-labelledby="mode-title">
             <div>
-              <span className="eyebrow">{t('trace', locale)}</span>
-              <h2>{t('traceTitle', locale)}</h2>
+              <p className="mode-purpose">
+                <Icon name="network" />
+                {t('tracePurpose', locale)}
+              </p>
+              <h2 id="mode-title">{t('traceTitle', locale)}</h2>
               <p>{t('traceHelp', locale)}</p>
             </div>
             <label>
@@ -339,6 +371,23 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
                 ))}
               </select>
             </label>
+          </section>
+        )}
+        {state.mode === 'explore' && (
+          <section className="explore-banner mode-guide" aria-labelledby="mode-title">
+            <div>
+              <p className="mode-purpose">
+                <Icon name="globe" />
+                {t('explorePurpose', locale)}
+              </p>
+              <h2 id="mode-title">{t('exploreTitle', locale)}</h2>
+              <p className="mode-description">{t('exploreHelp', locale)}</p>
+            </div>
+            <ol className="explore-steps">
+              <li>{t('exploreSelect', locale)}</li>
+              <li>{t('exploreConnect', locale)}</li>
+              <li>{t('exploreEvidence', locale)}</li>
+            </ol>
           </section>
         )}
         <div className="atlas-workspace" id="discoveries">
@@ -406,6 +455,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
           </aside>
           {filtered.length > 0 && selected ? (
             <>
+              {state.mode === 'story' && readingPanel}
               <div className="visualization-column">
                 <details className="visualization-frame" open={compact ? undefined : true}>
                   <summary>
@@ -439,14 +489,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
                   />
                 </details>
               </div>
-              <EntityPanel
-                key={selected.id}
-                entity={selected}
-                locale={locale}
-                onSelect={select}
-                onDemo={setDemo}
-                nobel={state.nobel}
-              />
+              {state.mode !== 'story' && readingPanel}
             </>
           ) : (
             <div className="empty-state">
@@ -526,6 +569,6 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
           <ReferenceList ids={edge.evidence} locale={locale} />
         </Modal>
       )}
-    </>
+    </div>
   );
 }
