@@ -40,6 +40,12 @@ The current corpus contains 35 discoveries, 45 documented relationships, 55 refe
 
 A discovery date identifies the specific contribution, not a person's lifetime. Geographic curves represent documented relationships between research locations, not personal travel itineraries. Artificial-network components are called units; a neuron is a biological cell.
 
+## Scientific color system
+
+The palette is centralized in `lib/colors.ts`, with UI and print roles in `app/colors.css`. Computing uses blue, neuroscience teal, mathematics orange, learning violet, and NeuroAI coral across the graph, map, timeline, and discovery cards. White and neutral gray surfaces keep the data prominent. Contrast-adjusted text variants preserve category identity in light and dark themes.
+
+Binary demonstrations use blue/orange with labels, open/filled markers, or solid/dashed borders. Attention weights use the blue–teal sequential scale over 0–100%. Filter weights and responses use blue–neutral–coral with fixed symmetric limits of ±⅓ and ±1 respectively; zero always receives the neutral midpoint. Continuous colors interpolate in Oklab. Numeric labels and explicit scale legends remain available without color, and physical stimulus brightness stays constant across themes. Print styling forces light surfaces.
+
 ## Quality checks
 
 ```sh

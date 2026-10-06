@@ -178,13 +178,10 @@ export default function WorldMap({
                   <circle
                     r={isActive ? 10 : 5}
                     fill={isActive ? 'var(--accent-soft)' : 'var(--surface)'}
-                    stroke={isActive ? 'var(--accent)' : 'var(--domain)'}
+                    stroke="var(--domain-ink)"
                     strokeWidth={isActive ? 1.5 : 1}
                   />
-                  <circle
-                    r={isActive ? 4 : 2}
-                    fill={isActive ? 'var(--accent)' : 'var(--domain)'}
-                  />
+                  <circle r={isActive ? 4 : 2} fill="var(--domain)" />
                   {(isActive || index % 5 === 0) && (
                     <text
                       y={isActive ? -16 : 14}

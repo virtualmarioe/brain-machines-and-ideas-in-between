@@ -17,6 +17,8 @@ import {
   temporalDifference,
 } from '../../lib/concept-simulations';
 import { Frame, Range, number } from './DemoPrimitives';
+import { scaleColor, sequential } from '../../lib/colors';
+import { ColorLegend } from './ColorLegend';
 
 type Props = { locale: Locale; kind: ConceptDemoKind };
 function Lab({
@@ -65,7 +67,17 @@ function Toggle({
     </button>
   );
 }
-function Bar({ label, value, text }: { label: string; value: number; text: string }) {
+function Bar({
+  label,
+  value,
+  text,
+  tone = 'model',
+}: {
+  label: string;
+  value: number;
+  text: string;
+  tone?: 'model' | 'alternative' | 'reference' | 'magnitude';
+}) {
   return (
     <div className="concept-bar">
       <div>
@@ -73,7 +85,13 @@ function Bar({ label, value, text }: { label: string; value: number; text: strin
         <strong>{text}</strong>
       </div>
       <span className="concept-bar-track" aria-hidden="true">
-        <i style={{ width: `${Math.max(0, Math.min(100, value * 100))}%` }} />
+        <i
+          data-tone={tone}
+          style={{
+            width: `${Math.max(0, Math.min(100, value * 100))}%`,
+            ...(tone === 'magnitude' ? { background: scaleColor(sequential, value) } : {}),
+          }}
+        />
       </span>
     </div>
   );
@@ -367,7 +385,12 @@ function Entropy(props: Props) {
       />
       <div className="concept-spaced">
         <Bar label="0" value={1 - p} text={`${number((1 - p) * 100, props.locale, 0)} %`} />
-        <Bar label="1" value={p} text={`${number(p * 100, props.locale, 0)} %`} />
+        <Bar
+          tone="alternative"
+          label="1"
+          value={p}
+          text={`${number(p * 100, props.locale, 0)} %`}
+        />
       </div>
       <svg
         viewBox="0 0 360 160"
@@ -624,7 +647,7 @@ function Planning(props: Props) {
           <p>
             {t.now}: 0 → {t.later}: +5
           </p>
-          <Bar label={t.return} value={b / 5} text={number(b, props.locale)} />
+          <Bar tone="alternative" label={t.return} value={b / 5} text={number(b, props.locale)} />
         </div>
       </div>
       <Results values={[[t.best, Math.abs(a - b) < 1e-9 ? t.tie : a > b ? t.routeA : t.routeB]]} />
@@ -700,7 +723,12 @@ function Prediction(props: Props) {
         locale={props.locale}
       />
       <div className="concept-spaced">
-        <Bar label={t.observed} value={observed} text={number(observed, props.locale)} />
+        <Bar
+          tone="reference"
+          label={t.observed}
+          value={observed}
+          text={number(observed, props.locale)}
+        />
         <Bar label={t.predicted} value={predicted} text={number(predicted, props.locale)} />
       </div>
       <button onClick={() => setPredicted(predicted + 0.5 * (observed - predicted))}>
@@ -751,12 +779,14 @@ function Attention(props: Props) {
         {weights.map((weight, i) => (
           <Bar
             key={i}
+            tone="magnitude"
             label={`${'ABC'[i]} (${t.value}: ${values[i]})`}
             value={weight}
             text={`${number(weight * 100, props.locale, 1)} %`}
           />
         ))}
       </div>
+      <ColorLegend locale={props.locale} percent />
       <Results
         values={[
           [

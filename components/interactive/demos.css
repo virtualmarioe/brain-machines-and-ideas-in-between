@@ -93,7 +93,7 @@
   margin-inline: auto;
 }
 .scidemo-gridline {
-  stroke: var(--border);
+  stroke: var(--grid);
   stroke-width: 0.8;
 }
 .scidemo-axis {
@@ -101,16 +101,17 @@
   stroke-width: 0.8;
 }
 .scidemo-class-one {
-  fill: var(--accent);
-  opacity: 0.6;
+  fill: var(--palette-orange);
+  stroke: var(--ink-orange);
+  stroke-width: 0.5;
 }
 .scidemo-class-zero {
-  stroke: var(--muted);
+  stroke: var(--ink-blue);
   stroke-width: 1.3;
   fill: var(--surface);
 }
 .scidemo-boundary {
-  stroke: var(--accent);
+  stroke: var(--reference);
   stroke-width: 2;
 }
 .scidemo-selected-point {
@@ -138,11 +139,11 @@
   flex-shrink: 0;
 }
 .scidemo-circle {
-  border: 1px solid var(--muted);
+  border: 1px solid var(--ink-blue);
   border-radius: 50%;
 }
 .scidemo-square {
-  background: var(--accent);
+  background: var(--palette-orange);
 }
 .scidemo-diamond {
   background: var(--text);
@@ -271,11 +272,6 @@
   display: block;
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
 }
-.scidemo-comparison meter {
-  width: 100%;
-  height: 12px;
-  accent-color: var(--accent);
-}
 .scidemo-convolution-controls {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -320,21 +316,15 @@
   width: 100%;
 }
 .scidemo-stimulus-bg {
-  fill: var(--text);
+  fill: var(--neutral-black);
 }
 .scidemo-kernel-bg {
   fill: var(--border);
 }
 .scidemo-pixel {
-  fill: var(--surface);
+  fill: var(--neutral-figure);
 }
-.scidemo-filter-positive {
-  fill: var(--accent-soft);
-}
-.scidemo-filter-negative {
-  fill: var(--surface);
-}
-.scidemo-matrix text {
+.scidemo .scidemo-matrix text {
   font-size: 8px;
 }
 .scidemo-patch-outline {
@@ -358,9 +348,6 @@
     SFMono-Regular,
     Consolas,
     monospace;
-}
-.scidemo .scidemo-response-cell.is-positive {
-  background: var(--accent-soft);
 }
 .scidemo .scidemo-response-cell[aria-pressed='true'] {
   outline: 2px solid var(--accent);
@@ -472,9 +459,9 @@
   font-size: 0.7rem;
 }
 .scidemo-actions .scidemo-primary {
-  background: var(--accent);
-  color: var(--surface);
-  border-color: var(--accent);
+  background: var(--action-fill);
+  color: var(--on-action);
+  border-color: var(--action-fill);
 }
 .scidemo .scidemo-loss-figure {
   margin-top: 1.2rem;
@@ -682,11 +669,13 @@
   border: 1px solid var(--border);
 }
 .concept-samples .class-a {
-  background: var(--accent-soft);
+  background: color-mix(in srgb, var(--palette-blue) 12%, var(--surface));
   color: var(--text);
+  border-color: var(--ink-blue);
 }
 .concept-samples .class-b {
-  background: var(--surface);
+  background: color-mix(in srgb, var(--palette-orange) 12%, var(--surface));
+  border-color: var(--ink-orange);
   color: var(--text);
   border-style: dashed;
 }
@@ -731,13 +720,13 @@
 }
 .concept-object {
   display: block;
-  background: #344344;
+  background: var(--neutral-text);
   border: 1px solid var(--text);
   border-radius: 50%;
   flex-shrink: 0;
 }
 .concept-object.concept-object-bright {
-  background: #eae9cf;
+  background: var(--neutral-panel);
 }
 @media (max-width: 500px) {
   .concept-object-grid {
@@ -746,4 +735,66 @@
   .concept-object-grid > div {
     min-height: 155px;
   }
+}
+
+.concept-bar-track i[data-tone='model'] {
+  background: var(--palette-blue);
+}
+.concept-bar-track i[data-tone='alternative'] {
+  background: var(--palette-orange);
+}
+.concept-bar-track i[data-tone='reference'] {
+  background: var(--reference);
+}
+.scidemo-color-legend {
+  margin-block: 0.65rem;
+  font-size: 0.65rem;
+  color: var(--muted);
+}
+.scidemo-color-legend > i {
+  display: block;
+  height: 9px;
+  margin-block: 0.35rem;
+  border: 1px solid var(--reference);
+  background: var(--magnitude-gradient);
+}
+.scidemo-color-legend[data-scale='signed'] > i {
+  background: var(--signed-gradient);
+}
+.scidemo-color-legend > div {
+  display: flex;
+  justify-content: space-between;
+  font-variant-numeric: tabular-nums;
+}
+.scidemo-signed-meter {
+  position: relative;
+  height: 13px;
+  background: var(--signed-gradient);
+  border: 1px solid var(--reference);
+}
+.scidemo-signed-meter::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  height: 100%;
+  border-left: 1px solid var(--neutral-secondary);
+}
+.scidemo-signed-meter > i {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 3px;
+  transform: translateX(-50%);
+  background: var(--neutral-black);
+  outline: 1px solid var(--neutral-figure);
+}
+
+.scidemo-magnitude-meter {
+  height: 13px;
+  background: var(--grid);
+  border: 1px solid var(--reference);
+}
+.scidemo-magnitude-meter > i {
+  display: block;
+  height: 100%;
 }

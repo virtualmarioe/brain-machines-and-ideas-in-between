@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
+import { scientificColorVariables } from '../lib/colors';
+import type { CSSProperties } from 'react';
+import './colors.css';
 import './globals.css';
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://127.0.0.1:3000'),
@@ -12,7 +15,11 @@ const themeScript = `(function(){try{var t=localStorage.getItem('atlas-theme');d
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = (await headers()).get('x-atlas-locale') || 'en';
   return (
-    <html lang={locale || 'en'} suppressHydrationWarning>
+    <html
+      lang={locale || 'en'}
+      style={scientificColorVariables as CSSProperties}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>

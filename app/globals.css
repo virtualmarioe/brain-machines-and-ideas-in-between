@@ -1,75 +1,3 @@
-:root {
-  --background: #f5f3ec;
-  --surface: #fbfaf6;
-  --elevated: #fffefa;
-  --text: #243d3b;
-  --muted: #646e68;
-  --border: #dcded3;
-  --accent: #a2462c;
-  --accent-soft: #f0dfd1;
-  --neuro: #327468;
-  --math: #8b662d;
-  --computing: #556b91;
-  --learning: #a04e30;
-  --neuroai: #795a8b;
-  --land: #e2e6da;
-  --land-border: #bdc8b8;
-  --map-grid: #dce2d6;
-  --focus: #285fcc;
-  --panel-highlight: #eaf0e7;
-  --gold: #8a692d;
-  --shadow: 0 12px 50px #253a3820;
-  color-scheme: light;
-  font-family: Arial, Helvetica, sans-serif;
-}
-:root[data-theme='dark'] {
-  --background: #172422;
-  --surface: #1d2d2a;
-  --elevated: #243631;
-  --text: #e6e8dc;
-  --muted: #b0b9ad;
-  --border: #3e5149;
-  --accent: #ecab83;
-  --accent-soft: #543b2c;
-  --neuro: #86c3ab;
-  --math: #d8b674;
-  --computing: #a2b8e1;
-  --learning: #eca583;
-  --neuroai: #c3a3d8;
-  --land: #344c41;
-  --land-border: #4b6657;
-  --map-grid: #2a4037;
-  --focus: #a0c6ff;
-  --panel-highlight: #2c4339;
-  --gold: #e2be7c;
-  --shadow: 0 12px 50px #0005;
-  color-scheme: dark;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --background: #172422;
-    --surface: #1d2d2a;
-    --elevated: #243631;
-    --text: #e6e8dc;
-    --muted: #b0b9ad;
-    --border: #3e5149;
-    --accent: #ecab83;
-    --accent-soft: #543b2c;
-    --neuro: #86c3ab;
-    --math: #d8b674;
-    --computing: #a2b8e1;
-    --learning: #eca583;
-    --neuroai: #c3a3d8;
-    --land: #344c41;
-    --land-border: #4b6657;
-    --map-grid: #2a4037;
-    --focus: #a0c6ff;
-    --panel-highlight: #2c4339;
-    --gold: #e2be7c;
-    --shadow: 0 12px 50px #0005;
-    color-scheme: dark;
-  }
-}
 * {
   box-sizing: border-box;
 }
@@ -146,7 +74,7 @@ select option {
 }
 input[type='checkbox'],
 input[type='range'] {
-  accent-color: var(--neuro);
+  accent-color: var(--accent);
 }
 input[type='range'] {
   cursor: pointer;
@@ -175,19 +103,24 @@ input[type='range'] {
   top: 12px;
 }
 .domain-neuroscience {
-  --domain: var(--neuro);
+  --domain-ink: var(--category-neuroscience-ink);
+  --domain: var(--category-neuroscience);
 }
 .domain-mathematics {
-  --domain: var(--math);
+  --domain-ink: var(--category-mathematics-ink);
+  --domain: var(--category-mathematics);
 }
 .domain-computing {
-  --domain: var(--computing);
+  --domain-ink: var(--category-computing-ink);
+  --domain: var(--category-computing);
 }
 .domain-learning {
-  --domain: var(--learning);
+  --domain-ink: var(--category-learning-ink);
+  --domain: var(--category-learning);
 }
 .domain-neuroai {
-  --domain: var(--neuroai);
+  --domain-ink: var(--category-neuroai-ink);
+  --domain: var(--category-neuroai);
 }
 .eyebrow {
   font-size: 10px;
@@ -457,7 +390,7 @@ input[type='range'] {
 }
 .discovery-item.selected {
   background: var(--panel-highlight);
-  border-left-color: var(--domain);
+  border-left-color: var(--domain-ink);
 }
 .discovery-item i {
   width: 4px;
@@ -571,7 +504,7 @@ input[type='range'] {
 }
 .node-dot {
   fill: var(--surface);
-  stroke: var(--domain);
+  stroke: var(--domain-ink);
   stroke-width: 2;
 }
 .graph-node.selected .node-dot,
@@ -580,7 +513,7 @@ input[type='range'] {
 }
 .node-halo {
   fill: var(--panel-highlight);
-  stroke: var(--domain);
+  stroke: var(--domain-ink);
   stroke-dasharray: 2 4;
   stroke-width: 1;
   opacity: 0.8;
@@ -701,7 +634,7 @@ input[type='range'] {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  color: var(--domain);
+  color: var(--domain-ink);
   font-size: 9px;
 }
 .domain-tag i {
@@ -721,7 +654,7 @@ input[type='range'] {
   margin-top: 19px;
   margin-bottom: 6px;
   font-weight: 400;
-  color: var(--domain);
+  color: var(--domain-ink);
 }
 .year-rule {
   flex: 1;
@@ -861,7 +794,7 @@ input[type='range'] {
   display: block;
   margin-top: 18px;
   font-size: 8px;
-  color: var(--neuro);
+  color: var(--muted);
   letter-spacing: 0.4px;
 }
 .verification.needs-review {
@@ -1015,7 +948,7 @@ input[type='range'] {
 .time-event.selected {
   height: 17px;
   width: 17px;
-  outline: 1px solid var(--domain);
+  outline: 1px solid var(--domain-ink);
   z-index: 3;
 }
 .time-tooltip {
@@ -1129,7 +1062,7 @@ footer button {
 .story-banner .eyebrow,
 .trace-banner .eyebrow {
   font-size: 9px;
-  color: var(--neuro);
+  color: var(--muted);
 }
 .story-pagination {
   display: flex;
@@ -1190,12 +1123,12 @@ footer button {
   color: var(--muted);
 }
 .primary-button {
-  background: var(--text);
-  color: var(--surface);
+  background: var(--action-fill);
+  color: var(--on-action);
   padding: 12px 20px;
 }
 .primary-button:hover:not(:disabled) {
-  color: var(--surface);
+  color: var(--on-action);
   opacity: 0.8;
 }
 .modal {
@@ -1210,7 +1143,7 @@ footer button {
   overflow: auto;
 }
 .modal::backdrop {
-  background: #10221dc0;
+  background: var(--backdrop);
   backdrop-filter: blur(5px);
 }
 .modal-wide {
@@ -1750,20 +1683,20 @@ footer button {
 .time-event.selected::before {
   width: 11px;
   height: 11px;
-  outline: 1px solid var(--domain);
+  outline: 1px solid var(--domain-ink);
   outline-offset: 2px;
 }
 .time-event.clustered::before {
   width: 19px;
   height: 19px;
   background: var(--surface);
-  border: 1px solid var(--domain);
+  border: 1px solid var(--domain-ink);
 }
 .cluster-count {
   position: relative;
   z-index: 1;
   font-size: 9px;
-  color: var(--domain);
+  color: var(--domain-ink);
 }
 .time-event:focus-visible {
   outline: 2px solid var(--focus);
@@ -1794,7 +1727,7 @@ footer button {
 }
 .cluster-discoveries button span {
   font-variant-numeric: tabular-nums;
-  color: var(--domain);
+  color: var(--domain-ink);
 }
 .cluster-discoveries button svg {
   margin-left: auto;

@@ -1,0 +1,47 @@
+:root {
+  color-scheme: light;
+  font-family: Arial, Helvetica, sans-serif;
+  --background: light-dark(var(--neutral-panel), var(--neutral-darkBackground));
+  --surface: light-dark(var(--neutral-figure), var(--neutral-darkSurface));
+  --elevated: light-dark(var(--neutral-figure), var(--neutral-darkElevated));
+  --text: light-dark(var(--neutral-text), var(--neutral-panel));
+  --muted: light-dark(var(--neutral-secondary), var(--neutral-light));
+  --border: light-dark(var(--neutral-light), var(--neutral-darkBorder));
+  --grid: light-dark(var(--neutral-grid), var(--neutral-darkBorder));
+  --reference: light-dark(var(--neutral-reference), var(--neutral-inactive));
+  --accent: var(--ink-blue);
+  --accent-soft: color-mix(in srgb, var(--palette-blue) 10%, var(--surface));
+  --action-fill: var(--palette-blue);
+  --on-action: var(--neutral-figure);
+  --gold: var(--ink-gold);
+  --land: light-dark(var(--neutral-light), var(--neutral-darkBorder));
+  --land-border: var(--reference);
+  --map-grid: var(--grid);
+  --focus: var(--ink-blue);
+  --panel-highlight: var(--background);
+  --shadow: 0 12px 50px color-mix(in srgb, var(--neutral-text) 12%, transparent);
+  --backdrop: color-mix(in srgb, var(--neutral-text) 75%, transparent);
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+  }
+}
+@media print {
+  :root,
+  :root[data-theme='dark'],
+  :root:not([data-theme='light']) {
+    color-scheme: light;
+  }
+  html body {
+    background: var(--neutral-figure);
+  }
+  svg,
+  .scidemo,
+  .concept-samples {
+    print-color-adjust: exact;
+  }
+}

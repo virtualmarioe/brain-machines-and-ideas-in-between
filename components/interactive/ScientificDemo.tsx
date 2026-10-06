@@ -17,6 +17,8 @@ import {
 } from '../../lib/simulations';
 import { Frame, Range, number } from './DemoPrimitives';
 import { ConceptDemo } from './ConceptDemo';
+import { signedColor, textOn, scaleColor, sequential } from '../../lib/colors';
+import { ColorLegend } from './ColorLegend';
 import './demos.css';
 
 interface DemoProps {
@@ -227,17 +229,17 @@ function MatrixGraphic({
               y={4 + r * cell}
               width={cell - 1}
               height={cell - 1}
-              className={
-                weights
-                  ? value > 0
-                    ? 'scidemo-filter-positive'
-                    : 'scidemo-filter-negative'
-                  : 'scidemo-pixel'
-              }
+              className={weights ? 'scidemo-filter-cell' : 'scidemo-pixel'}
+              style={weights ? { fill: signedColor(value, 1 / 3) } : undefined}
               opacity={weights ? 1 : 0.08 + value * 0.92}
             />
             {weights && (
-              <text x={4 + c * cell + cell / 2} y={4 + r * cell + cell / 2 + 3} textAnchor="middle">
+              <text
+                style={{ fill: textOn(signedColor(value, 1 / 3)) }}
+                x={4 + c * cell + cell / 2}
+                y={4 + r * cell + cell / 2 + 3}
+                textAnchor="middle"
+              >
                 {number(value, locale)}
               </text>
             )}
@@ -373,6 +375,7 @@ function ConvolutionDemo({ locale }: DemoProps) {
             weights
             locale={locale}
           />
+          <ColorLegend locale={locale} limit={1 / 3} signed />
         </figure>
         <figure>
           <figcaption>
@@ -384,7 +387,11 @@ function ConvolutionDemo({ locale }: DemoProps) {
                 <button
                   type="button"
                   key={`${r}-${c}`}
-                  className={`scidemo-response-cell ${value >= 0 ? 'is-positive' : 'is-negative'}`}
+                  className="scidemo-response-cell"
+                  style={{
+                    background: signedColor(value, 1),
+                    color: textOn(signedColor(value, 1)),
+                  }}
                   aria-pressed={selected.row === r && selected.col === c}
                   aria-label={`${t.row} ${r + 1}, ${t.column} ${c + 1}: ${number(value, locale, 3)}`}
                   onClick={() => setSelected({ row: r, col: c })}
@@ -394,6 +401,7 @@ function ConvolutionDemo({ locale }: DemoProps) {
               )),
             )}
           </div>
+          <ColorLegend locale={locale} signed />
         </figure>
       </div>
       <p className="scidemo-small">{t.patchHint}</p>
@@ -417,12 +425,22 @@ function ConvolutionDemo({ locale }: DemoProps) {
             {t.relativeResponse}:{' '}
             <strong>{number(Math.max(0, selectedResponse), locale, 3)}</strong>
           </p>
-          <meter
-            min="0"
-            max="1"
-            value={Math.max(0, selectedResponse)}
+          <div
+            className="scidemo-magnitude-meter"
+            role="meter"
+            aria-valuemin={0}
+            aria-valuemax={1}
+            aria-valuenow={Math.max(0, selectedResponse)}
             aria-label={t.relativeResponse}
-          />
+          >
+            <i
+              style={{
+                width: `${Math.max(0, selectedResponse) * 100}%`,
+                background: scaleColor(sequential, Math.max(0, selectedResponse)),
+              }}
+            />
+          </div>
+          <ColorLegend locale={locale} label={t.relativeResponse} />
           <span>r = max(0, Σ IᵢKᵢ)</span>
         </div>
         <div>
@@ -430,7 +448,17 @@ function ConvolutionDemo({ locale }: DemoProps) {
           <p>
             {t.signedResponse}: <strong>{number(selectedResponse, locale, 3)}</strong>
           </p>
-          <meter min="-1" max="1" value={selectedResponse} aria-label={t.signedResponse} />
+          <div
+            className="scidemo-signed-meter"
+            role="meter"
+            aria-valuemin={-1}
+            aria-valuemax={1}
+            aria-valuenow={selectedResponse}
+            aria-label={t.signedResponse}
+          >
+            <i style={{ left: `${(selectedResponse + 1) * 50}%` }} />
+          </div>
+          <ColorLegend locale={locale} signed />
           <span>z = Σ IᵢKᵢ</span>
         </div>
       </div>
