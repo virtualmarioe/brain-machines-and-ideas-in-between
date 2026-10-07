@@ -70,7 +70,7 @@ export default function Timeline({
   );
   const awardYears = [...new Set(awards.map((e) => e.nobel!.year))];
   return (
-    <section className="timeline-section" aria-label={t('timeline', locale)}>
+    <section id="timeline-view" className="timeline-section" aria-label={t('timeline', locale)}>
       <div className="timeline-heading">
         <span className="eyebrow">03 / {t('timeline', locale)}</span>
         <div className="timeline-controls">
@@ -120,7 +120,7 @@ export default function Timeline({
             <span>{year}</span>
           </div>
         ))}
-        {groups.map((group) => {
+        {groups.map((group, index) => {
           const entity = group.entities[0];
           const active = group.entities.some((e) => e.id === selected);
           const multiple = group.entities.length > 1;
@@ -137,7 +137,13 @@ export default function Timeline({
               aria-label={label}
               aria-pressed={active}
               className={`time-event domain-${entity.domain} ${active ? 'selected' : ''} ${multiple ? 'clustered' : ''}`}
-              style={{ left: group.x, top: 22 }}
+              style={
+                {
+                  left: group.x,
+                  top: 22,
+                  '--reveal-delay': `${Math.min(index, 8) * 20}ms`,
+                } as React.CSSProperties
+              }
               onClick={() => {
                 preview.dismiss();
                 if (multiple) setCluster(group.entities);

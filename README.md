@@ -28,7 +28,10 @@ The production server uses the same port as the development server, so stop the 
 - A draggable graph overview strip, keyboard navigation, and a fit-all view for long historical lineages.
 - Glass previews on hover or keyboard focus across graph nodes, graph and map connections, and timeline markers. Map cards include institutions, countries, coordinates, and recorded location years. Connection cards show evidence and confidence; timeline cards show recorded temporal relationships and calendar-year gaps. Nearby map markers are separated with lines to their recorded sites.
 - A shareable People filter exposes the existing person category independently of scientific domains. Person dates identify contributions, not lifetimes.
-- Story chapters, exploration mode, and trace mode.
+- Story chapters with shareable return bookmarks, exploration mode, and a Trace journey with branch explanations, evidence, backtracking, and optional path emphasis.
+- Ranked conceptual search with grouped previews, associated researchers, and direct trace actions. Active filter chips and view links preserve orientation.
+- Speech-bubble previews reserve their source node or edge, share a 68% glass surface, and appear with a brief anchored expansion. Bounded node staggering and fades respect reduced-motion preferences.
+- An optional, lazy-loaded receptive-field explanation compares a 2D footprint with spatial computation layers and an equivalent data table.
 - English, German, and Spanish content and interface labels from the first implementation.
 - Shareable entity routes that restore the selected discovery, filters, time range, and mode.
 - Light, dark, and operating-system themes, with persistent preferences and pre-paint initialization.
@@ -45,7 +48,7 @@ A discovery date identifies the specific contribution, not a person's lifetime. 
 
 Shared typography, spacing, reading measures, and control tokens live in `app/design-system.css`. Story emphasizes the narrative with chapter progress, Explore supports open discovery, and Trace frames each selection as a genealogy. All three share the same scientific palette and component language. Responsive layouts reorganize filters, text, and visualizations from phones through ultrawide displays.
 
-See [the visual review](docs/VISUAL_REVIEW.md) for findings, implementation decisions, and validation coverage.
+See [the interaction review](docs/ATLAS_INTERACTION_REVIEW.md) for priorities, the spatial prototype decision, and journey coverage. See [the visual review](docs/VISUAL_REVIEW.md) for findings, implementation decisions, and validation coverage.
 
 ## Scientific color system
 

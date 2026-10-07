@@ -1,3 +1,4 @@
+import { settleMotion } from './motion';
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -17,6 +18,7 @@ for (const theme of ['light', 'dark'] as const) {
       'background-color',
       'rgb(224, 230, 236)',
     );
+    await settleMotion(page);
     const violations = await new AxeBuilder({ page })
       .include('dialog')
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
@@ -54,6 +56,7 @@ for (const theme of ['light', 'dark'] as const) {
     ]) {
       await page.goto(route);
       await page.getByLabel('Appearance', { exact: true }).selectOption(theme);
+      await settleMotion(page);
       const scan = await new AxeBuilder({ page })
         .include('.entity-panel')
         .withRules(['color-contrast'])

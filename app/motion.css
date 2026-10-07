@@ -1,0 +1,78 @@
+:root {
+  --motion-fast: 150ms;
+  --motion-enter: 260ms;
+}
+@keyframes atlas-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes atlas-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes atlas-reveal {
+  from {
+    opacity: 0;
+    translate: 0 5px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+.mode-guide,
+.entity-heading,
+.entity-reading,
+.journey-context,
+.search-results,
+.trace-journey {
+  animation: atlas-reveal var(--motion-enter) ease-out both;
+}
+.graph-node,
+.map-pin,
+.time-event,
+.nobel-event {
+  animation: atlas-fade-in 240ms ease-out both;
+  animation-delay: var(--reveal-delay, 0ms);
+  animation-fill-mode: backwards;
+}
+.graph-edge,
+.map-edge {
+  animation: atlas-fade-in 300ms ease-out both;
+  animation-delay: 60ms;
+  animation-fill-mode: backwards;
+}
+.graph-node,
+.graph-edge,
+.map-pin {
+  transition: opacity 180ms ease-out;
+}
+.graph-node[data-secondary='true'],
+.graph-edge[data-secondary='true'] {
+  opacity: 0.28;
+}
+.graph-node[data-secondary='true']:is(:hover, :focus-within),
+.graph-edge[data-secondary='true']:is(:hover, :focus-within) {
+  opacity: 1;
+}
+.modal[open] {
+  animation: atlas-reveal 220ms ease-out both;
+}
+.modal[data-closing='true'] {
+  animation: atlas-fade-out 140ms ease-in both;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

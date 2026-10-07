@@ -6,6 +6,8 @@ import './colors.css';
 import './design-system.css';
 import './globals.css';
 import './overlays.css';
+import './motion.css';
+import './journeys.css';
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://127.0.0.1:3000'),
   title: 'The Intelligence Atlas',

@@ -10,6 +10,7 @@ import { NodePreview, useNodePreview } from '@/components/ui/NodePreview';
 import { ConnectionPreview, useConnectionPreview } from '@/components/ui/ConnectionPreview';
 type Point = { x: number; y: number };
 export default function IdeaGraph({
+  focusIds,
   entities,
   relationships,
   selected,
@@ -19,6 +20,7 @@ export default function IdeaGraph({
   compact = false,
 }: {
   compact?: boolean;
+  focusIds?: Set<string>;
   entities: HistoricalEntity[];
   relationships: HistoricalRelationship[];
   selected: string;
@@ -193,7 +195,13 @@ export default function IdeaGraph({
               const active = edge.source === selected || edge.target === selected;
               const path = `M${a.x + 13},${a.y} C${a.x + (b.x - a.x) * 0.6},${a.y} ${b.x - (b.x - a.x) * 0.6},${b.y} ${b.x - 16},${b.y}`;
               return (
-                <g key={edge.id} className={`graph-edge ${active ? 'is-active' : ''}`}>
+                <g
+                  data-secondary={
+                    !!focusIds && !(focusIds.has(edge.source) && focusIds.has(edge.target))
+                  }
+                  key={edge.id}
+                  className={`graph-edge ${active ? 'is-active' : ''}`}
+                >
                   <path
                     d={path}
                     fill="none"
@@ -242,7 +250,7 @@ export default function IdeaGraph({
                 </g>
               );
             })}
-            {ordered.map((node) => {
+            {ordered.map((node, index) => {
               const p = nodes.get(node.id)!;
               const previewProps = preview.nodeProps(node);
               const active = node.id === selected;
@@ -260,6 +268,10 @@ export default function IdeaGraph({
                   {...previewProps}
                   data-node-id={node.id}
                   transform={`translate(${p.x} ${p.y})`}
+                  data-secondary={!!focusIds && !focusIds.has(node.id)}
+                  style={
+                    { '--reveal-delay': `${Math.min(index, 8) * 20}ms` } as React.CSSProperties
+                  }
                   className={`graph-node domain-${node.domain} ${active ? 'selected' : ''} ${related.has(node.id) ? 'related' : ''}`}
                   role="button"
                   tabIndex={0}

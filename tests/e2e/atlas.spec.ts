@@ -1,3 +1,4 @@
+import { settleMotion } from './motion';
 import { expect, test, type Locator, type Page, type TestInfo } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -29,6 +30,7 @@ async function expectNoOverflow(page: Page) {
 }
 
 async function expectDialogAccessibility(page: Page, testInfo: TestInfo) {
+  await settleMotion(page);
   const scan = await new AxeBuilder({ page })
     .include('dialog')
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
@@ -333,6 +335,7 @@ for (const theme of ['light', 'dark'] as const) {
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
     await expectNoOverflow(page);
     await screenshot(page, testInfo, `atlas-${theme}`);
+    await settleMotion(page);
     const scan = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
       .analyze();

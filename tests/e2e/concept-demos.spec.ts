@@ -1,3 +1,4 @@
+import { settleMotion } from './motion';
 import { expect, test, type Locator } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { entities } from '../../content';
@@ -192,6 +193,7 @@ for (const scenario of scenarios)
       await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1),
     ).toBe(true);
     if (['memory', 'masking', 'attention'].includes(scenario.kind)) {
+      await settleMotion(page);
       const scan = await new AxeBuilder({ page })
         .include('dialog')
         .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])

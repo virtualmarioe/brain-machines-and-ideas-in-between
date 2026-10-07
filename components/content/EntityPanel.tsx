@@ -54,6 +54,26 @@ export default function EntityPanel({
             role="tab"
             aria-selected={depth === tab}
             aria-controls="entity-reading"
+            tabIndex={depth === tab ? 0 : -1}
+            onKeyDown={(event) => {
+              const tabs = ['why', 'understand', 'deeper'] as const;
+              const index = tabs.indexOf(tab);
+              const next =
+                event.key === 'ArrowRight'
+                  ? (index + 1) % 3
+                  : event.key === 'ArrowLeft'
+                    ? (index + 2) % 3
+                    : event.key === 'Home'
+                      ? 0
+                      : event.key === 'End'
+                        ? 2
+                        : -1;
+              if (next >= 0) {
+                event.preventDefault();
+                setDepth(tabs[next]);
+                document.getElementById(`depth-${tabs[next]}`)?.focus();
+              }
+            }}
             onClick={() => setDepth(tab)}
           >
             {t(tab, locale)}
@@ -61,6 +81,7 @@ export default function EntityPanel({
         ))}
       </div>
       <div
+        key={depth}
         className="entity-reading"
         id="entity-reading"
         role="tabpanel"

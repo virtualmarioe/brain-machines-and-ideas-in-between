@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useId, useState } from 'react';
 import type { DemoKind, Locale } from '../../types/history';
 import { demoTranslations, type DemoStrings } from '../../content/translations/demos';
@@ -20,6 +21,24 @@ import { ConceptDemo } from './ConceptDemo';
 import { signedColor, textOn, scaleColor, sequential } from '../../lib/colors';
 import { ColorLegend } from './ColorLegend';
 import './demos.css';
+const SpatialReceptiveField = dynamic(() => import('./SpatialReceptiveField'));
+function SpatialExtension({ locale }: DemoProps) {
+  const [open, setOpen] = useState(false);
+  return (
+    <details className="spatial-extension" onToggle={(e) => setOpen(e.currentTarget.open)}>
+      <summary>
+        {
+          {
+            en: 'Explore receptive fields across layers',
+            de: 'Rezeptive Felder über Schichten erkunden',
+            es: 'Explorar campos receptivos entre capas',
+          }[locale]
+        }
+      </summary>
+      {open && <SpatialReceptiveField locale={locale} />}
+    </details>
+  );
+}
 
 interface DemoProps {
   locale: Locale;
@@ -710,7 +729,13 @@ function BackpropagationDemo({ locale }: DemoProps) {
 
 export default function ScientificDemo({ kind, locale }: { kind: DemoKind; locale: Locale }) {
   if (kind === 'perceptron') return <PerceptronDemo locale={locale} />;
-  if (kind === 'convolution') return <ConvolutionDemo locale={locale} />;
+  if (kind === 'convolution')
+    return (
+      <>
+        <ConvolutionDemo locale={locale} />
+        <SpatialExtension locale={locale} />
+      </>
+    );
   if (kind === 'backpropagation') return <BackpropagationDemo locale={locale} />;
   return <ConceptDemo key={kind} kind={kind} locale={locale} />;
 }

@@ -199,6 +199,9 @@ export default function WorldMap({
                   tabIndex={0}
                   aria-label={`${entity.title[locale]} · ${location.name}`}
                   aria-pressed={isActive}
+                  style={
+                    { '--reveal-delay': `${Math.min(index, 8) * 20}ms` } as React.CSSProperties
+                  }
                   className={`map-pin domain-${entity.domain}`}
                   {...previewProps}
                   onFocus={(event) => {

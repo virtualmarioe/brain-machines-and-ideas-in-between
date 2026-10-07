@@ -1,3 +1,4 @@
+import { settleMotion } from './motion';
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -42,6 +43,7 @@ for (const width of [375, 768, 1280, 1440, 1920, 2560]) {
         await testInfo.attach(`${mode}-${width}`, { path, contentType: 'image/png' });
       }
       if (width === 1440) {
+        await settleMotion(page);
         const scan = await new AxeBuilder({ page })
           .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
           .analyze();

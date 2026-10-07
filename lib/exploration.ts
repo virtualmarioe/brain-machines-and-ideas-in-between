@@ -2,6 +2,8 @@ import type { Domain, HistoricalEntity, Locale } from '@/types/history';
 import { isLocale } from './i18n';
 export interface ExplorationState {
   selected: string;
+  story?: string;
+  trail?: string[];
   mode: 'explore' | 'story' | 'trace';
   query: string;
   domain: Domain | 'all';
@@ -34,6 +36,19 @@ export function parseExploration(
     scope = params.get('scope');
   return {
     selected,
+    ...(entities.some((e) => e.id === params.get('story')) ? { story: params.get('story')! } : {}),
+    ...(params.get('trail')
+      ? {
+          trail: [
+            ...new Set(
+              params
+                .get('trail')!
+                .split(',')
+                .filter((id) => entities.some((e) => e.id === id)),
+            ),
+          ].slice(0, 35),
+        }
+      : {}),
     locale,
     category,
     mode: mode === 'story' || mode === 'trace' ? mode : 'explore',
@@ -53,6 +68,8 @@ export function parseExploration(
 export function explorationUrl(state: ExplorationState, entities: HistoricalEntity[]) {
   const entity = entities.find((e) => e.id === state.selected);
   const params = new URLSearchParams();
+  if (state.story) params.set('story', state.story);
+  if (state.trail?.length) params.set('trail', state.trail.join(','));
   if (state.mode !== 'explore') params.set('mode', state.mode);
   if (state.query) params.set('q', state.query);
   if (state.category === 'person') params.set('category', 'person');

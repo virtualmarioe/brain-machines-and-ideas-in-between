@@ -5,7 +5,7 @@ import { entities, relationships, references } from '@/content';
 import { domains, relationLabels, t } from '@/content/translations/ui';
 import { chronological, traverse, yearOf } from '@/lib/graph';
 import { searchEntities } from '@/lib/search';
-import { traceTargets } from '@/lib/traces';
+import { traceTargets, extendTrail } from '@/lib/traces';
 import {
   explorationUrl,
   localeFromPath,
@@ -23,6 +23,9 @@ import { AtlasMark, Icon } from './ui/Icon';
 import { useTheme } from './theme/useTheme';
 import { useCompactLayout } from './navigation/useCompactLayout';
 import { usePageMetadata } from './navigation/usePageMetadata';
+import { journeyText as journey } from '@/content/translations/journeys';
+import SearchResults from './exploration/SearchResults';
+import TraceJourney from './exploration/TraceJourney';
 const ScientificDemo = dynamic(() => import('./interactive/ScientificDemo'));
 const storyIds = [
   'golgi',
@@ -40,6 +43,7 @@ const storyIds = [
 ];
 export default function Atlas({ initialState }: { initialState: ExplorationState }) {
   const [state, setState] = useState(initialState);
+  const [focusPath, setFocusPath] = useState(true);
   const [theme, setTheme] = useTheme();
   const compact = useCompactLayout();
   const [dialog, setDialog] = useState<'about' | null>(null);
@@ -76,6 +80,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
   }, [locale]);
   function update(patch: Partial<ExplorationState>, push = false) {
     const next = { ...state, ...patch };
+    if (state.mode === 'story' && story.includes(state.selected)) next.story = state.selected;
     const matching = searchEntities(entities, next.query, next.locale, references).filter(
       (e) =>
         (next.domain === 'all' || e.domain === next.domain) &&
@@ -86,6 +91,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
     if (matching.length && !matching.some((e) => e.id === next.selected))
       next.selected = chronological(matching)[0].id;
     if (next.mode === 'story' && !story.includes(next.selected)) next.mode = 'explore';
+    if (next.mode === 'story') next.story = next.selected;
     setState(next);
     const url = explorationUrl(next, entities);
     if (push) window.history.pushState(null, '', url);
@@ -97,11 +103,47 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
     update(
       {
         selected: id,
+        ...(state.mode === 'trace'
+          ? {
+              trail: extendTrail(
+                state.trail?.length ? state.trail : [state.selected],
+                id,
+                relationships,
+              ),
+            }
+          : {}),
         category: state.category === 'person' && entity.type !== 'person' ? 'all' : state.category,
         query: searchEntities([entity], state.query, locale, references).length ? state.query : '',
         domain: state.domain === 'all' || state.domain === entity.domain ? state.domain : 'all',
         from: Math.min(state.from, yearOf(entity)),
         to: Math.max(state.to, yearOf(entity)),
+      },
+      true,
+    );
+  }
+  function switchMode(mode: ExplorationState['mode'], id = state.selected) {
+    update(
+      {
+        mode,
+        selected:
+          mode === 'story'
+            ? story.includes(state.story ?? '')
+              ? state.story!
+              : story.includes(id)
+                ? id
+                : story[0]
+            : id,
+        ...(mode === 'story' || mode === 'trace'
+          ? {
+              category: 'all',
+              domain: 'all',
+              query: '',
+              from: MIN_YEAR,
+              to: MAX_YEAR,
+              scope: 'all',
+            }
+          : {}),
+        ...(mode === 'trace' ? { trail: [id] } : {}),
       },
       true,
     );
@@ -122,6 +164,11 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
   );
   const selected = filtered.find((e) => e.id === state.selected) ?? filtered[0];
   usePageMetadata(locale, selected, state.mode);
+  const trail = state.trail?.at(-1) === selected?.id ? state.trail : selected ? [selected.id] : [];
+  const focusIds =
+    state.mode === 'trace' && focusPath
+      ? new Set(trail.length > 1 ? trail : [...traverse(selected?.id ?? '', relationships, 1)])
+      : undefined;
   const graphEntities = useMemo(() => {
     const id = selected?.id;
     if (!id) return [];
@@ -132,6 +179,10 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
         Infinity,
         'before',
       );
+      if (state.mode === 'trace') {
+        for (const node of state.trail ?? []) path.add(node);
+        for (const node of traverse(id, relationships, 1)) path.add(node);
+      }
       return filtered.filter((e) => path.has(e.id));
     }
     if (state.scope !== 'all' || (compact && state.category !== 'person')) {
@@ -143,7 +194,16 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
       return filtered.filter((e) => path.has(e.id));
     }
     return filtered;
-  }, [filtered, selected, state.scope, state.mode, state.context, state.category, compact]);
+  }, [
+    filtered,
+    selected,
+    state.scope,
+    state.mode,
+    state.context,
+    state.category,
+    state.trail,
+    compact,
+  ]);
   const graphIds = new Set(graphEntities.map((e) => e.id));
   const graphEdges = relationships.filter(
     (r) =>
@@ -206,30 +266,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
               className={state.mode === mode ? 'active' : ''}
               aria-pressed={state.mode === mode}
               title={t(`${mode}Purpose`, locale)}
-              onClick={() =>
-                update({
-                  mode,
-                  ...(mode === 'story'
-                    ? {
-                        selected: story[0],
-                        from: MIN_YEAR,
-                        to: MAX_YEAR,
-                        query: '',
-                        category: 'all' as const,
-                        domain: 'all' as const,
-                        scope: 'all' as const,
-                      }
-                    : mode === 'trace'
-                      ? {
-                          category: 'all' as const,
-                          query: '',
-                          domain: 'all' as const,
-                          from: MIN_YEAR,
-                          to: MAX_YEAR,
-                        }
-                      : {}),
-                })
-              }
+              onClick={() => switchMode(mode)}
             >
               <Icon
                 name={mode === 'story' ? 'book' : mode === 'trace' ? 'network' : 'globe'}
@@ -332,7 +369,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
           </div>
         </div>
         {state.mode === 'story' && (
-          <section className="story-banner mode-guide" aria-labelledby="mode-title">
+          <section key="story" className="story-banner mode-guide" aria-labelledby="mode-title">
             <div>
               <p className="mode-purpose">
                 <Icon name="book" />
@@ -371,7 +408,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
           </section>
         )}
         {state.mode === 'trace' && (
-          <section className="trace-banner mode-guide" aria-labelledby="mode-title">
+          <section key="trace" className="trace-banner mode-guide" aria-labelledby="mode-title">
             <div>
               <p className="mode-purpose">
                 <Icon name="network" />
@@ -382,7 +419,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
             </div>
             <label>
               {t('traceTarget', locale)}
-              <select value={state.selected} onChange={(e) => select(e.target.value)}>
+              <select value={state.selected} onChange={(e) => switchMode('trace', e.target.value)}>
                 {chronological(entities).map((e) => (
                   <option key={e.id} value={e.id}>
                     {e.title[locale]}
@@ -393,7 +430,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
           </section>
         )}
         {state.mode === 'explore' && (
-          <section className="explore-banner mode-guide" aria-labelledby="mode-title">
+          <section key="explore" className="explore-banner mode-guide" aria-labelledby="mode-title">
             <div>
               <p className="mode-purpose">
                 <Icon name="globe" />
@@ -408,6 +445,95 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
               <li>{t('exploreEvidence', locale)}</li>
             </ol>
           </section>
+        )}
+        {selected && (
+          <section className="journey-context" aria-label={journey.orientation[locale]}>
+            <span>
+              {t(state.mode, locale)} / {yearOf(selected)}
+            </span>
+            <strong>{selected.title[locale]}</strong>
+            {state.mode !== 'trace' && (
+              <button onClick={() => switchMode('trace')}>{journey.trace[locale]}</button>
+            )}
+            {state.mode === 'trace' && (
+              <button onClick={() => switchMode('explore')}>{journey.explore[locale]}</button>
+            )}
+            {state.mode !== 'story' && state.story && (
+              <button onClick={() => switchMode('story')}>{journey.resume[locale]}</button>
+            )}
+            <nav className="view-links" aria-label={journey.orientation[locale]}>
+              <a
+                href="#graph-view"
+                onClick={() =>
+                  document
+                    .querySelector<HTMLDetailsElement>('#graph-view')
+                    ?.setAttribute('open', '')
+                }
+              >
+                {t('graph', locale)}
+              </a>
+              <a
+                href="#map-view"
+                onClick={() =>
+                  document.querySelector<HTMLDetailsElement>('#map-view')?.setAttribute('open', '')
+                }
+              >
+                {t('map', locale)}
+              </a>
+              <a href="#timeline-view">{t('timeline', locale)}</a>
+            </nav>
+          </section>
+        )}
+        {(state.query ||
+          state.domain !== 'all' ||
+          state.category !== 'all' ||
+          state.from !== MIN_YEAR ||
+          state.to !== MAX_YEAR) && (
+          <nav className="filter-summary" aria-label={journey.filters[locale]}>
+            <strong>{journey.filters[locale]}</strong>
+            {state.query && (
+              <button
+                aria-label={`${journey.remove[locale]}: ${state.query}`}
+                onClick={() => update({ query: '' })}
+              >
+                {state.query} ×
+              </button>
+            )}
+            {state.domain !== 'all' && (
+              <button onClick={() => update({ domain: 'all' })}>
+                {domains[state.domain][locale]} ×
+              </button>
+            )}
+            {state.category !== 'all' && (
+              <button onClick={() => update({ category: 'all' })}>{t('persons', locale)} ×</button>
+            )}
+            {(state.from !== MIN_YEAR || state.to !== MAX_YEAR) && (
+              <button onClick={() => update({ from: MIN_YEAR, to: MAX_YEAR })}>
+                {state.from}–{state.to} ×
+              </button>
+            )}
+            {filtered.length > 0 && <button onClick={resetFilters}>{journey.clear[locale]}</button>}
+          </nav>
+        )}
+        {state.query.trim() && filtered.length > 0 && (
+          <SearchResults
+            results={filtered}
+            locale={locale}
+            onSelect={select}
+            onTrace={(id) => switchMode('trace', id)}
+            onQuery={(query) => update({ query, mode: 'explore' })}
+          />
+        )}
+        {state.mode === 'trace' && selected && (
+          <TraceJourney
+            entity={selected}
+            locale={locale}
+            trail={trail}
+            onSelect={select}
+            onEdge={setEdge}
+            focus={focusPath}
+            onFocus={setFocusPath}
+          />
         )}
         <div className="atlas-workspace" id="discoveries">
           <aside className="discovery-sidebar">
@@ -458,7 +584,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
             <div className="sidebar-discoveries">
               <h2 className="eyebrow">{t('milestones', locale)}</h2>
               <div className="discovery-list">
-                {chronological(filtered).map((entity) => (
+                {(state.query ? filtered : chronological(filtered)).map((entity) => (
                   <button
                     key={entity.id}
                     className={`discovery-item domain-${entity.domain} ${selected?.id === entity.id ? 'selected' : ''}`}
@@ -496,13 +622,18 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
             <>
               {state.mode === 'story' && readingPanel}
               <div className="visualization-column">
-                <details className="visualization-frame" open={compact ? undefined : true}>
+                <details
+                  id="graph-view"
+                  className="visualization-frame"
+                  open={compact ? undefined : true}
+                >
                   <summary>
                     <Icon name="network" size={18} />
                     {t('graph', locale)}
                     <span>+</span>
                   </summary>
                   <IdeaGraph
+                    focusIds={focusIds}
                     compact={compact}
                     entities={graphEntities}
                     relationships={graphEdges}
@@ -512,7 +643,11 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
                     onEdge={setEdge}
                   />
                 </details>
-                <details className="visualization-frame" open={compact ? undefined : true}>
+                <details
+                  id="map-view"
+                  className="visualization-frame"
+                  open={compact ? undefined : true}
+                >
                   <summary>
                     <Icon name="globe" size={18} />
                     {t('map', locale)}

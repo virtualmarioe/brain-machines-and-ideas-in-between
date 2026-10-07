@@ -1,3 +1,4 @@
+import { settleMotion } from './motion';
 import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -24,9 +25,18 @@ for (const theme of ['light', 'dark']) {
     await expect(card).toContainText('Evidence confidence');
     await expect(edge).toHaveAttribute('aria-describedby', (await card.getAttribute('id'))!);
     await expect(card).toHaveCSS('backdrop-filter', /blur\(24px\)/);
-    await expect(card).toHaveCSS('background-color', /0\.82\)/);
+    await expect(card).toHaveCSS('background-color', /0\.68\)/);
     await card.hover();
     await expect(card).toBeVisible();
+    const sourceBox = (await edge.boundingBox())!;
+    const cardBox = (await card.boundingBox())!;
+    expect(
+      cardBox.x + cardBox.width <= sourceBox.x ||
+        cardBox.x >= sourceBox.x + sourceBox.width ||
+        cardBox.y + cardBox.height <= sourceBox.y ||
+        cardBox.y >= sourceBox.y + sourceBox.height,
+    ).toBe(true);
+    await settleMotion(page);
     const scan = await new AxeBuilder({ page })
       .include('[data-preview-kind="edge"]')
       .withTags(['wcag2aa', 'wcag21aa'])
@@ -39,9 +49,20 @@ for (const theme of ['light', 'dark']) {
     await expect(page.getByRole('dialog')).toBeVisible();
     await expect(page.getByRole('dialog')).toHaveClass(/glass-surface/);
     await page.keyboard.press('Escape');
+    await expect(page.getByRole('dialog')).toHaveCount(0);
     const mapEdge = page.locator('.map-edge [data-edge-id="hubel-neocognitron"]');
     await mapEdge.focus();
-    await expect(page.locator('[data-preview-kind="map-edge"]')).toContainText('not travel routes');
+    const mapCard = page.locator('[data-preview-kind="map-edge"]');
+    await expect(mapCard).toContainText('not travel routes');
+    await mapCard.hover();
+    const mapSource = (await mapEdge.boundingBox())!;
+    const mapBubble = (await mapCard.boundingBox())!;
+    expect(
+      mapBubble.x + mapBubble.width <= mapSource.x ||
+        mapBubble.x >= mapSource.x + mapSource.width ||
+        mapBubble.y + mapBubble.height <= mapSource.y ||
+        mapBubble.y >= mapSource.y + mapSource.height,
+    ).toBe(true);
     await expect(page.getByRole('tooltip')).toHaveCount(1);
     await mapEdge.press('Enter');
     await expect(page.getByRole('dialog')).toBeVisible();
