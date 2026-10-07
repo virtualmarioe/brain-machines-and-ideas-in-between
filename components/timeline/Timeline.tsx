@@ -139,7 +139,7 @@ export default function Timeline({
               className={`time-event domain-${entity.domain} ${active ? 'selected' : ''} ${multiple ? 'clustered' : ''}`}
               style={
                 {
-                  left: group.x,
+                  left: `clamp(12px, ${(group.x / width) * 100}%, calc(100% - 12px))`,
                   top: 22,
                   '--reveal-delay': `${Math.min(index, 8) * 20}ms`,
                 } as React.CSSProperties

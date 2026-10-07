@@ -197,6 +197,9 @@ input[type='range'] {
   padding-right: 10px;
 }
 .about-button {
+  display: grid;
+  place-items: center;
+  text-decoration: none;
   border: 1px solid var(--border);
   border-radius: 50%;
   width: var(--control-size);
@@ -988,7 +991,7 @@ footer {
   font-size: var(--text-caption);
   color: var(--muted);
 }
-footer button {
+footer :is(button, a) {
   font-size: var(--text-caption);
   display: flex;
   align-items: center;
@@ -1457,10 +1460,10 @@ body {
   max-width: var(--measure);
 }
 footer,
-footer button {
+footer :is(button, a) {
   font-size: var(--text-caption);
 }
-footer button {
+footer :is(button, a) {
   min-height: var(--control-size);
 }
 .visualization-frame {

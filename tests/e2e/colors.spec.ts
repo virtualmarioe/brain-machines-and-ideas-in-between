@@ -6,7 +6,7 @@ for (const theme of ['light', 'dark'] as const) {
   test(`scientific palette and signed scales remain readable in ${theme}`, async ({
     page,
   }, testInfo) => {
-    await page.goto('/en/experiment/hubel-wiesel');
+    await page.goto('/en/architecture/neocognitron');
     await page.getByLabel('Appearance', { exact: true }).selectOption(theme);
     await page.getByRole('button', { name: 'ƒ Try the idea' }).click();
     const dialog = page.getByRole('dialog');

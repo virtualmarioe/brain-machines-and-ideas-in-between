@@ -24,8 +24,8 @@ for (const theme of ['light', 'dark']) {
     await expect(card).toContainText('Supporting sources');
     await expect(card).toContainText('Evidence confidence');
     await expect(edge).toHaveAttribute('aria-describedby', (await card.getAttribute('id'))!);
-    await expect(card).toHaveCSS('backdrop-filter', /blur\(24px\)/);
-    await expect(card).toHaveCSS('background-color', /0\.68\)/);
+    await expect(card).toHaveCSS('backdrop-filter', /blur\(3px\)/);
+    await expect(card).toHaveCSS('background-image', /radial-gradient.*0\.65.*0\.45/);
     await card.hover();
     await expect(card).toBeVisible();
     const sourceBox = (await edge.boundingBox())!;

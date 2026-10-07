@@ -281,7 +281,7 @@ test('perceptron controls calculate a new decision and Escape restores focus', a
 });
 
 test('convolution responds to stimulus, filter and patch changes', async ({ page }, testInfo) => {
-  await openAtlas(page, '/en/experiment/hubel-wiesel');
+  await openAtlas(page, '/en/architecture/neocognitron');
   await page.getByRole('button', { name: 'ƒ Try the idea' }).click();
   const dialog = page.getByRole('dialog');
   await expect(

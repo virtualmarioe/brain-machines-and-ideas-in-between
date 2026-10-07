@@ -1,5 +1,6 @@
 :root {
-  --glass-alpha: 68%;
+  --glass-alpha: 45%;
+  --glass-center: color-mix(in srgb, var(--elevated) 65%, transparent);
   --glass-fill: color-mix(in srgb, var(--elevated) var(--glass-alpha), transparent);
 }
 /* Every floating card shares one material; opaque fallback remains usable. */
@@ -14,9 +15,13 @@
 }
 @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .glass-surface {
-    background: var(--glass-fill);
-    -webkit-backdrop-filter: blur(24px) saturate(1.25);
-    backdrop-filter: blur(24px) saturate(1.25);
+    background: radial-gradient(
+      ellipse closest-side at center,
+      var(--glass-center) 0%,
+      var(--glass-fill) 100%
+    );
+    -webkit-backdrop-filter: blur(3px) saturate(1.1);
+    backdrop-filter: blur(3px) saturate(1.1);
   }
 }
 .glass-surface .node-preview-meta {

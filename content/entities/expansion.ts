@@ -396,7 +396,7 @@ export const expansionEntities: HistoricalEntity[] = [
   },
   {
     id: 'mnist',
-    demo: 'sampling',
+    demo: 'digits',
     slug: 'mnist',
     type: 'dataset',
     title: t(
@@ -500,7 +500,7 @@ export const expansionEntities: HistoricalEntity[] = [
   },
   {
     id: 'q-learning',
-    demo: 'reward',
+    demo: 'q-update',
     slug: 'q-learning',
     type: 'algorithm',
     title: t(
@@ -546,7 +546,7 @@ export const expansionEntities: HistoricalEntity[] = [
   },
   {
     id: 'dopamine',
-    demo: 'reward',
+    demo: 'surprise',
     slug: 'dopamine',
     type: 'publication',
     title: t(
@@ -582,7 +582,7 @@ export const expansionEntities: HistoricalEntity[] = [
   },
   {
     id: 'dqn',
-    demo: 'reward',
+    demo: 'replay',
     slug: 'dqn',
     type: 'architecture',
     title: t(
@@ -615,7 +615,7 @@ export const expansionEntities: HistoricalEntity[] = [
   },
   {
     id: 'alphago',
-    demo: 'planning',
+    demo: 'tree-search',
     slug: 'alphago',
     type: 'technology',
     title: t(
@@ -855,7 +855,7 @@ export const expansionEntities: HistoricalEntity[] = [
   },
   {
     id: 'neuroai',
-    demo: 'convolution',
+    demo: 'representations',
     slug: 'neuroai',
     type: 'field',
     title: t(

@@ -52,7 +52,7 @@ export const initialEntities: HistoricalEntity[] = [
   },
   {
     id: 'cajal',
-    demo: 'staining',
+    demo: 'arbor',
     slug: 'cajal',
     type: 'person',
     title: t(
@@ -94,7 +94,7 @@ export const initialEntities: HistoricalEntity[] = [
   },
   {
     id: 'neuron-doctrine',
-    demo: 'staining',
+    demo: 'synapse',
     slug: 'neuron-doctrine',
     type: 'concept',
     title: t('The neuron doctrine', 'Die Neuronenlehre', 'La doctrina neuronal'),
@@ -229,7 +229,7 @@ export const initialEntities: HistoricalEntity[] = [
     ),
     startDate: '1962',
     domain: 'neuroscience',
-    demo: 'convolution',
+    demo: 'orientation',
     locations: [
       {
         name: 'Boston, United States',
@@ -349,7 +349,7 @@ export const initialEntities: HistoricalEntity[] = [
     ),
     startDate: '1998',
     domain: 'computing',
-    demo: 'convolution',
+    demo: 'sharing',
     locations: [
       {
         name: 'Red Bank, United States',
@@ -407,7 +407,7 @@ export const initialEntities: HistoricalEntity[] = [
   },
   {
     id: 'alexnet',
-    demo: 'convolution',
+    demo: 'rectifier',
     slug: 'alexnet',
     type: 'architecture',
     title: t(

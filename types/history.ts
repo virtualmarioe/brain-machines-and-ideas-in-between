@@ -79,11 +79,26 @@ export const conceptDemoKinds = [
   'membrane',
 ] as const;
 export type ConceptDemoKind = (typeof conceptDemoKinds)[number];
+export const distinctKinds = [
+  'arbor',
+  'synapse',
+  'orientation',
+  'sharing',
+  'rectifier',
+  'digits',
+  'q-update',
+  'surprise',
+  'replay',
+  'tree-search',
+  'representations',
+] as const;
+export type DistinctKind = (typeof distinctKinds)[number];
 export const demoKinds = [
   'perceptron',
   'convolution',
   'backpropagation',
   ...conceptDemoKinds,
+  ...distinctKinds,
 ] as const;
 export type DemoKind = (typeof demoKinds)[number];
 

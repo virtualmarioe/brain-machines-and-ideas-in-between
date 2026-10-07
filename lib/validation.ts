@@ -84,6 +84,7 @@ export function validateContent(
   claims: Claim[] = [],
 ): string[] {
   const errors: string[] = [];
+  const demoOwners = new Map<string, string>();
   const text = (value: unknown, path: string) => {
     if (!isText(value)) errors.push(`${path} must be a nonempty string.`);
   };
@@ -195,7 +196,15 @@ export function validateContent(
     stringArray(entity.people, `${path}.people`);
     stringArray(entity.tags, `${path}.tags`);
     linkedReferences(entity.references, `${path}.references`);
-    if (entity.demo !== undefined) enumeration(entity.demo, new Set(demoKinds), `${path}.demo`);
+    if (entity.demo !== undefined) {
+      enumeration(entity.demo, new Set(demoKinds), `${path}.demo`);
+      const owner = demoOwners.get(entity.demo);
+      if (owner)
+        errors.push(
+          `${path}.demo reuses ${entity.demo} from ${owner}. Each discovery needs a distinct demo.`,
+        );
+      else demoOwners.set(entity.demo, entity.id);
+    }
     if (!Array.isArray(entity.locations)) errors.push(`${path}.locations must be an array.`);
     else
       entity.locations.forEach((location: unknown, locationIndex: number) => {

@@ -1,0 +1,65 @@
+body {
+  isolation: isolate;
+}
+.background-network {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.15;
+  color: var(--accent);
+}
+.background-network svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.background-network g {
+  transform-origin: center;
+  animation: network-drift 120s ease-in-out infinite alternate;
+}
+.background-network line {
+  stroke: currentColor;
+  stroke-width: 0.8;
+}
+.background-network circle {
+  fill: currentColor;
+}
+.background-network[data-paused='true'] g {
+  animation-play-state: paused;
+}
+@keyframes network-drift {
+  from {
+    transform: translate(-12px, -8px) rotate(-1deg) scale(1.04);
+  }
+  to {
+    transform: translate(12px, 8px) rotate(1deg) scale(1.04);
+  }
+}
+.background-motion-toggle {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  z-index: 65;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+}
+@media (prefers-reduced-motion: reduce) {
+  .background-network g {
+    animation: none !important;
+  }
+  .background-motion-toggle {
+    display: none;
+  }
+}
+@media print, (forced-colors: active) {
+  .background-network,
+  .background-motion-toggle {
+    display: none;
+  }
+}

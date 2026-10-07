@@ -6,6 +6,8 @@ import './node-preview.css';
 import { placeBubble, type Point } from '@/lib/overlay-placement';
 // Keyboard focus keeps its preview while smooth scrolling crosses other hover targets.
 let keyboardAnchor: Element | null = null;
+let pointerPoint: Point | null = null;
+let dismissedPoint: Point | null = null;
 type PreviewItem<T> = { item: T; key: string; anchor: Element; origin?: Point };
 /** Hover and keyboard previews share positioning, dismissal, and persistence. */
 export function useOverlayPreview<T>() {
@@ -70,6 +72,7 @@ export function useOverlayPreview<T>() {
     if (!current) return;
     const onKey = (event: globalThis.KeyboardEvent) => {
       if (event.key === 'Escape') {
+        dismissedPoint = pointerPoint;
         dismiss();
       }
     };
@@ -90,9 +93,13 @@ export function useOverlayPreview<T>() {
     closing,
     dismiss,
     cardProps: {
-      onPointerEnter() {
+      onPointerEnter(event: PointerEvent<Element>) {
+        pointerPoint = { x: event.clientX, y: event.clientY };
         cancelClose();
         overCard.current = true;
+      },
+      onPointerMove(event: PointerEvent<Element>) {
+        pointerPoint = { x: event.clientX, y: event.clientY };
       },
       onPointerLeave() {
         overCard.current = false;
@@ -100,20 +107,31 @@ export function useOverlayPreview<T>() {
       },
     },
     triggerProps(item: T, key: string) {
+      function fromPointer(event: PointerEvent<Element>) {
+        if (event.pointerType === 'touch' || keyboardAnchor === document.activeElement) return;
+        const point = { x: event.clientX, y: event.clientY };
+        // Removing a card can expose another target beneath a stationary pointer.
+        // Escape stays effective until the user actually moves the pointer.
+        if (
+          dismissedPoint &&
+          Math.hypot(point.x - dismissedPoint.x, point.y - dismissedPoint.y) <= 2
+        )
+          return;
+        dismissedPoint = null;
+        pointerPoint = point;
+        hovered.current = event.currentTarget;
+        if (current?.anchor === event.currentTarget && !closing) return;
+        show(
+          item,
+          key,
+          event.currentTarget,
+          event.currentTarget.tagName.toLowerCase() === 'path' ? point : undefined,
+        );
+      }
       return {
         'aria-describedby': current?.key === key ? id : undefined,
-        onPointerEnter(event: PointerEvent<Element>) {
-          if (event.pointerType === 'touch' || keyboardAnchor === document.activeElement) return;
-          hovered.current = event.currentTarget;
-          show(
-            item,
-            key,
-            event.currentTarget,
-            event.currentTarget.tagName.toLowerCase() === 'path'
-              ? { x: event.clientX, y: event.clientY }
-              : undefined,
-          );
-        },
+        onPointerEnter: fromPointer,
+        onPointerMove: fromPointer,
         onPointerLeave(event: PointerEvent<Element>) {
           if (hovered.current === event.currentTarget) hovered.current = null;
           scheduleClose();
@@ -130,7 +148,10 @@ export function useOverlayPreview<T>() {
           scheduleClose();
         },
         onKeyDown(event: KeyboardEvent<Element>) {
-          if (event.key === 'Escape') dismiss();
+          if (event.key === 'Escape') {
+            dismissedPoint = pointerPoint;
+            dismiss();
+          }
         },
       };
     },

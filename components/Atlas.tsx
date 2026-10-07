@@ -1,5 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { entities, relationships, references } from '@/content';
 import { domains, relationLabels, t } from '@/content/translations/ui';
@@ -46,7 +47,6 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
   const [focusPath, setFocusPath] = useState(true);
   const [theme, setTheme] = useTheme();
   const compact = useCompactLayout();
-  const [dialog, setDialog] = useState<'about' | null>(null);
   const [demo, setDemo] = useState<HistoricalEntity['demo']>();
   const [edge, setEdge] = useState<HistoricalRelationship | null>(null);
   const locale = state.locale;
@@ -304,13 +304,9 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
               ))}
             </select>
           </label>
-          <button
-            className="about-button"
-            aria-label={t('about', locale)}
-            onClick={() => setDialog('about')}
-          >
+          <Link className="about-button" aria-label={t('about', locale)} href={`/${locale}/about`}>
             ?
-          </button>
+          </Link>
         </div>
       </header>
       <main>
@@ -700,27 +696,11 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
       </main>
       <footer>
         <span>{t('footer', locale)}</span>
-        <button onClick={() => setDialog('about')}>
+        <Link href={`/${locale}/about`}>
           {t('about', locale)} <Icon name="external" size={12} />
-        </button>
+        </Link>
         <span>1873 → 2026</span>
       </footer>
-      {dialog && (
-        <Modal title={t('about', locale)} locale={locale} onClose={() => setDialog(null)}>
-          <p>{t('aboutText', locale)}</p>
-          <p>{t('nobelNote', locale)}</p>
-          <p className="muted">
-            {t('map', locale)}: Natural Earth, {t('publicDomain', locale)}.{' '}
-            <a
-              href="https://www.naturalearthdata.com/about/terms-of-use/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Natural Earth
-            </a>
-          </p>
-        </Modal>
-      )}
       {demo && (
         <Modal
           title={t('experiment', locale)}

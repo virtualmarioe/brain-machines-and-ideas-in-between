@@ -8,6 +8,8 @@ import './globals.css';
 import './overlays.css';
 import './motion.css';
 import './journeys.css';
+import './background-network.css';
+import BackgroundNetwork from '../components/ui/BackgroundNetwork';
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://127.0.0.1:3000'),
   title: 'The Intelligence Atlas',
@@ -27,7 +29,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body>{children}</body>
+      <body>
+        <BackgroundNetwork locale={locale} />
+        {children}
+      </body>
     </html>
   );
 }

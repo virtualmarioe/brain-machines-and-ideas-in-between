@@ -30,12 +30,12 @@ The production server uses the same port as the development server, so stop the 
 - A shareable People filter exposes the existing person category independently of scientific domains. Person dates identify contributions, not lifetimes.
 - Story chapters with shareable return bookmarks, exploration mode, and a Trace journey with branch explanations, evidence, backtracking, and optional path emphasis.
 - Ranked conceptual search with grouped previews, associated researchers, and direct trace actions. Active filter chips and view links preserve orientation.
-- Speech-bubble previews reserve their source node or edge, share a 68% glass surface, and appear with a brief anchored expansion. Bounded node staggering and fades respect reduced-motion preferences.
+- Speech-bubble previews reserve their source node or edge, share a radial glass surface (45% opacity at the edges, 65% at the center), and appear with a brief anchored expansion. Bounded node staggering and fades respect reduced-motion preferences.
 - An optional, lazy-loaded receptive-field explanation compares a 2D footprint with spatial computation layers and an equivalent data table.
 - English, German, and Spanish content and interface labels from the first implementation.
 - Shareable entity routes that restore the selected discovery, filters, time range, and mode.
 - Light, dark, and operating-system themes, with persistent preferences and pre-paint initialization.
-- Twenty-two interactive demonstration types across 33 discoveries, including sparse staining, logic, memory, feedback, information entropy, reward learning, attention, and the original perceptron, convolution, and backpropagation labs. Each includes controls, a reset, and an explanation of its simplifications. Historical event nodes remain text-only.
+- Thirty-three distinct interactive demonstrations across 33 discoveries, including sparse staining, logic, memory, feedback, information entropy, reward learning, attention, and the original perceptron, convolution, and backpropagation labs. Each includes controls, a reset, and an explanation of its simplifications. Historical event nodes remain text-only.
 - Evidence-bearing relationship types, source links, explicit disputed interpretations, and Nobel landmarks.
 - Mobile reading view with an early timeline and expandable, focused visualizations.
 - Keyboard-operable visualizations, textual relationships, visible focus, reduced-motion support, and responsive layouts.
@@ -98,3 +98,5 @@ The bundled land outline is World Atlas 2 `land-110m.json`, derived from Natural
 
 - [World Atlas](https://github.com/topojson/world-atlas)
 - [Natural Earth terms](https://www.naturalearthdata.com/about/terms-of-use/)
+
+The localized About page links to the repository and reserves a clearly marked Zenodo DOI placeholder. All 33 assigned demos are distinct; publication validation rejects duplicate assignments.

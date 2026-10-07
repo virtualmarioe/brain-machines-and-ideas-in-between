@@ -78,7 +78,7 @@ test('bubble placement preserves the source and reduced motion removes travel', 
     b.x + b.width <= a.x || b.x >= a.x + a.width || b.y + b.height <= a.y || b.y >= a.y + a.height,
   ).toBe(true);
   await expect(page.locator('.bubble-tail')).toBeVisible();
-  await expect(card).toHaveCSS('background-color', /0\.68\)/);
+  await expect(card).toHaveCSS('background-image', /radial-gradient.*0\.65.*0\.45/);
   await page.keyboard.press('Escape');
   await expect(card).toHaveCount(0);
   await page.getByRole('tab', { name: 'Understand the idea', exact: true }).focus();

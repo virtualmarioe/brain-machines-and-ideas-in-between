@@ -798,3 +798,79 @@
   display: block;
   height: 100%;
 }
+.distinct-demo {
+  display: grid;
+  gap: 20px;
+}
+.distinct-diagram {
+  width: 100%;
+  max-height: 260px;
+  color: var(--accent);
+}
+.distinct-diagram :is(path, line, polyline, circle) {
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+.distinct-diagram circle {
+  fill: var(--surface);
+}
+.distinct-diagram text {
+  fill: var(--text);
+  font-size: 12px;
+}
+.distinct-diagram .distinct-guide {
+  stroke: var(--border);
+  stroke-dasharray: 4 3;
+}
+.distinct-bars {
+  display: grid;
+  gap: 12px;
+}
+.distinct-bars > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(40px, 2fr) 4rem;
+  gap: 12px;
+  align-items: center;
+}
+.distinct-bar-track {
+  height: 12px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.distinct-bar-track > div {
+  height: 100%;
+  background: var(--accent);
+}
+.distinct-kernels,
+.distinct-buffer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.distinct-kernels span,
+.distinct-buffer span {
+  border: 1px solid var(--border);
+  padding: 6px;
+}
+.distinct-buffer [data-active='true'] {
+  border: 2px solid var(--accent);
+  font-weight: bold;
+  text-decoration: underline;
+}
+.distinct-pixels {
+  display: grid;
+  grid-template-columns: repeat(5, 44px);
+  gap: 3px;
+  justify-content: center;
+}
+.distinct-pixels button {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--text);
+  background: var(--surface);
+}
+.distinct-pixels button[aria-pressed='true'] {
+  background: var(--text);
+}

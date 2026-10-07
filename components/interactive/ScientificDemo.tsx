@@ -2,7 +2,13 @@
 
 import dynamic from 'next/dynamic';
 import { useId, useState } from 'react';
-import type { DemoKind, Locale } from '../../types/history';
+import {
+  distinctKinds,
+  type DistinctKind,
+  type ConceptDemoKind,
+  type DemoKind,
+  type Locale,
+} from '../../types/history';
 import { demoTranslations, type DemoStrings } from '../../content/translations/demos';
 import {
   correlateValid,
@@ -21,6 +27,7 @@ import { ConceptDemo } from './ConceptDemo';
 import { signedColor, textOn, scaleColor, sequential } from '../../lib/colors';
 import { ColorLegend } from './ColorLegend';
 import './demos.css';
+const DistinctDemo = dynamic(() => import('./DistinctDemo'));
 const SpatialReceptiveField = dynamic(() => import('./SpatialReceptiveField'));
 function SpatialExtension({ locale }: DemoProps) {
   const [open, setOpen] = useState(false);
@@ -737,5 +744,7 @@ export default function ScientificDemo({ kind, locale }: { kind: DemoKind; local
       </>
     );
   if (kind === 'backpropagation') return <BackpropagationDemo locale={locale} />;
-  return <ConceptDemo key={kind} kind={kind} locale={locale} />;
+  if ((distinctKinds as readonly string[]).includes(kind))
+    return <DistinctDemo key={kind} kind={kind as DistinctKind} locale={locale} />;
+  return <ConceptDemo key={kind} kind={kind as ConceptDemoKind} locale={locale} />;
 }
