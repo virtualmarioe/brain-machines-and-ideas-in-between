@@ -1,23 +1,39 @@
-type Point = { x: number; y: number };
-
-/** Separate nearby markers while retaining each research site's true anchor. */
-export function separateMapPins(points: readonly Point[], minimumDistance: number): Point[] {
-  const placed: Point[] = [];
-  for (const point of points) {
-    let candidate = point;
-    let step = 0;
-    while (
-      placed.some(
-        (other) => Math.hypot(candidate.x - other.x, candidate.y - other.y) < minimumDistance,
-      )
-    ) {
-      step += 1;
-      const radius = Math.sqrt(step) * minimumDistance * 0.55;
-      const angle = step * Math.PI * (3 - Math.sqrt(5));
-      candidate = { x: point.x + Math.cos(angle) * radius, y: point.y + Math.sin(angle) * radius };
+import type { HistoricalEntity } from '@/types/history';
+/** City names include the country, so identically named cities in different countries stay separate. */
+export function groupMapCities(entities: readonly HistoricalEntity[]) {
+  const groups = new Map<
+    string,
+    {
+      key: string;
+      name: string;
+      lat: number;
+      lon: number;
+      count: number;
+      entities: HistoricalEntity[];
+      institutions: string[];
     }
-    // Avoid sub-pixel transcendental differences between server and browser engines.
-    placed.push({ x: Number(candidate.x.toFixed(6)), y: Number(candidate.y.toFixed(6)) });
-  }
-  return placed;
+  >();
+  for (const entity of entities)
+    for (const location of entity.locations) {
+      const key = location.name.trim().toLocaleLowerCase('en').replace(/\s+/g, ' ');
+      const city = groups.get(key) ?? {
+        key,
+        name: location.name,
+        lat: 0,
+        lon: 0,
+        count: 0,
+        entities: [],
+        institutions: [],
+      };
+      city.lat += location.lat;
+      city.lon += location.lon;
+      city.count++;
+      if (!city.entities.some((e) => e.id === entity.id)) city.entities.push(entity);
+      if (!city.institutions.includes(location.institution))
+        city.institutions.push(location.institution);
+      groups.set(key, city);
+    }
+  return [...groups.values()]
+    .map((city) => ({ ...city, lat: city.lat / city.count, lon: city.lon / city.count }))
+    .sort((a, b) => a.name.localeCompare(b.name, 'en'));
 }

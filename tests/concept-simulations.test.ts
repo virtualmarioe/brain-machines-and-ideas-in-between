@@ -110,7 +110,7 @@ describe('published demonstration coverage', () => {
         .filter((e) => !e.demo)
         .map((e) => e.id)
         .sort(),
-    ).toEqual(['ai-winters', 'dartmouth']);
+    ).toEqual(['ai-winters', 'dartmouth', 'douglas-hofstadter', 'godel-escher-bach']);
   });
   it('provides complete localized explanations and control labels', () => {
     for (const kind of conceptDemoKinds)

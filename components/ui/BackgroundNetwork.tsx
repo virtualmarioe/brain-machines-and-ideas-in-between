@@ -1,5 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
+import { categorical } from '@/lib/colors';
+
+const colors = Object.values(categorical);
 
 const points = Array.from({ length: 48 }, (_, i) => ({
   x: (i % 8) * 175 + 35 + Math.sin(i * 7) * 48,
@@ -17,7 +20,7 @@ export default function BackgroundNetwork({ locale }: { locale: string }) {
     <>
       <div className="background-network" aria-hidden="true" data-paused={paused}>
         <svg viewBox="0 0 1300 1000" preserveAspectRatio="xMidYMid slice" focusable="false">
-          <g>
+          <g className="network-drift">
             {points.flatMap((a, i) =>
               points
                 .slice(i + 1)
@@ -28,7 +31,21 @@ export default function BackgroundNetwork({ locale }: { locale: string }) {
                 ),
             )}
             {points.map((p, i) => (
-              <circle key={i} cx={p.x} cy={p.y} r={i % 5 === 0 ? 3.5 : 2} />
+              <g
+                key={i}
+                className="network-node"
+                transform={`translate(${p.x} ${p.y})`}
+                style={
+                  {
+                    color: colors[i % colors.length],
+                    '--pulse-duration': `${48 + ((i * 7) % 29)}s`,
+                    '--pulse-delay': `${-((i * 19.37) % (48 + ((i * 7) % 29)))}s`,
+                  } as CSSProperties
+                }
+              >
+                <circle className="network-node-ring" r={(i % 5 === 0 ? 3.5 : 2) * 3.3} />
+                <circle className="network-node-core" r={(i % 5 === 0 ? 3.5 : 2) * 1.5} />
+              </g>
             ))}
           </g>
         </svg>

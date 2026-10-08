@@ -1969,3 +1969,100 @@ footer :is(button, a) {
     max-width: 30rem;
   }
 }
+/* Legible geographic labels remain upright and constant-sized while zooming. */
+.place-label,
+.active-place {
+  font-size: 14px;
+  font-weight: 600;
+  fill: var(--text);
+  stroke: var(--surface);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.active-place {
+  font-size: 15px;
+  font-weight: 700;
+}
+.map-view-control {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 4px 0 12px;
+  font-size: var(--text-small);
+}
+.map-view-control select,
+.map-city-details select {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  min-height: 44px;
+  max-width: 100%;
+  background: var(--surface);
+}
+.map-city {
+  cursor: pointer;
+}
+.map-city:is(:hover, :focus-visible) > circle:first-child {
+  stroke: var(--focus);
+  stroke-width: 2;
+}
+.city-count {
+  font-size: 12px;
+  font-weight: 700;
+  pointer-events: none;
+}
+.map-city-details {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-bottom: 16px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.map-city-details label {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.map-city-details p {
+  font-size: var(--text-small);
+  margin-bottom: 8px;
+}
+.map-city-details ul {
+  padding: 0;
+  list-style: none;
+  margin: 0;
+  display: grid;
+  gap: 4px;
+}
+.map-city-details button {
+  text-align: left;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid var(--border);
+}
+.map-city-details button[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.map-city-details button span {
+  font-variant-numeric: tabular-nums;
+  margin-right: 8px;
+  color: var(--muted);
+}
+
+.map-section > .map-view-control {
+  margin-inline: var(--space-5);
+}
+.map-city-details {
+  margin-inline: var(--space-5);
+}
+
+.map-label-layer .map-country {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}

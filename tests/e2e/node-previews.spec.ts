@@ -45,6 +45,7 @@ test('keyboard focus exposes preview descriptions without changing selection', a
 test('map cards include localized geography and accurate longitude direction', async ({ page }) => {
   for (const locale of ['de', 'es'] as const) {
     await openViews(page, `/${locale}/architecture/lenet`);
+    await page.locator('.map-view-control select').selectOption('discoveries');
     const pin = page.locator('.map-pin[aria-pressed="true"]');
     await pin.locator('circle').last().hover();
     const preview = page.locator('[role="tooltip"][data-preview-kind="map"]');
@@ -57,16 +58,15 @@ test('map cards include localized geography and accurate longitude direction', a
   }
 });
 
-test('co-located London discoveries have distinct reachable hover targets', async ({ page }) => {
+test('co-located London discoveries are reachable through their city list', async ({ page }) => {
   await openViews(page, '/en?q=DeepMind&scope=all&context=1');
-  const pins = page.locator('.map-pin[aria-label*="London"]');
-  expect(await pins.count()).toBeGreaterThanOrEqual(2);
-  for (const pin of await pins.all()) {
-    const name = (await pin.getAttribute('aria-label'))!.split(' · ')[0];
-    await pin.locator('circle').last().hover();
-    const preview = page.locator('[role="tooltip"][data-preview-kind="map"]');
-    await expect(preview.getByRole('heading')).toHaveText(name);
-    await expect(preview).toContainText('United Kingdom');
-    await page.keyboard.press('Escape');
+  const selector = page.locator('.map-city-details select');
+  await selector.selectOption('london, united kingdom');
+  const buttons = page.locator('.map-city-details li button');
+  expect(await buttons.count()).toBeGreaterThanOrEqual(2);
+  for (let i = 0; i < (await buttons.count()); i++) {
+    const name = (await buttons.nth(i).innerText()).slice(5);
+    await buttons.nth(i).click();
+    await expect(page.locator('.entity-panel h1, .entity-panel h2').first()).toContainText(name);
   }
 });

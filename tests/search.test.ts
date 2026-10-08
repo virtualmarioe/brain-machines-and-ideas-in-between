@@ -74,3 +74,21 @@ it('finds discoveries through original publication titles and DOI metadata', () 
     ),
   ).toBe(true);
 });
+
+it('finds GEB through its people, themes, and publication city in every locale', () => {
+  for (const locale of ['en', 'de', 'es'] as const)
+    for (const query of [
+      'GEB',
+      'Godel',
+      'Escher',
+      'Johann Sebastian Bach',
+      'strange loops',
+      'New York',
+    ])
+      expect(
+        searchEntities(entities, query, locale, references).map((entity) => entity.id),
+      ).toContain('godel-escher-bach');
+  expect(searchEntities(entities, 'Douglas Hofstadter', 'en').map((entity) => entity.id)).toContain(
+    'douglas-hofstadter',
+  );
+});

@@ -1,6 +1,6 @@
 :root {
   --glass-alpha: 45%;
-  --glass-center: color-mix(in srgb, var(--elevated) 65%, transparent);
+  --glass-center: color-mix(in srgb, var(--elevated) 75%, transparent);
   --glass-fill: color-mix(in srgb, var(--elevated) var(--glass-alpha), transparent);
 }
 /* Every floating card shares one material; opaque fallback remains usable. */

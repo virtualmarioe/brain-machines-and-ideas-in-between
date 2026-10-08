@@ -25,7 +25,7 @@ for (const theme of ['light', 'dark']) {
     await expect(card).toContainText('Evidence confidence');
     await expect(edge).toHaveAttribute('aria-describedby', (await card.getAttribute('id'))!);
     await expect(card).toHaveCSS('backdrop-filter', /blur\(3px\)/);
-    await expect(card).toHaveCSS('background-image', /radial-gradient.*0\.65.*0\.45/);
+    await expect(card).toHaveCSS('background-image', /radial-gradient.*0\.75.*0\.45/);
     await card.hover();
     await expect(card).toBeVisible();
     const sourceBox = (await edge.boundingBox())!;
@@ -50,11 +50,14 @@ for (const theme of ['light', 'dark']) {
     await expect(page.getByRole('dialog')).toHaveClass(/glass-surface/);
     await page.keyboard.press('Escape');
     await expect(page.getByRole('dialog')).toHaveCount(0);
+    await page.getByLabel('Show intellectual connections').check();
+    await page.keyboard.press('Tab');
     const mapEdge = page.locator('.map-edge [data-edge-id="hubel-neocognitron"]');
     await mapEdge.focus();
     const mapCard = page.locator('[data-preview-kind="map-edge"]');
     await expect(mapCard).toContainText('not travel routes');
     await mapCard.hover();
+    await settleMotion(page);
     const mapSource = (await mapEdge.boundingBox())!;
     const mapBubble = (await mapCard.boundingBox())!;
     expect(
@@ -161,7 +164,7 @@ test('People category persists and resets when selecting a non-person connection
 }) => {
   await views(page);
   await page.getByLabel('Node category', { exact: true }).selectOption('person');
-  await expect(page.locator('.graph-node')).toHaveCount(2);
+  await expect(page.locator('.graph-node')).toHaveCount(3);
   await expect(page.locator('.entity-panel')).toHaveAttribute('data-entity-id', 'cajal');
   await expect(page).toHaveURL(/category=person/);
   await page.reload();

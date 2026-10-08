@@ -15,7 +15,7 @@ body {
   height: 100%;
   overflow: visible;
 }
-.background-network g {
+.background-network .network-drift {
   transform-origin: center;
   animation: network-drift 120s ease-in-out infinite alternate;
 }
@@ -26,15 +26,16 @@ body {
 .background-network circle {
   fill: currentColor;
 }
-.background-network[data-paused='true'] g {
+.background-network[data-paused='true']
+  :is(.network-drift, .network-node-core, .network-node-ring) {
   animation-play-state: paused;
 }
 @keyframes network-drift {
   from {
-    transform: translate(-12px, -8px) rotate(-1deg) scale(1.04);
+    transform: translate(-13.86px, -9.24px) rotate(-1.155deg) scale(1.04);
   }
   to {
-    transform: translate(12px, 8px) rotate(1deg) scale(1.04);
+    transform: translate(13.86px, 9.24px) rotate(1.155deg) scale(1.04);
   }
 }
 .background-motion-toggle {
@@ -50,7 +51,7 @@ body {
   color: var(--muted);
 }
 @media (prefers-reduced-motion: reduce) {
-  .background-network g {
+  .background-network :is(.network-drift, .network-node-core, .network-node-ring) {
     animation: none !important;
   }
   .background-motion-toggle {
@@ -61,5 +62,49 @@ body {
   .background-network,
   .background-motion-toggle {
     display: none;
+  }
+}
+
+.background-network :is(.network-node-core, .network-node-ring) {
+  transform-origin: 0 0;
+  animation-duration: var(--pulse-duration);
+  animation-delay: var(--pulse-delay);
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+.background-network .network-node-core {
+  animation-name: network-node-pulse;
+}
+.background-network .network-node-ring {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.65;
+  vector-effect: non-scaling-stroke;
+  opacity: 0;
+  animation-name: network-node-ripple;
+}
+@keyframes network-node-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(2.2);
+  }
+}
+/* The ring begins at the peak node diameter and expands to three times that size. */
+@keyframes network-node-ripple {
+  0%,
+  49.99% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
   }
 }
