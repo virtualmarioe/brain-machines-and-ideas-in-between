@@ -17,7 +17,7 @@ export function ClusterPreview({
   const cluster = preview.current.item;
   return (
     <PreviewCard preview={preview} kind="map-cluster" forId={cluster.key} splitCards>
-      <p className="cluster-preview-intro">
+      <p className="cluster-preview-intro glass-surface">
         {cluster.cities.map((city) => city.name).join(' · ')}
         <br />
         <strong>{describeMapCluster(cluster, locale)}</strong>

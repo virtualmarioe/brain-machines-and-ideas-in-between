@@ -130,7 +130,34 @@
 .cluster-preview-intro {
   padding: 10px;
   margin: 0;
-  background: var(--surface);
   border-radius: 8px;
   font-size: var(--text-small);
+}
+
+/* Opacity on a glass card's ancestor creates a backdrop root and prevents the
+   nested cards from blurring the page. Keep cluster motion transform-only. */
+.node-preview.cluster-preview[data-ready='true'] {
+  animation-name: cluster-bubble-in;
+}
+.node-preview.cluster-preview[data-closing='true'] {
+  animation-name: cluster-bubble-out;
+}
+@keyframes cluster-bubble-in {
+  from {
+    transform: translate(var(--bubble-x), var(--bubble-y)) scale(0.14, 0.06);
+  }
+  to {
+    transform: translate(0, 0) scale(1);
+  }
+}
+@keyframes cluster-bubble-out {
+  to {
+    transform: scale(0.94, 0.85);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .node-preview.cluster-preview[data-ready='true'],
+  .node-preview.cluster-preview[data-closing='true'] {
+    animation: none;
+  }
 }
