@@ -113,3 +113,24 @@
   overflow-y: auto;
   overscroll-behavior: contain;
 }
+
+.node-preview.cluster-preview {
+  padding: 0 5px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  display: grid;
+  gap: 14px;
+}
+.cluster-preview article {
+  padding: 16px;
+  border-radius: 10px;
+  border-top: 3px solid var(--domain, var(--accent));
+}
+.cluster-preview-intro {
+  padding: 10px;
+  margin: 0;
+  background: var(--surface);
+  border-radius: 8px;
+  font-size: var(--text-small);
+}

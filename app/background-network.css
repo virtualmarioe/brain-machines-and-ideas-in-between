@@ -27,15 +27,15 @@ body {
   fill: currentColor;
 }
 .background-network[data-paused='true']
-  :is(.network-drift, .network-node-core, .network-node-ring) {
+  :is(.network-drift, .network-node-core, .network-node-ring, .network-signal) {
   animation-play-state: paused;
 }
 @keyframes network-drift {
   from {
-    transform: translate(-13.86px, -9.24px) rotate(-1.155deg) scale(1.04);
+    transform: translate(-15.246px, -10.164px) rotate(-1.2705deg) scale(1.04);
   }
   to {
-    transform: translate(13.86px, 9.24px) rotate(1.155deg) scale(1.04);
+    transform: translate(15.246px, 10.164px) rotate(1.2705deg) scale(1.04);
   }
 }
 .background-motion-toggle {
@@ -51,7 +51,7 @@ body {
   color: var(--muted);
 }
 @media (prefers-reduced-motion: reduce) {
-  .background-network :is(.network-drift, .network-node-core, .network-node-ring) {
+  .background-network :is(.network-drift, .network-node-core, .network-node-ring, .network-signal) {
     animation: none !important;
   }
   .background-motion-toggle {
@@ -65,7 +65,7 @@ body {
   }
 }
 
-.background-network :is(.network-node-core, .network-node-ring) {
+.background-network :is(.network-node-core, .network-node-ring, .network-signal) {
   transform-origin: 0 0;
   animation-duration: var(--pulse-duration);
   animation-delay: var(--pulse-delay);
@@ -103,8 +103,32 @@ body {
     transform: scale(1);
     opacity: 0.8;
   }
+  91.6667%,
   100% {
     transform: scale(3);
     opacity: 0;
   }
+}
+
+.background-network .network-signal {
+  opacity: 0;
+  animation: network-signal var(--signal-duration) linear var(--signal-delay) infinite;
+}
+@keyframes network-signal {
+  0% {
+    transform: translate(var(--signal-x1), var(--signal-y1));
+    opacity: 0;
+  }
+  8%,
+  65% {
+    opacity: 0.9;
+  }
+  75%,
+  100% {
+    transform: translate(var(--signal-x2), var(--signal-y2));
+    opacity: 0;
+  }
+}
+.background-network[data-paused='true'] .network-signal {
+  animation-play-state: paused;
 }

@@ -13,7 +13,7 @@ test('visualization content stays inside its sections at phone, desktop and ultr
       await page.goto('/en/architecture/neocognitron?from=1870&to=2026');
       await expect(page.locator('.entity-panel')).toBeVisible();
       for (const frame of await page.locator('.visualization-frame').all()) {
-        if ((await frame.getAttribute('open')) === null) await frame.locator('summary').click();
+        if ((await frame.getAttribute('open')) === null) await frame.locator(':scope > summary').click();
       }
       await expect(page.locator('.world-map')).toBeVisible();
 

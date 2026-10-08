@@ -13,7 +13,7 @@ async function openAtlas(page: Page, path = '/en') {
 async function openVisualizations(page: Page) {
   const frames = page.locator('.visualization-frame');
   for (const frame of await frames.all()) {
-    if ((await frame.getAttribute('open')) === null) await frame.locator('summary').click();
+    if ((await frame.getAttribute('open')) === null) await frame.locator(':scope > summary').click();
   }
 }
 

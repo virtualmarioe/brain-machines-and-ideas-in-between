@@ -53,3 +53,11 @@ City markers retain projected coordinates instead of being pushed apart. Labels 
 The approach draws on [Google Maps collision priorities](https://developers.google.com/maps/documentation/javascript/examples/marker-collision-management), [Mapbox label collision and variable anchors](https://docs.mapbox.com/help/dive-deeper/optimize-map-label-placement/), and [Apple annotation clustering](https://developer.apple.com/documentation/mapkit/decluttering-a-map-with-mapkit-annotation-clustering). It uses the existing SVG map without adding another rendering library.
 
 GEB and Douglas R. Hofstadter now have localized, sourced records. Publication geography is distinguished from institutional affiliation. Gödel, Escher, and Bach are searchable associated people. The comparison to foundation models is explicitly editorial, with low confidence, and does not assert direct influence or settle consciousness. The 1979 publication and 1980 Pulitzer dates remain distinct.
+
+## Dynamic map clusters and connection endpoints
+
+At world scale, city marker footprints merge into non-overlapping clusters in screen space. Each cluster counts unique ideas; zoom recomputes the grouping. Cluster centers represent grouped cities rather than an individual location. Connection curves end on the visible endpoint markers or clusters, with loops for relationships inside a cluster. The default includes all mapped ideas and their connections within the current filters, including on mobile. Selected-discovery mode retains all geographically located endpoints of its displayed edges. Records without coordinates remain accessible below the map; locations are not invented.
+
+Hover and keyboard focus reveal separated glass cards, each with a speech-bubble tail to the cluster. A bounded scrolling column keeps large clusters readable, and tapping a cluster exposes its complete idea list below the map. Escape dismisses previews.
+
+The decorative network now has 30 nodes instead of 48, 10% greater drift, and sparse traveling pulses on existing connections. Rings reach their terminal size in 1/1.2 of the previous expansion time while remaining synchronized with node maxima. Pause and reduced-motion preferences apply to the signals as well as the nodes and rings.

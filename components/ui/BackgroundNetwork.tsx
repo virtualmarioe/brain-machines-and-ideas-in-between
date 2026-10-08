@@ -4,10 +4,17 @@ import { categorical } from '@/lib/colors';
 
 const colors = Object.values(categorical);
 
-const points = Array.from({ length: 48 }, (_, i) => ({
-  x: (i % 8) * 175 + 35 + Math.sin(i * 7) * 48,
-  y: Math.floor(i / 8) * 180 + 25 + Math.cos(i * 11) * 48,
+const points = Array.from({ length: 30 }, (_, i) => ({
+  x: (i % 6) * 245 + 35 + Math.sin(i * 7) * 48,
+  y: Math.floor(i / 6) * 225 + 25 + Math.cos(i * 11) * 48,
 }));
+const links = points.flatMap((a, i) =>
+  points
+    .slice(i + 1)
+    .flatMap((b, offset) =>
+      Math.hypot(a.x - b.x, a.y - b.y) < 270 ? [{ a, b, key: `${i}-${offset}` }] : [],
+    ),
+);
 const labels = {
   en: ['Pause background motion', 'Resume background motion'],
   de: ['Hintergrundbewegung pausieren', 'Hintergrundbewegung fortsetzen'],
@@ -21,15 +28,28 @@ export default function BackgroundNetwork({ locale }: { locale: string }) {
       <div className="background-network" aria-hidden="true" data-paused={paused}>
         <svg viewBox="0 0 1300 1000" preserveAspectRatio="xMidYMid slice" focusable="false">
           <g className="network-drift">
-            {points.flatMap((a, i) =>
-              points
-                .slice(i + 1)
-                .map((b, offset) =>
-                  Math.hypot(a.x - b.x, a.y - b.y) < 240 ? (
-                    <line key={`${i}-${offset}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} />
-                  ) : null,
-                ),
-            )}
+            {links.map(({ a, b, key }, index) => (
+              <g key={key}>
+                <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} />
+                {index % 3 === 0 && (
+                  <circle
+                    className="network-signal"
+                    r="2.4"
+                    style={
+                      {
+                        '--signal-x1': `${a.x}px`,
+                        '--signal-y1': `${a.y}px`,
+                        '--signal-x2': `${b.x}px`,
+                        '--signal-y2': `${b.y}px`,
+                        '--signal-duration': `${14 + (index % 9)}s`,
+                        '--signal-delay': `${-(index * 3.7)}s`,
+                        color: colors[index % colors.length],
+                      } as CSSProperties
+                    }
+                  />
+                )}
+              </g>
+            ))}
             {points.map((p, i) => (
               <g
                 key={i}

@@ -652,8 +652,12 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
                   <WorldMap
                     onEdge={setEdge}
                     nobel={state.nobel}
-                    entities={graphEntities}
-                    relationships={graphEdges}
+                    entities={filtered}
+                    relationships={relationships.filter(
+                      (edge) =>
+                        filtered.some((entity) => entity.id === edge.source) &&
+                        filtered.some((entity) => entity.id === edge.target),
+                    )}
                     selected={selected.id}
                     locale={locale}
                     onSelect={select}

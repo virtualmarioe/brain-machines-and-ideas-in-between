@@ -66,9 +66,9 @@ test('the graph overview remains usable after filtering and on compact screens',
   await page.goto('/en/architecture/neocognitron');
   await expect(page.locator('.entity-panel')).toBeVisible();
   const frame = page.locator('.visualization-frame').first();
-  if (await frame.locator('summary').isVisible()) {
+  if (await frame.locator(':scope > summary').isVisible()) {
     await expect(frame).not.toHaveAttribute('open');
-    await frame.locator('summary').click();
+    await frame.locator(':scope > summary').click();
   }
   await expect(page.getByRole('slider', { name: 'Graph position', exact: true })).toBeVisible();
   await page.getByRole('searchbox', { name: 'Search the atlas' }).fill('NHK');

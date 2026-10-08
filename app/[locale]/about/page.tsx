@@ -10,7 +10,10 @@ const copy = {
     back: 'Return to the atlas',
     intro:
       'An interactive atlas of the connected histories of neuroscience, computation, and machine learning. It follows ideas that travelled from biological cells to artificial systems and back again, through linked discoveries, timelines, idea graphs, and scientific demonstrations, in English, German, and Spanish.',
-    accompanies: 'It accompanies my',
+    accompanies: 'The Intelligence Atlas is a work in progress accompanying a',
+    universityIntro: 'at the',
+    university: 'University of Jena',
+    country: 'Germany',
     course: 'Neuro-AI course',
     researchIntro: 'and the research topic',
     research: 'Natural and artificial intelligence in medicine',
@@ -26,7 +29,10 @@ const copy = {
     back: 'Zurück zum Atlas',
     intro:
       'Ein interaktiver Atlas der miteinander verbundenen Geschichte von Neurowissenschaften, Informatik und maschinellem Lernen. Er verfolgt Ideen, die von biologischen Zellen zu künstlichen Systemen und wieder zurück wanderten, anhand verknüpfter Entdeckungen, Zeitachsen, Ideengraphen und wissenschaftlicher Demonstrationen, auf Englisch, Deutsch und Spanisch.',
-    accompanies: 'Er begleitet meinen',
+    accompanies: 'The Intelligence Atlas wird laufend weiterentwickelt und begleitet einen',
+    universityIntro: 'an der',
+    university: 'Universität Jena',
+    country: 'Deutschland',
     course: 'Neuro-AI-Kurs',
     researchIntro: 'und das Forschungsthema',
     research: 'Natürliche und künstliche Intelligenz in der Medizin',
@@ -42,7 +48,10 @@ const copy = {
     back: 'Volver al atlas',
     intro:
       'Un atlas interactivo de las historias conectadas de la neurociencia, la computación y el aprendizaje automático. Sigue ideas que viajaron de las células biológicas a los sistemas artificiales y de vuelta, mediante descubrimientos enlazados, líneas de tiempo, grafos de ideas y demostraciones científicas, en inglés, alemán y español.',
-    accompanies: 'Acompaña mi',
+    accompanies: 'The Intelligence Atlas es un proyecto en desarrollo que acompaña un',
+    universityIntro: 'en la',
+    university: 'Universidad de Jena',
+    country: 'Alemania',
     course: 'curso de Neuro-AI',
     researchIntro: 'y el tema de investigación',
     research: 'Inteligencia natural y artificial en medicina',
@@ -88,8 +97,12 @@ export default async function About({ params }: Props) {
       <p>
         {c.accompanies}{' '}
         <a href="https://archilaresearch.github.io/teaching.html#neuro-ai">{c.course}</a>{' '}
-        {c.researchIntro} <a href="https://archilaresearch.github.io/research.html">{c.research}</a>
-        .
+        {c.researchIntro} <a href="https://archilaresearch.github.io/research.html">{c.research}</a>{' '}
+        {c.universityIntro}{' '}
+        <a href={locale === 'de' ? 'https://www.uni-jena.de/' : 'https://www.uni-jena.de/en'}>
+          {c.university}
+        </a>
+        , {c.country}.
       </p>
       <p>{c.evidence}</p>
       <h2>{c.source}</h2>

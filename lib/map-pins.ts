@@ -37,3 +37,53 @@ export function groupMapCities(entities: readonly HistoricalEntity[]) {
     .map((city) => ({ ...city, lat: city.lat / city.count, lon: city.lon / city.count }))
     .sort((a, b) => a.name.localeCompare(b.name, 'en'));
 }
+
+export type MapCity = ReturnType<typeof groupMapCities>[number];
+export type MapCluster = {
+  key: string;
+  x: number;
+  y: number;
+  cities: MapCity[];
+  entities: HistoricalEntity[];
+};
+/** Merge overlapping screen-space marker footprints without losing city or idea membership. */
+export function clusterMapCities(
+  cities: MapCity[],
+  project: (lon: number, lat: number) => [number, number],
+  distance: number,
+): MapCluster[] {
+  const groups = cities.map((city) => {
+    const [x, y] = project(city.lon, city.lat);
+    return { x, y, cities: [city] };
+  });
+  let merged = true;
+  while (merged) {
+    merged = false;
+    outer: for (let i = 0; i < groups.length; i++)
+      for (let j = i + 1; j < groups.length; j++) {
+        if (Math.hypot(groups[i].x - groups[j].x, groups[i].y - groups[j].y) >= distance) continue;
+        const members = [...groups[i].cities, ...groups[j].cities];
+        const points = members.map((city) => project(city.lon, city.lat));
+        groups[i] = {
+          cities: members,
+          x: points.reduce((sum, p) => sum + p[0], 0) / points.length,
+          y: points.reduce((sum, p) => sum + p[1], 0) / points.length,
+        };
+        groups.splice(j, 1);
+        merged = true;
+        break outer;
+      }
+  }
+  return groups.map((group) => ({
+    ...group,
+    key: group.cities
+      .map((city) => city.key)
+      .sort()
+      .join('|'),
+    entities: [
+      ...new Map(
+        group.cities.flatMap((city) => city.entities).map((entity) => [entity.id, entity]),
+      ).values(),
+    ],
+  }));
+}

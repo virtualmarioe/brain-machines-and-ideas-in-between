@@ -6,7 +6,7 @@ async function views(page: Page) {
   await page.goto('/en/architecture/neocognitron');
   await expect(page.locator('.entity-panel')).toBeVisible();
   for (const frame of await page.locator('.visualization-frame').all()) {
-    if ((await frame.getAttribute('open')) === null) await frame.locator('summary').click();
+    if ((await frame.getAttribute('open')) === null) await frame.locator(':scope > summary').click();
   }
 }
 for (const theme of ['light', 'dark']) {

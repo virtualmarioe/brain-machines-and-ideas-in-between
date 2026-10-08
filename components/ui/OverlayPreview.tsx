@@ -164,12 +164,14 @@ export function PreviewCard<T>({
   className = '',
   kind,
   forId,
+  splitCards = false,
 }: {
   preview: ReturnType<typeof useOverlayPreview<T>>;
   children: ReactNode;
   className?: string;
   kind: string;
   forId: string;
+  splitCards?: boolean;
 }) {
   const card = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<ReturnType<typeof placeBubble>>(null);
@@ -228,7 +230,12 @@ export function PreviewCard<T>({
       }
       const result = placeBubble(
         reserved,
-        { width: Math.min(384, window.innerWidth - 24), height: card.current.scrollHeight + 2 },
+        {
+          width: Math.min(384, window.innerWidth - 24),
+          height: splitCards
+            ? Math.min(620, window.innerHeight * 0.7, card.current.scrollHeight + 2)
+            : card.current.scrollHeight + 2,
+        },
         {
           left: viewport?.offsetLeft ?? 0,
           top: viewport?.offsetTop ?? 0,
@@ -265,7 +272,49 @@ export function PreviewCard<T>({
       window.removeEventListener('resize', schedule);
       window.visualViewport?.removeEventListener('resize', schedule);
     };
-  }, [current, dismiss]);
+  }, [current, dismiss, splitCards]);
+
+  const [tails, setTails] = useState<string[]>([]);
+  useEffect(() => {
+    if (!splitCards || !position || !card.current) return;
+    const container = card.current;
+    const update = () => {
+      const clip = container.getBoundingClientRect();
+      const paths = [...container.querySelectorAll('[data-bubble-card]')].flatMap((element) => {
+        const bounds = element.getBoundingClientRect();
+        const top = Math.max(bounds.top, clip.top),
+          bottom = Math.min(bounds.bottom, clip.bottom);
+        if (bottom - top < 20) return [];
+        const tip = position.tip;
+        const horizontal = position.side === 'top' || position.side === 'bottom';
+        const x = horizontal
+          ? Math.max(bounds.left + 12, Math.min(bounds.right - 12, tip.x))
+          : position.side === 'left'
+            ? bounds.right
+            : bounds.left;
+        const y = horizontal ? (position.side === 'top' ? bottom : top) : (top + bottom) / 2;
+        return [
+          horizontal
+            ? `M${x - 5},${y} Q${x},${(y + tip.y) / 2} ${tip.x},${tip.y} Q${x + 5},${(y + tip.y) / 2} ${x + 5},${y} Z`
+            : `M${x},${y - 5} Q${(x + tip.x) / 2},${y} ${tip.x},${tip.y} Q${(x + tip.x) / 2},${y + 5} ${x},${y + 5} Z`,
+        ];
+      });
+      setTails((previous) =>
+        JSON.stringify(previous) === JSON.stringify(paths) ? previous : paths,
+      );
+    };
+    const frame = requestAnimationFrame(update);
+    const observer = new ResizeObserver(update);
+    observer.observe(container);
+    container.addEventListener('scroll', update);
+    container.addEventListener('animationend', update);
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      container.removeEventListener('scroll', update);
+      container.removeEventListener('animationend', update);
+    };
+  }, [splitCards, position]);
 
   if (!current) return null;
   const dx = position ? position.tip.x - position.base.x : 0;
@@ -274,20 +323,24 @@ export function PreviewCard<T>({
     <>
       {position && (
         <svg className="bubble-tail" aria-hidden="true" data-closing={preview.closing}>
-          <path
-            d={
-              position.horizontal
-                ? `M${position.base.x - 8},${position.base.y} Q${position.base.x},${position.base.y + dy * 0.5} ${position.tip.x},${position.tip.y} Q${position.base.x + 8},${position.base.y + dy * 0.35} ${position.base.x + 8},${position.base.y} Z`
-                : `M${position.base.x},${position.base.y - 8} Q${position.base.x + dx * 0.5},${position.base.y} ${position.tip.x},${position.tip.y} Q${position.base.x + dx * 0.35},${position.base.y + 8} ${position.base.x},${position.base.y + 8} Z`
-            }
-          />
+          {splitCards ? (
+            tails.map((path, index) => <path key={index} data-cluster-tail="true" d={path} />)
+          ) : (
+            <path
+              d={
+                position.horizontal
+                  ? `M${position.base.x - 8},${position.base.y} Q${position.base.x},${position.base.y + dy * 0.5} ${position.tip.x},${position.tip.y} Q${position.base.x + 8},${position.base.y + dy * 0.35} ${position.base.x + 8},${position.base.y} Z`
+                  : `M${position.base.x},${position.base.y - 8} Q${position.base.x + dx * 0.5},${position.base.y} ${position.tip.x},${position.tip.y} Q${position.base.x + dx * 0.35},${position.base.y + 8} ${position.base.x},${position.base.y + 8} Z`
+              }
+            />
+          )}
         </svg>
       )}
       <div
         ref={card}
         id={preview.id}
         role="tooltip"
-        className={`node-preview glass-surface ${className}`}
+        className={`node-preview ${splitCards ? 'cluster-preview' : 'glass-surface'} ${className}`}
         data-preview-for={forId}
         data-preview-kind={kind}
         data-closing={preview.closing}
@@ -298,7 +351,10 @@ export function PreviewCard<T>({
             left: position?.left ?? 12,
             top: position?.top ?? 12,
             width: position?.width,
-            maxHeight: position?.maxHeight,
+            maxHeight:
+              splitCards && position
+                ? Math.min(position.maxHeight, 620, window.innerHeight * 0.7)
+                : position?.maxHeight,
             visibility: position ? 'visible' : 'hidden',
             transformOrigin: position
               ? `${position.base.x - position.left}px ${position.base.y - position.top}px`

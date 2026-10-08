@@ -7,7 +7,8 @@ import { ConnectionPreview, useConnectionPreview } from '@/components/ui/Connect
 import { Icon } from '@/components/ui/Icon';
 import { NodePreview, useNodePreview } from '@/components/ui/NodePreview';
 import MapLabels from './MapLabels';
-import { groupMapCities } from '@/lib/map-pins';
+import { ClusterPreview, useClusterPreview } from './ClusterPreview';
+import { clusterMapCities, groupMapCities } from '@/lib/map-pins';
 export default function WorldMap({
   entities,
   relationships,
@@ -37,7 +38,8 @@ export default function WorldMap({
   }, []);
   const [cityMode, setCityMode] = useState(true);
   const [hoveredCity, setHoveredCity] = useState<string | null>(null);
-  const [showConnections, setShowConnections] = useState(false);
+  const [showConnections, setShowConnections] = useState(true);
+  const [clusterKey, setClusterKey] = useState<string | null>(null);
   const [cityKey, setCityKey] = useState<string | null>(null);
   const copy = {
     en: {
@@ -49,7 +51,7 @@ export default function WorldMap({
       city: 'City',
       sites: 'Institutions',
       open: 'Select a discovery to explore it.',
-      note: 'Antarctica omitted. City markers count distinct discoveries in the current view; positions approximate associated locations, including publication cities.',
+      note: 'Positions approximate associated locations, including publication cities. Crowded labels appear as you zoom. Use the city list to reach every discovery.',
     },
     de: {
       mode: 'Kartenansicht',
@@ -60,7 +62,7 @@ export default function WorldMap({
       city: 'Stadt',
       sites: 'Institutionen',
       open: 'Wählen Sie eine Entdeckung, um sie zu erkunden.',
-      note: 'Antarktis ausgeblendet. Stadtmarker zählen einzelne Entdeckungen der aktuellen Ansicht; Positionen nähern zugehörige Orte einschließlich Erscheinungsorte an.',
+      note: 'Positionen nähern zugehörige Orte einschließlich Erscheinungsorte an. Dichte Beschriftungen erscheinen beim Zoomen. Die Stadtliste erschließt alle Entdeckungen.',
     },
     es: {
       mode: 'Vista del mapa',
@@ -71,7 +73,7 @@ export default function WorldMap({
       city: 'Ciudad',
       sites: 'Instituciones',
       open: 'Seleccione un descubrimiento para explorarlo.',
-      note: 'Antártida omitida. Los marcadores cuentan descubrimientos distintos de la vista actual; las posiciones aproximan lugares asociados, incluidas ciudades de publicación.',
+      note: 'Las posiciones aproximan lugares asociados, incluidas ciudades de publicación. Las etiquetas próximas aparecen al ampliar. La lista de ciudades permite acceder a todos los descubrimientos.',
     },
   }[locale];
   const [scale, setScale] = useState(1);
@@ -80,18 +82,28 @@ export default function WorldMap({
   const active = entities.find((e) => e.id === selected);
   const center = active?.locations[0];
   const [cx, cy] = center ? project(center.lon, center.lat) : [360, 180];
-  const edges = relationships.filter((e) => e.source === selected || e.target === selected);
+  const edges = relationships.filter(
+    (e) =>
+      (cityMode || e.source === selected || e.target === selected) &&
+      entities.some((entity) => entity.id === e.source && entity.locations.length) &&
+      entities.some((entity) => entity.id === e.target && entity.locations.length),
+  );
+  const endpointIds = new Set(
+    showConnections ? edges.flatMap((edge) => [edge.source, edge.target]) : [],
+  );
+  const clusterPreview = useClusterPreview();
   const lookup = new Map(entities.map((e) => [e.id, e]));
   const preview = useNodePreview();
   const connectionPreview = useConnectionPreview();
   const pins = entities
-    .filter((entity) => entity.id === selected)
+    .filter((entity) => entity.id === selected || endpointIds.has(entity.id))
     .flatMap((entity) =>
       entity.locations.map((location, locIndex) => {
         const [x, y] = project(location.lon, location.lat);
         return { entity, location, locIndex, x, y };
       }),
     );
+  pins.sort((a, b) => Number(a.entity.id === selected) - Number(b.entity.id === selected));
   const pinPositions = pins;
   const markerScale = uiScale * (1 + 0.18 * (scale - 1));
   const cities = groupMapCities(entities);
@@ -99,21 +111,30 @@ export default function WorldMap({
     cities.find((c) => c.key === cityKey) ??
     cities.find((c) => c.entities.some((e) => e.id === selected)) ??
     cities[0];
-  const cityPoints = cities.map((c) => {
-    const [x, y] = project(c.lon, c.lat);
-    return { x, y };
-  });
-  const cityPositions = cityPoints;
+  const clusters = clusterMapCities(cities, project, (28 * markerScale) / scale);
+  const chosenCluster = clusters.find((cluster) => cluster.key === clusterKey);
+  const detailEntities = chosenCluster?.entities ?? chosenCity?.entities ?? [];
+  const clusterByCity = new Map(
+    clusters.flatMap((cluster) => cluster.cities.map((city) => [city.key, cluster] as const)),
+  );
   const mapX = (scale === 1 ? 0 : 360 - cx * scale) + offset.x;
   const mapY = (scale === 1 ? 0 : 147 - cy * scale) + offset.y;
   const labelAnchors = cityMode
-    ? cities.map((city, index) => ({
-        key: city.key,
-        name: city.name,
-        x: cityPositions[index].x * scale + mapX,
-        y: cityPositions[index].y * scale + mapY,
-        radius: 10 * markerScale,
-        priority: city.key === hoveredCity ? 3 : city.key === chosenCity?.key ? 2 : 1,
+    ? clusters.map((cluster) => ({
+        key: cluster.key,
+        name:
+          cluster.cities.length === 1
+            ? cluster.cities[0].name
+            : `${cluster.cities.length} ${{ en: 'cities', de: 'Städte', es: 'ciudades' }[locale]}`,
+        x: cluster.x * scale + mapX,
+        y: cluster.y * scale + mapY,
+        radius: 12 * markerScale,
+        priority:
+          cluster.key === hoveredCity
+            ? 3
+            : cluster.cities.some((city) => city.key === chosenCity?.key)
+              ? 2
+              : 1,
       }))
     : pins.map((pin, index) => ({
         key: `${pin.entity.id}-${pin.locIndex}`,
@@ -173,6 +194,8 @@ export default function WorldMap({
           onChange={(event) => {
             setCityMode(event.target.value === 'cities');
             setCityKey(null);
+            setClusterKey(null);
+            clusterPreview.dismiss(true);
             preview.dismiss(true);
             connectionPreview.dismiss(true);
             setScale(1);
@@ -202,6 +225,7 @@ export default function WorldMap({
         aria-label={t('mapAlt', locale)}
         onPointerDown={(e) => {
           if (e.button !== 0) return;
+          clusterPreview.dismiss();
           preview.dismiss();
           connectionPreview.dismiss();
           const matrix = e.currentTarget.getScreenCTM();
@@ -242,9 +266,18 @@ export default function WorldMap({
               const a = lookup.get(edge.source)?.locations[0],
                 b = lookup.get(edge.target)?.locations[0];
               if (!a || !b) return null;
-              const [x1, y1] = project(a.lon, a.lat),
-                [x2, y2] = project(b.lon, b.lat);
-              const path = `M${x1} ${y1} Q${(x1 + x2) / 2} ${Math.min(y1, y2) - Math.min(80, Math.abs(x1 - x2) * 0.3)} ${x2} ${y2}`;
+              const ca = cityMode
+                ? clusterByCity.get(a.name.trim().toLocaleLowerCase('en').replace(/\s+/g, ' '))
+                : undefined;
+              const cb = cityMode
+                ? clusterByCity.get(b.name.trim().toLocaleLowerCase('en').replace(/\s+/g, ' '))
+                : undefined;
+              const [x1, y1] = ca ? [ca.x, ca.y] : project(a.lon, a.lat),
+                [x2, y2] = cb ? [cb.x, cb.y] : project(b.lon, b.lat);
+              const path =
+                Math.hypot(x2 - x1, y2 - y1) < 1
+                  ? `M${x1} ${y1} c${-35 / scale} ${-45 / scale} ${35 / scale} ${-45 / scale} 0 0`
+                  : `M${x1} ${y1} Q${(x1 + x2) / 2} ${Math.min(y1, y2) - Math.min(80, Math.abs(x1 - x2) * 0.3)} ${x2} ${y2}`;
               const source = lookup.get(edge.source)!;
               const target = lookup.get(edge.target)!;
               const previewProps = connectionPreview.triggerProps(
@@ -252,7 +285,12 @@ export default function WorldMap({
                 edge.id,
               );
               return (
-                <g key={edge.id} className="map-edge">
+                <g
+                  key={edge.id}
+                  className="map-edge"
+                  data-source={edge.source}
+                  data-target={edge.target}
+                >
                   <path
                     d={path}
                     fill="none"
@@ -350,52 +388,66 @@ export default function WorldMap({
               );
             })}
           {cityMode &&
-            cities.map((city, index) => {
-              const { x, y } = cityPositions[index];
-              const isActive = city.key === chosenCity?.key;
+            clusters.map((cluster) => {
+              const { x, y } = cluster;
+              const isActive = cluster.cities.some((city) => city.key === chosenCity?.key);
+              const props = clusterPreview.triggerProps(cluster, cluster.key);
               return (
-                <g key={city.key}>
-                  <g
-                    className="map-city"
-                    onPointerEnter={() => setHoveredCity(city.key)}
-                    onPointerLeave={() => setHoveredCity(null)}
-                    onBlur={() => setHoveredCity(null)}
-                    transform={`translate(${x} ${y}) scale(${markerScale / scale})`}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`${city.name}: ${city.entities.length} ${copy.discoveries}`}
-                    aria-pressed={isActive}
-                    onPointerDown={(event) => event.stopPropagation()}
-                    onFocus={(event) => {
-                      if (event.currentTarget.matches(':focus-visible')) {
-                        setHoveredCity(city.key);
-                        focusPoint(x, y);
-                      }
-                    }}
-                    onClick={() => setCityKey(city.key)}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault();
-                        setCityKey(city.key);
-                      }
-                    }}
+                <g
+                  key={cluster.key}
+                  className="map-city"
+                  data-cluster={cluster.key}
+                  data-entities={cluster.entities.map((entity) => entity.id).join(' ')}
+                  {...props}
+                  onPointerEnter={(event) => {
+                    setHoveredCity(cluster.key);
+                    props.onPointerEnter(event);
+                  }}
+                  onPointerLeave={(event) => {
+                    setHoveredCity(null);
+                    props.onPointerLeave(event);
+                  }}
+                  transform={`translate(${x} ${y}) scale(${markerScale / scale})`}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${cluster.cities.map((city) => city.name).join(' · ')}: ${cluster.entities.length} ${copy.discoveries}`}
+                  aria-pressed={isActive}
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onFocus={(event) => {
+                    props.onFocus(event);
+                    if (event.currentTarget.matches(':focus-visible')) {
+                      setHoveredCity(cluster.key);
+                      focusPoint(x, y);
+                    }
+                  }}
+                  onClick={() => {
+                    setCityKey(cluster.cities[0].key);
+                    setClusterKey(cluster.key);
+                  }}
+                  onKeyDown={(event) => {
+                    props.onKeyDown(event);
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      setCityKey(cluster.cities[0].key);
+                      setClusterKey(cluster.key);
+                    }
+                  }}
+                >
+                  <circle r="13" fill="transparent" />
+                  <circle
+                    r="11"
+                    fill={isActive ? 'var(--action-fill)' : 'var(--surface)'}
+                    stroke="var(--accent)"
+                    strokeWidth={isActive ? 2.5 : 1.5}
+                  />
+                  <text
+                    className="city-count"
+                    y="4"
+                    textAnchor="middle"
+                    fill={isActive ? 'var(--on-action)' : 'var(--text)'}
                   >
-                    <circle r="12" fill="transparent" />
-                    <circle
-                      r="9"
-                      fill={isActive ? 'var(--action-fill)' : 'var(--surface)'}
-                      stroke="var(--accent)"
-                      strokeWidth={isActive ? 2.5 : 1.5}
-                    />
-                    <text
-                      className="city-count"
-                      y="4"
-                      textAnchor="middle"
-                      fill={isActive ? 'var(--on-action)' : 'var(--text)'}
-                    >
-                      {city.entities.length}
-                    </text>
-                  </g>
+                    {cluster.entities.length}
+                  </text>
                 </g>
               );
             })}
@@ -410,6 +462,7 @@ export default function WorldMap({
               value={chosenCity.key}
               onChange={(event) => {
                 setCityKey(event.target.value);
+                setClusterKey(null);
                 const city = cities.find((item) => item.key === event.target.value);
                 if (city) {
                   const [x, y] = project(city.lon, city.lat);
@@ -425,11 +478,16 @@ export default function WorldMap({
             </select>
           </label>
           <p>
-            <strong>{copy.sites}:</strong> {chosenCity.institutions.join(' · ')}
+            <strong>{copy.sites}:</strong>{' '}
+            {(chosenCluster
+              ? [...new Set(chosenCluster.cities.flatMap((city) => city.institutions))]
+              : chosenCity.institutions
+            ).join(' · ')}
           </p>
+          {chosenCluster && <p>{chosenCluster.cities.map((city) => city.name).join(' · ')}</p>}
           <p>{copy.open}</p>
           <ul>
-            {chosenCity.entities.map((entity) => (
+            {detailEntities.map((entity) => (
               <li key={entity.id}>
                 <button aria-pressed={entity.id === selected} onClick={() => onSelect(entity.id)}>
                   <span>{entity.startDate.slice(0, 4)}</span> {entity.title[locale]}
@@ -439,19 +497,34 @@ export default function WorldMap({
           </ul>
         </div>
       )}
-      <div className="map-caption">
-        <span>
-          {t('mapNote', locale)} {copy.note}{' '}
-          {
+      {entities.some((entity) => !entity.locations.length) && (
+        <details className="map-city-details">
+          <summary>
             {
-              en: 'Markers stay at their geographic coordinates. Crowded labels appear as you zoom. Use the city list to reach every discovery.',
-              de: 'Marker bleiben an ihren geografischen Koordinaten. Dichte Beschriftungen erscheinen beim Zoomen. Die Stadtliste erschließt alle Entdeckungen.',
-              es: 'Los marcadores conservan sus coordenadas geográficas. Las etiquetas próximas aparecen al ampliar. La lista de ciudades permite acceder a todos los descubrimientos.',
-            }[locale]
-          }
-        </span>
+              {
+                en: 'Ideas without a recorded map location',
+                de: 'Ideen ohne erfassten Kartenort',
+                es: 'Ideas sin ubicación registrada',
+              }[locale]
+            }{' '}
+            ({entities.filter((entity) => !entity.locations.length).length})
+          </summary>
+          <ul>
+            {entities
+              .filter((entity) => !entity.locations.length)
+              .map((entity) => (
+                <li key={entity.id}>
+                  <button onClick={() => onSelect(entity.id)}>{entity.title[locale]}</button>
+                </li>
+              ))}
+          </ul>
+        </details>
+      )}
+      <div className="map-caption">
+        <span>{copy.note}</span>
         <span>Natural Earth</span>
       </div>
+      <ClusterPreview preview={clusterPreview} locale={locale} />
       <NodePreview preview={preview} locale={locale} />
       <ConnectionPreview preview={connectionPreview} locale={locale} />
     </section>

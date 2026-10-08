@@ -1,7 +1,7 @@
 import { entities } from '@/content';
 import { geography, project } from '@/lib/map';
 import { describe, expect, it } from 'vitest';
-import { groupMapCities } from '@/lib/map-pins';
+import { clusterMapCities, groupMapCities } from '@/lib/map-pins';
 
 describe('city clusters and map extent', () => {
   it('retains every discovery once per city and keeps countries separate', () => {
@@ -53,5 +53,35 @@ describe('city clusters and map extent', () => {
         expect(y).toBeGreaterThanOrEqual(0);
         expect(y).toBeLessThanOrEqual(295);
       }
+  });
+});
+
+describe('screen-space clustering', () => {
+  it('deduplicates ideas, preserves membership, avoids overlap and splits with zoom', () => {
+    const cities = groupMapCities(entities);
+    const wide = clusterMapCities(cities, project, 28);
+    const close = clusterMapCities(cities, project, 7);
+    expect(close.length).toBeGreaterThan(wide.length);
+    expect(wide.flatMap((cluster) => cluster.cities.map((city) => city.key)).sort()).toEqual(
+      cities.map((city) => city.key).sort(),
+    );
+    expect(
+      new Set(
+        wide.flatMap((cluster) =>
+          cluster.entities.filter((entity) => entity.locations.length).map((entity) => entity.id),
+        ),
+      ),
+    ).toEqual(
+      new Set(entities.filter((entity) => entity.locations.length).map((entity) => entity.id)),
+    );
+    for (const cluster of wide) {
+      expect(
+        new Set(
+          cluster.entities.filter((entity) => entity.locations.length).map((entity) => entity.id),
+        ).size,
+      ).toBe(cluster.entities.length);
+      for (const other of wide.filter((other) => other !== cluster))
+        expect(Math.hypot(other.x - cluster.x, other.y - cluster.y)).toBeGreaterThanOrEqual(28);
+    }
   });
 });
