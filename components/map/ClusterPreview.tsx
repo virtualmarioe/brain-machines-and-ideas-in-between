@@ -1,7 +1,7 @@
 'use client';
 import { PreviewCard, useOverlayPreview } from '@/components/ui/OverlayPreview';
 import { domains } from '@/content/translations/ui';
-import type { MapCluster } from '@/lib/map-pins';
+import { describeMapCluster, type MapCluster } from '@/lib/map-pins';
 import type { Locale } from '@/types/history';
 export function useClusterPreview() {
   return useOverlayPreview<MapCluster>();
@@ -20,12 +20,13 @@ export function ClusterPreview({
       <p className="cluster-preview-intro">
         {cluster.cities.map((city) => city.name).join(' · ')}
         <br />
-        {cluster.entities.length}{' '}
+        <strong>{describeMapCluster(cluster, locale)}</strong>
+        <br />
         {
           {
-            en: 'ideas. Scroll to read each card. Esc closes.',
-            de: 'Ideen. Scrollen zeigt alle Karten. Esc schließt.',
-            es: 'ideas. Desplácese para leer cada tarjeta. Esc cierra.',
+            en: 'Scroll to read each card. Esc closes.',
+            de: 'Scrollen zeigt alle Karten. Esc schließt.',
+            es: 'Desplácese para leer cada tarjeta. Esc cierra.',
           }[locale]
         }
       </p>

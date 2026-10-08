@@ -8,7 +8,7 @@ import { Icon } from '@/components/ui/Icon';
 import { NodePreview, useNodePreview } from '@/components/ui/NodePreview';
 import MapLabels from './MapLabels';
 import { ClusterPreview, useClusterPreview } from './ClusterPreview';
-import { clusterMapCities, groupMapCities } from '@/lib/map-pins';
+import { clusterMapCities, describeMapCluster, groupMapCities } from '@/lib/map-pins';
 export default function WorldMap({
   entities,
   relationships,
@@ -410,7 +410,7 @@ export default function WorldMap({
                   transform={`translate(${x} ${y}) scale(${markerScale / scale})`}
                   role="button"
                   tabIndex={0}
-                  aria-label={`${cluster.cities.map((city) => city.name).join(' · ')}: ${cluster.entities.length} ${copy.discoveries}`}
+                  aria-label={`${cluster.cities.map((city) => city.name).join(' · ')}: ${describeMapCluster(cluster, locale)}`}
                   aria-pressed={isActive}
                   onPointerDown={(event) => event.stopPropagation()}
                   onFocus={(event) => {
@@ -484,7 +484,13 @@ export default function WorldMap({
               : chosenCity.institutions
             ).join(' · ')}
           </p>
-          {chosenCluster && <p>{chosenCluster.cities.map((city) => city.name).join(' · ')}</p>}
+          {chosenCluster && (
+            <p>
+              <strong>{describeMapCluster(chosenCluster, locale)}</strong>
+              <br />
+              {chosenCluster.cities.map((city) => city.name).join(' · ')}
+            </p>
+          )}
           <p>{copy.open}</p>
           <ul>
             {detailEntities.map((entity) => (

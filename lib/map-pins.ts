@@ -1,4 +1,4 @@
-import type { HistoricalEntity } from '@/types/history';
+import type { HistoricalEntity, Locale } from '@/types/history';
 /** City names include the country, so identically named cities in different countries stay separate. */
 export function groupMapCities(entities: readonly HistoricalEntity[]) {
   const groups = new Map<
@@ -86,4 +86,19 @@ export function clusterMapCities(
       ).values(),
     ],
   }));
+}
+
+/** Shared count summary for visual and accessible cluster descriptions. */
+export function describeMapCluster(cluster: MapCluster, locale: Locale) {
+  const cities = cluster.cities.length;
+  const discoveries = cluster.entities.length;
+  const labels = {
+    en: [cities === 1 ? 'city' : 'cities', discoveries === 1 ? 'discovery' : 'discoveries'],
+    de: [cities === 1 ? 'Stadt' : 'Städte', discoveries === 1 ? 'Entdeckung' : 'Entdeckungen'],
+    es: [
+      cities === 1 ? 'ciudad' : 'ciudades',
+      discoveries === 1 ? 'descubrimiento' : 'descubrimientos',
+    ],
+  }[locale];
+  return `${cities} ${labels[0]} · ${discoveries} ${labels[1]}`;
 }
