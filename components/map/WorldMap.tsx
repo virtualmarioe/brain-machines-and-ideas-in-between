@@ -8,6 +8,8 @@ import { ConnectionPreview, useConnectionPreview } from '@/components/ui/Connect
 import { Icon } from '@/components/ui/Icon';
 import { NodePreview, useNodePreview } from '@/components/ui/NodePreview';
 import { useConnectionAnimation } from './useConnectionAnimation';
+import { PreviewCard, useOverlayPreview } from '@/components/ui/OverlayPreview';
+import './map-controls.css';
 import MapLabels from './MapLabels';
 import { ClusterPreview, useClusterPreview } from './ClusterPreview';
 import { clusterMapCities, describeMapCluster, groupMapCities } from '@/lib/map-pins';
@@ -28,6 +30,17 @@ export default function WorldMap({
   onEdge: (edge: HistoricalRelationship) => void;
   nobel?: boolean;
 }) {
+  const infoPreview = useOverlayPreview<string>();
+  const infoTitle = {
+    en: 'About map connections',
+    de: 'Über Kartenverbindungen',
+    es: 'Acerca de las conexiones del mapa',
+  }[locale];
+  const infoText = {
+    en: 'Connections appear when both discoveries exist, in date order. Trail colors indicate the originating idea’s field; arrival rings mark the receiving idea. Moving lights indicate relationship direction, not travel or proven influence.',
+    de: 'Verbindungen erscheinen in zeitlicher Reihenfolge, sobald beide Entdeckungen existieren. Die Linienfarbe zeigt das Fachgebiet der Ursprungsidee; Ringe markieren die Ankunft. Lichtpunkte zeigen die Beziehungsrichtung, keine Reisen oder belegten Einflüsse.',
+    es: 'Las conexiones aparecen por fecha cuando existen ambos descubrimientos. El color indica el campo de la idea de origen; los anillos marcan su llegada. Las luces indican la dirección de la relación, no viajes ni influencias probadas.',
+  }[locale];
   const mapElement = useRef<SVGSVGElement>(null);
   const [uiScale, setUiScale] = useState(1);
   useEffect(() => {
@@ -167,6 +180,7 @@ export default function WorldMap({
               : 1,
       }));
 
+  const routeLanes = new Map<string, number>();
   const focusPoint = (x: number, y: number) =>
     setOffset({
       x: 360 - x * scale - (scale === 1 ? 0 : 360 - cx * scale),
@@ -201,8 +215,24 @@ export default function WorldMap({
           >
             +
           </button>
+          <button
+            className="map-info-button"
+            aria-label={infoTitle}
+            {...infoPreview.triggerProps(infoText, 'map-info')}
+            onClick={(event) =>
+              infoPreview.current
+                ? infoPreview.dismiss()
+                : infoPreview.open(infoText, 'map-info', event.currentTarget)
+            }
+          >
+            <span aria-hidden="true">i</span>
+          </button>
         </div>
       </div>
+      <PreviewCard preview={infoPreview} kind="map-info" forId="map-info">
+        <h3>{infoTitle}</h3>
+        <p className="node-preview-description">{infoText}</p>
+      </PreviewCard>
       <label className="map-view-control">
         {copy.mode}
         <select
@@ -235,24 +265,33 @@ export default function WorldMap({
       </label>
       {showConnections && (
         <button
-          className="map-view-control"
-          aria-pressed={animateConnections}
+          className="map-view-control map-animation-switch"
+          role="switch"
+          aria-checked={animateConnections}
           onClick={() => setAnimateConnections((value) => !value)}
         >
+          <span className="map-switch-track" aria-hidden="true">
+            <span />
+          </span>
           {
             { en: 'Animate chronology', de: 'Chronologie animieren', es: 'Animar cronología' }[
               locale
             ]
           }
+          <span className="map-switch-state" aria-hidden="true">
+            {animateConnections
+              ? { en: 'On', de: 'An', es: 'Sí' }[locale]
+              : { en: 'Off', de: 'Aus', es: 'No' }[locale]}
+          </span>
         </button>
       )}
       {showConnections && (
-        <p className="muted">
+        <p className="muted map-animation-hint">
           {
             {
-              en: 'Connections appear when both discoveries exist, in date order. Moving lights indicate relationship direction, not travel or proven influence. Turn off animation to see every connection.',
-              de: 'Verbindungen erscheinen in zeitlicher Reihenfolge, sobald beide Entdeckungen existieren. Lichtpunkte zeigen die Beziehungsrichtung, keine Reisen oder belegten Einflüsse. Ohne Animation sind alle Verbindungen sichtbar.',
-              es: 'Las conexiones aparecen por fecha cuando existen ambos descubrimientos. Las luces indican la dirección de la relación, no viajes ni influencias probadas. Desactive la animación para ver todas las conexiones.',
+              en: 'Turn off animation to see every connection.',
+              de: 'Ohne Animation sind alle Verbindungen sichtbar.',
+              es: 'Desactive la animación para ver todas las conexiones.',
             }[locale]
           }
         </p>
@@ -314,10 +353,17 @@ export default function WorldMap({
                 : undefined;
               const [x1, y1] = ca ? [ca.x, ca.y] : project(a.lon, a.lat),
                 [x2, y2] = cb ? [cb.x, cb.y] : project(b.lon, b.lat);
+              // Give shared routes their own lanes while keeping endpoints on their markers.
+              const routeKey = [[x1, y1].join(','), [x2, y2].join(',')].sort().join('|');
+              const lane = routeLanes.get(routeKey) ?? 0;
+              routeLanes.set(routeKey, lane + 1);
+              const distance = Math.hypot(x2 - x1, y2 - y1);
+              const direction = x1 < x2 || (x1 === x2 && y1 < y2) ? 1 : -1;
+              const separation = (lane * 10) / scale;
               const path =
-                Math.hypot(x2 - x1, y2 - y1) < 1
-                  ? `M${x1} ${y1} c${-35 / scale} ${-45 / scale} ${35 / scale} ${-45 / scale} 0 0`
-                  : `M${x1} ${y1} Q${(x1 + x2) / 2} ${Math.min(y1, y2) - Math.min(80, Math.abs(x1 - x2) * 0.3)} ${x2} ${y2}`;
+                distance < 1
+                  ? `M${x1} ${y1} c${-(35 / scale + separation)} ${-(45 / scale + separation)} ${35 / scale + separation} ${-(45 / scale + separation)} 0 0`
+                  : `M${x1} ${y1} Q${(x1 + x2) / 2 - ((direction * (y2 - y1)) / distance) * separation} ${Math.min(y1, y2) - Math.min(80, Math.abs(x1 - x2) * 0.3) + ((direction * (x2 - x1)) / distance) * separation} ${x2} ${y2}`;
               const source = lookup.get(edge.source)!;
               const target = lookup.get(edge.target)!;
               const previewProps = connectionPreview.triggerProps(
@@ -327,7 +373,8 @@ export default function WorldMap({
               return (
                 <g
                   key={edge.id}
-                  className="map-edge"
+                  className={`map-edge domain-${source.domain}`}
+                  data-domain={source.domain}
                   data-source={edge.source}
                   data-target={edge.target}
                 >
@@ -336,17 +383,33 @@ export default function WorldMap({
                     pathLength="1"
                     d={path}
                     fill="none"
-                    stroke="var(--accent)"
+                    stroke="var(--domain-ink)"
                     strokeWidth={1.2 / scale}
                     opacity=".65"
                   />
                   <circle
                     className="map-connection-head"
                     r={3 / scale}
-                    fill="var(--accent)"
+                    fill="var(--domain-ink)"
                     opacity="0"
                     pointerEvents="none"
                   />
+                  {[0, 1, 2].map((ring) => (
+                    <circle
+                      key={ring}
+                      className="map-arrival-ring"
+                      cx={x2}
+                      cy={y2}
+                      r={(12 * markerScale) / scale}
+                      data-radius={(12 * markerScale) / scale}
+                      fill="none"
+                      stroke="var(--domain-ink)"
+                      strokeWidth={1.4 / scale}
+                      opacity="0"
+                      pointerEvents="none"
+                      aria-hidden="true"
+                    />
+                  ))}
                   <path
                     {...previewProps}
                     data-edge-id={edge.id}
@@ -399,6 +462,7 @@ export default function WorldMap({
                       { '--reveal-delay': `${Math.min(index, 8) * 20}ms` } as React.CSSProperties
                     }
                     className={`map-pin domain-${entity.domain}`}
+                    data-entities={entity.id}
                     {...previewProps}
                     onFocus={(event) => {
                       previewProps.onFocus(event);
@@ -420,9 +484,10 @@ export default function WorldMap({
                   >
                     <circle r="11" fill="transparent" />
                     <circle
+                      className="map-node-border"
                       r={isActive ? 10 : 5}
                       fill={isActive ? 'var(--accent-soft)' : 'var(--surface)'}
-                      stroke="var(--domain-ink)"
+                      stroke="var(--neutral-secondary)"
                       strokeWidth={isActive ? 1.5 : 1}
                     />
                     <circle r={isActive ? 4 : 2} fill="var(--domain)" />
@@ -483,9 +548,10 @@ export default function WorldMap({
                 >
                   <circle r="13" fill="transparent" />
                   <circle
+                    className="map-node-border"
                     r="11"
                     fill={isActive ? 'var(--action-fill)' : 'var(--surface)'}
-                    stroke="var(--accent)"
+                    stroke="var(--neutral-secondary)"
                     strokeWidth={isActive ? 2.5 : 1.5}
                   />
                   <text

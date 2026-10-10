@@ -91,6 +91,7 @@ export function useOverlayPreview<T>() {
     id,
     current,
     closing,
+    open: show,
     dismiss,
     cardProps: {
       onPointerEnter(event: PointerEvent<Element>) {
