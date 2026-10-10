@@ -3,7 +3,7 @@ import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { FocusEvent, KeyboardEvent, PointerEvent, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import './node-preview.css';
-import { placeBubble, type Point } from '@/lib/overlay-placement';
+import { placeBubble, bubbleTail, type Point } from '@/lib/overlay-placement';
 // Keyboard focus keeps its preview while smooth scrolling crosses other hover targets.
 let keyboardAnchor: Element | null = null;
 let pointerPoint: Point | null = null;
@@ -293,11 +293,7 @@ export function PreviewCard<T>({
             ? bounds.right
             : bounds.left;
         const y = horizontal ? (position.side === 'top' ? bottom : top) : (top + bottom) / 2;
-        return [
-          horizontal
-            ? `M${x - 5},${y} Q${x},${(y + tip.y) / 2} ${tip.x},${tip.y} Q${x + 5},${(y + tip.y) / 2} ${x + 5},${y} Z`
-            : `M${x},${y - 5} Q${(x + tip.x) / 2},${y} ${tip.x},${tip.y} Q${(x + tip.x) / 2},${y + 5} ${x},${y + 5} Z`,
-        ];
+        return [bubbleTail({ x, y }, tip, position.side, 10)];
       });
       setTails((previous) =>
         JSON.stringify(previous) === JSON.stringify(paths) ? previous : paths,
@@ -326,13 +322,7 @@ export function PreviewCard<T>({
           {splitCards ? (
             tails.map((path, index) => <path key={index} data-cluster-tail="true" d={path} />)
           ) : (
-            <path
-              d={
-                position.horizontal
-                  ? `M${position.base.x - 8},${position.base.y} Q${position.base.x},${position.base.y + dy * 0.5} ${position.tip.x},${position.tip.y} Q${position.base.x + 8},${position.base.y + dy * 0.35} ${position.base.x + 8},${position.base.y} Z`
-                  : `M${position.base.x},${position.base.y - 8} Q${position.base.x + dx * 0.5},${position.base.y} ${position.tip.x},${position.tip.y} Q${position.base.x + dx * 0.35},${position.base.y + 8} ${position.base.x},${position.base.y + 8} Z`
-              }
-            />
+            <path d={bubbleTail(position.base, position.tip, position.side)} />
           )}
         </svg>
       )}

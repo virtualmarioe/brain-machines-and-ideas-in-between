@@ -66,3 +66,20 @@ export function placeBubble(
     horizontal,
   };
 }
+
+/** Open base avoids drawing a seam across the card; SVG still fills the wedge. */
+export function bubbleTail(base: Point, tip: Point, side: string, halfWidth = 12) {
+  const horizontal = side === 'top' || side === 'bottom';
+  const normal =
+    side === 'top'
+      ? { x: 0, y: 1 }
+      : side === 'bottom'
+        ? { x: 0, y: -1 }
+        : side === 'left'
+          ? { x: 1, y: 0 }
+          : { x: -1, y: 0 };
+  const bend = Math.min(48, Math.hypot(tip.x - base.x, tip.y - base.y) * 0.45);
+  const a = { x: base.x - (horizontal ? halfWidth : 0), y: base.y - (horizontal ? 0 : halfWidth) };
+  const b = { x: base.x + (horizontal ? halfWidth : 0), y: base.y + (horizontal ? 0 : halfWidth) };
+  return `M${a.x},${a.y} Q${a.x + normal.x * bend},${a.y + normal.y * bend} ${tip.x},${tip.y} Q${b.x + normal.x * bend},${b.y + normal.y * bend} ${b.x},${b.y}`;
+}

@@ -91,3 +91,84 @@
     display: none;
   }
 }
+
+/* Pale categorical tints share a 70% glass material in both themes. */
+.complexity-options button {
+  --level-color: var(--category-neuroscience);
+  --level-ink: var(--category-neuroscience-ink);
+  position: relative;
+  background: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--level-color) 14%, var(--elevated)) 70%,
+    transparent
+  );
+  -webkit-backdrop-filter: blur(8px) saturate(1.1);
+  backdrop-filter: blur(8px) saturate(1.1);
+  border-color: color-mix(in srgb, var(--level-color) 35%, var(--border));
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+.complexity-options button[data-level='connections'] {
+  --level-color: var(--category-computing);
+  --level-ink: var(--category-computing-ink);
+}
+.complexity-options button[data-level='expert'] {
+  --level-color: var(--category-learning);
+  --level-ink: var(--category-learning-ink);
+}
+.complexity-options button[aria-pressed='true'] {
+  outline: 2px solid var(--level-ink);
+  outline-offset: 2px;
+  box-shadow:
+    inset 0 3px 0 var(--level-ink),
+    0 5px 16px color-mix(in srgb, var(--level-color) 14%, transparent);
+}
+.complexity-current {
+  position: absolute;
+  top: 13px;
+  right: 16px;
+  color: var(--level-ink);
+  font-size: 0.75rem;
+  font-weight: 600;
+  visibility: hidden;
+}
+.complexity-options button[aria-pressed='true'] .complexity-current {
+  visibility: visible;
+}
+@media (hover: hover) {
+  .complexity-options button:not(:disabled):hover {
+    transform: translateY(-2px);
+    border-color: var(--level-ink);
+    box-shadow:
+      inset 0 3px 0 var(--level-ink),
+      0 8px 22px color-mix(in srgb, var(--level-color) 20%, transparent);
+  }
+}
+.complexity-options button:focus-visible {
+  outline: 3px solid var(--text);
+  outline-offset: 5px;
+}
+@media (max-width: 650px) {
+  .complexity-options button {
+    padding-top: 34px;
+  }
+  .complexity-current {
+    top: 9px;
+    right: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .complexity-options button {
+    transition: none;
+    transform: none !important;
+  }
+}
+@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+  .complexity-options button {
+    background: var(--elevated);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}

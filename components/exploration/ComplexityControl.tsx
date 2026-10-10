@@ -33,6 +33,9 @@ export default function ComplexityControl({
             onClick={() => onChange(value)}
             data-level={value}
           >
+            <span className="complexity-current" aria-hidden="true">
+              ✓ {{ en: 'Selected', de: 'Ausgewählt', es: 'Seleccionado' }[locale]}
+            </span>
             <span className="complexity-steps" aria-hidden="true">
               {[0, 1, 2].map((step) => (
                 <i key={step} data-filled={step <= index} />
