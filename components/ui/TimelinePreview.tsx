@@ -2,7 +2,7 @@
 import type { HistoricalEntity, Locale } from '@/types/history';
 import { entities, relationships } from '@/content';
 import { text, t, relationLabels } from '@/content/translations/ui';
-import { yearOf } from '@/lib/graph';
+import { yearOf, displayYear } from '@/lib/graph';
 import { temporalConnections, yearGap } from '@/lib/temporal';
 import { PreviewCard, useOverlayPreview } from './OverlayPreview';
 export type TimelineItem = {
@@ -73,7 +73,7 @@ export function TimelinePreview({
       <div className="node-preview-meta">
         <span>{awardYear ? t('nobel', locale) : copy.date[locale]}</span>
         <span>
-          {awardYear ?? `${yearOf(entity)}${multiple ? `–${yearOf(group.at(-1)!)}` : ''}`}
+          {awardYear ?? `${displayYear(entity)}${multiple ? `–${displayYear(group.at(-1)!)}` : ''}`}
         </span>
       </div>
       <h3>
@@ -88,7 +88,7 @@ export function TimelinePreview({
           <ul className="preview-list">
             {group.map((item) => (
               <li key={item.id}>
-                <strong>{yearOf(item)}</strong> · {item.title[locale]}
+                <strong>{displayYear(item)}</strong> · {item.title[locale]}
                 {awardYear && (
                   <>
                     <br />
@@ -108,7 +108,7 @@ export function TimelinePreview({
           {selected && selected.id !== entity.id && (
             <p className="node-preview-note">
               <strong>{copy.comparison[locale]}:</strong> {selected.title[locale]} (
-              {yearOf(selected)}) · {yearGap(yearOf(selected), yearOf(entity), locale)}
+              {displayYear(selected)}) · {yearGap(yearOf(selected), yearOf(entity), locale)}
             </p>
           )}
           {(['before', 'after'] as const).map((direction) => (
@@ -121,7 +121,7 @@ export function TimelinePreview({
                   {connections[direction].map(({ entity: other, relationship }) => (
                     <li key={relationship.id}>
                       <strong>
-                        {yearOf(other)} · {other.title[locale]}
+                        {displayYear(other)} · {other.title[locale]}
                       </strong>
                       <br />
                       {relationLabels[relationship.type][locale]} ·{' '}

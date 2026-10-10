@@ -4,6 +4,8 @@ import { temporalConnections, yearGap } from '../lib/temporal';
 
 describe('temporal preview context', () => {
   it('expresses calendar gaps in both directions and preserves contemporaneous dates', () => {
+    expect(yearGap(-1, 1, 'en')).toBe('1 calendar year later');
+    expect(yearGap(1, -1, 'en')).toBe('1 calendar year earlier');
     expect(yearGap(1962, 1980, 'en')).toBe('18 calendar years later');
     expect(yearGap(1980, 1962, 'en')).toBe('18 calendar years earlier');
     expect(yearGap(1980, 1980, 'en')).toBe('Same recorded year');

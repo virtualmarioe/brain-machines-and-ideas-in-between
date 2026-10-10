@@ -1,4 +1,5 @@
 'use client';
+import { displayYear } from '@/lib/graph';
 import { useEffect, useRef, useState } from 'react';
 import type { HistoricalEntity, HistoricalRelationship, Locale } from '@/types/history';
 import { chronological } from '@/lib/graph';
@@ -275,7 +276,7 @@ export default function IdeaGraph({
                   className={`graph-node domain-${node.domain} ${active ? 'selected' : ''} ${related.has(node.id) ? 'related' : ''}`}
                   role="button"
                   tabIndex={0}
-                  aria-label={`${node.title[locale]}, ${node.startDate.slice(0, 4)}, ${domains[node.domain][locale]}`}
+                  aria-label={`${node.title[locale]}, ${displayYear(node)}, ${domains[node.domain][locale]}`}
                   aria-pressed={active}
                   onFocus={(event) => {
                     previewProps.onFocus(event);
@@ -299,7 +300,7 @@ export default function IdeaGraph({
                   <circle r={active ? 12 : 8} className="node-dot" />
                   <circle r="3" fill="var(--surface)" />
                   <text y="-19" className="node-year">
-                    {node.startDate.slice(0, 4)}
+                    {displayYear(node)}
                   </text>
                   <text y="31" className="node-label">
                     {line1}
@@ -320,7 +321,7 @@ export default function IdeaGraph({
           id: node.id,
           ...nodes.get(node.id)!,
           domain: node.domain,
-          year: node.startDate.slice(0, 4),
+          year: displayYear(node),
         }))}
         edges={edges}
         bounds={bounds}

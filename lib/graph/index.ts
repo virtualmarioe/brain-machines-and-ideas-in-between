@@ -34,8 +34,16 @@ export function traverse(
   return visited;
 }
 export function yearOf(entity: HistoricalEntity) {
-  return Number(entity.startDate.slice(0, 4));
+  return Number(entity.startDate.match(/^-?\d+/)?.[0]);
 }
 export function chronological(entities: HistoricalEntity[]) {
   return [...entities].sort((a, b) => yearOf(a) - yearOf(b) || a.id.localeCompare(b.id));
+}
+
+export function displayYear(entity: HistoricalEntity) {
+  return formatYear(yearOf(entity));
+}
+
+export function formatYear(year: number) {
+  return year < 0 ? `${Math.abs(year)} BCE` : String(year);
 }

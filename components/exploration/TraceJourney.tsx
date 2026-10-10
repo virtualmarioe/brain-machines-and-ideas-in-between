@@ -2,7 +2,7 @@
 import { entities, relationships } from '@/content';
 import { domains, relationLabels, t } from '@/content/translations/ui';
 import { journeyText as copy } from '@/content/translations/journeys';
-import { yearOf } from '@/lib/graph';
+import { yearOf, displayYear } from '@/lib/graph';
 import { yearGap } from '@/lib/temporal';
 import type { HistoricalEntity, HistoricalRelationship, Locale } from '@/types/history';
 export default function TraceJourney({
@@ -51,7 +51,7 @@ export default function TraceJourney({
       </nav>
       <p className="trace-contribution">
         <strong>
-          {copy.contribution[locale]} · {yearOf(entity)}
+          {copy.contribution[locale]} · {displayYear(entity)}
         </strong>
         <br />
         {entity.shortDescription[locale]}
@@ -70,7 +70,7 @@ export default function TraceJourney({
                 return (
                   <article className={`trace-branch domain-${other.domain}`} key={edge.id}>
                     <div className="branch-meta">
-                      {yearOf(other)} · {domains[other.domain][locale]} ·{' '}
+                      {displayYear(other)} · {domains[other.domain][locale]} ·{' '}
                       {yearGap(yearOf(entity), yearOf(other), locale)}
                     </div>
                     <button className="branch-title" onClick={() => onSelect(other.id)}>

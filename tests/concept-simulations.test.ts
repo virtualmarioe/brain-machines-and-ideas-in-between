@@ -107,7 +107,7 @@ describe('published demonstration coverage', () => {
     expect(entities.filter((e) => e.demo)).toHaveLength(33);
     expect(
       entities
-        .filter((e) => !e.demo)
+        .filter((e) => !e.demo && !e.research)
         .map((e) => e.id)
         .sort(),
     ).toEqual(['ai-winters', 'dartmouth', 'douglas-hofstadter', 'godel-escher-bach']);

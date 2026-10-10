@@ -1,10 +1,18 @@
 'use client';
+import ComplexityControl from './exploration/ComplexityControl';
+import {
+  atComplexity,
+  minimumComplexity,
+  complexityLevels,
+  levelStart,
+  complexityCopy,
+} from '@/lib/complexity';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { entities, relationships, references } from '@/content';
 import { domains, relationLabels, t } from '@/content/translations/ui';
-import { chronological, traverse, yearOf } from '@/lib/graph';
+import { chronological, traverse, yearOf, displayYear, formatYear } from '@/lib/graph';
 import { searchEntities } from '@/lib/search';
 import { traceTargets, extendTrail } from '@/lib/traces';
 import {
@@ -16,7 +24,7 @@ import {
 import type { Domain, HistoricalEntity, HistoricalRelationship, Locale } from '@/types/history';
 import IdeaGraph from './graph/IdeaGraph';
 import WorldMap from './map/WorldMap';
-import Timeline, { MAX_YEAR, MIN_YEAR } from './timeline/Timeline';
+import Timeline, { MAX_YEAR } from './timeline/Timeline';
 import EntityPanel from './content/EntityPanel';
 import ReferenceList from './content/ReferenceList';
 import Modal from './ui/Modal';
@@ -53,12 +61,17 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
   const story = storyIds.filter((id) => entities.some((e) => e.id === id));
   const chapter = Math.max(0, story.indexOf(state.selected));
   useEffect(() => {
-    const onPop = () => {
+    const onPop = (event: PopStateEvent) => {
       const parts = window.location.pathname.split('/');
       const isTrace = parts[2] === 'trace';
       const route = entities.find(
         (e) => e.slug === (isTrace ? traceTargets[parts[3]] || parts[3] : parts[3]),
       );
+      // Atlas entries share one interactive view. Handle their restoration before
+      // the router can remount a stale route and overwrite a subsequent selection.
+      const atlasPath = parts.length === 2 || Boolean(route);
+      if (!event.state?.atlasNavigation || !atlasPath) return;
+      event.stopImmediatePropagation();
       setState(
         parseExploration(
           new URLSearchParams(
@@ -72,8 +85,13 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
         ),
       );
     };
-    window.addEventListener('popstate', onPop);
-    return () => window.removeEventListener('popstate', onPop);
+    window.history.replaceState(
+      { ...window.history.state, atlasNavigation: true },
+      '',
+      window.location.href,
+    );
+    window.addEventListener('popstate', onPop, true);
+    return () => window.removeEventListener('popstate', onPop, true);
   }, []);
   useEffect(() => {
     document.documentElement.lang = locale;
@@ -83,6 +101,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
     if (state.mode === 'story' && story.includes(state.selected)) next.story = state.selected;
     const matching = searchEntities(entities, next.query, next.locale, references).filter(
       (e) =>
+        atComplexity(e, next.level) &&
         (next.domain === 'all' || e.domain === next.domain) &&
         (next.category === 'all' || e.type === next.category) &&
         yearOf(e) >= next.from &&
@@ -94,8 +113,8 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
     if (next.mode === 'story') next.story = next.selected;
     setState(next);
     const url = explorationUrl(next, entities);
-    if (push) window.history.pushState(null, '', url);
-    else window.history.replaceState(null, '', url);
+    if (push) window.history.pushState({ atlasNavigation: true }, '', url);
+    else window.history.replaceState({ atlasNavigation: true }, '', url);
   }
   function select(id: string) {
     const entity = entities.find((e) => e.id === id);
@@ -103,6 +122,13 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
     update(
       {
         selected: id,
+        level:
+          complexityLevels[
+            Math.max(
+              complexityLevels.indexOf(state.level),
+              complexityLevels.indexOf(minimumComplexity(entity)),
+            )
+          ],
         ...(state.mode === 'trace'
           ? {
               trail: extendTrail(
@@ -138,7 +164,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
               category: 'all',
               domain: 'all',
               query: '',
-              from: MIN_YEAR,
+              from: levelStart(state.level),
               to: MAX_YEAR,
               scope: 'all',
             }
@@ -155,12 +181,13 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
     () =>
       searchEntities(entities, state.query, locale, references).filter(
         (e) =>
+          atComplexity(e, state.level) &&
           (state.domain === 'all' || e.domain === state.domain) &&
           (state.category === 'all' || e.type === state.category) &&
           yearOf(e) >= state.from &&
           yearOf(e) <= state.to,
       ),
-    [state.query, state.domain, state.category, state.from, state.to, locale],
+    [state.level, state.query, state.domain, state.category, state.from, state.to, locale],
   );
   const selected = filtered.find((e) => e.id === state.selected) ?? filtered[0];
   usePageMetadata(locale, selected, state.mode);
@@ -216,7 +243,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
       category: 'all',
       domain: 'all',
       query: '',
-      from: MIN_YEAR,
+      from: levelStart(state.level),
       to: MAX_YEAR,
       scope: 'all',
     });
@@ -247,7 +274,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
               category: 'all',
               domain: 'all',
               query: '',
-              from: MIN_YEAR,
+              from: levelStart(state.level),
               to: MAX_YEAR,
               scope: 'all',
             });
@@ -325,7 +352,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
                 category: 'all',
                 domain: 'all',
                 query: '',
-                from: MIN_YEAR,
+                from: levelStart(state.level),
                 to: MAX_YEAR,
               })
             }
@@ -334,6 +361,26 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
             <Icon name="arrow" />
           </button>
         </section>
+        <ComplexityControl
+          level={state.level}
+          locale={locale}
+          onChange={(level) =>
+            update(
+              {
+                level,
+                from: levelStart(level),
+                to: MAX_YEAR,
+                scope: 'all',
+                query: '',
+                domain: 'all',
+                category: 'all',
+                mode: 'explore',
+                trail: [],
+              },
+              true,
+            )
+          }
+        />
         <div className="atlas-toolbar">
           <label className="search-field">
             <Icon name="search" />
@@ -445,7 +492,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
         {selected && (
           <section className="journey-context" aria-label={journey.orientation[locale]}>
             <span>
-              {t(state.mode, locale)} / {yearOf(selected)}
+              {t(state.mode, locale)} / {displayYear(selected)}
             </span>
             <strong>{selected.title[locale]}</strong>
             {state.mode !== 'trace' && (
@@ -483,7 +530,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
         {(state.query ||
           state.domain !== 'all' ||
           state.category !== 'all' ||
-          state.from !== MIN_YEAR ||
+          state.from !== levelStart(state.level) ||
           state.to !== MAX_YEAR) && (
           <nav className="filter-summary" aria-label={journey.filters[locale]}>
             <strong>{journey.filters[locale]}</strong>
@@ -503,9 +550,9 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
             {state.category !== 'all' && (
               <button onClick={() => update({ category: 'all' })}>{t('persons', locale)} ×</button>
             )}
-            {(state.from !== MIN_YEAR || state.to !== MAX_YEAR) && (
-              <button onClick={() => update({ from: MIN_YEAR, to: MAX_YEAR })}>
-                {state.from}–{state.to} ×
+            {(state.from !== levelStart(state.level) || state.to !== MAX_YEAR) && (
+              <button onClick={() => update({ from: levelStart(state.level), to: MAX_YEAR })}>
+                {formatYear(state.from)}–{formatYear(state.to)} ×
               </button>
             )}
             {filtered.length > 0 && <button onClick={resetFilters}>{journey.clear[locale]}</button>}
@@ -548,7 +595,12 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
               >
                 <option value="all">{t('allDiscoveries', locale)}</option>
                 <option value="person">
-                  {t('persons', locale)} ({entities.filter((e) => e.type === 'person').length})
+                  {t('persons', locale)} (
+                  {
+                    entities.filter((e) => e.type === 'person' && atComplexity(e, state.level))
+                      .length
+                  }
+                  )
                 </option>
               </select>
               {state.category === 'person' && <p>{t('personDates', locale)}</p>}
@@ -562,7 +614,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
               >
                 <span className="all-dot">◉</span>
                 {t('all', locale)}
-                <small>{entities.length}</small>
+                <small>{entities.filter((e) => atComplexity(e, state.level)).length}</small>
               </button>
               {Object.entries(domains).map(([domain, label]) => (
                 <button
@@ -573,7 +625,12 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
                 >
                   <i />
                   {label[locale]}
-                  <small>{entities.filter((e) => e.domain === domain).length}</small>
+                  <small>
+                    {
+                      entities.filter((e) => e.domain === domain && atComplexity(e, state.level))
+                        .length
+                    }
+                  </small>
                 </button>
               ))}
             </div>
@@ -587,7 +644,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
                     aria-pressed={selected?.id === entity.id}
                     onClick={() => select(entity.id)}
                   >
-                    <span className="discovery-date">{yearOf(entity)}</span>
+                    <span className="discovery-date">{displayYear(entity)}</span>
                     <span>{entity.title[locale]}</span>
                     <i />
                   </button>
@@ -671,6 +728,15 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
               <Icon name="search" size={32} />
               <h2>{t('noResults', locale)}</h2>
               <p>{t('emptyTimeline', locale)}</p>
+              {state.level !== 'expert' && (
+                <button
+                  className="primary-button"
+                  onClick={() => update({ level: 'expert', from: -400, to: MAX_YEAR }, true)}
+                >
+                  {complexityCopy[locale].names[2]} · {entities.length}{' '}
+                  {complexityCopy[locale].nodes}
+                </button>
+              )}
               <button className="primary-button" onClick={resetFilters}>
                 {t('clear', locale)}
               </button>
@@ -680,6 +746,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
         <Timeline
           entities={searchEntities(entities, state.query, locale, references).filter(
             (e) =>
+              atComplexity(e, state.level) &&
               (state.domain === 'all' || e.domain === state.domain) &&
               (state.category === 'all' || e.type === state.category),
           )}
@@ -703,7 +770,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
         <Link href={`/${locale}/about`}>
           {t('about', locale)} <Icon name="external" size={12} />
         </Link>
-        <span>1873 → 2026</span>
+        <span>350 BCE → 2026</span>
       </footer>
       {demo && (
         <Modal

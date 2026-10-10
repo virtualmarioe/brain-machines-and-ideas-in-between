@@ -1,12 +1,12 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import type { HistoricalEntity, Locale } from '@/types/history';
-import { chronological, yearOf } from '@/lib/graph';
+import { chronological, yearOf, displayYear, formatYear } from '@/lib/graph';
 import { t } from '@/content/translations/ui';
 import { Icon } from '@/components/ui/Icon';
 import Modal from '@/components/ui/Modal';
 import { TimelinePreview, useTimelinePreview } from '@/components/ui/TimelinePreview';
-export const MIN_YEAR = 1870,
+export const MIN_YEAR = -400,
   MAX_YEAR = 2026;
 export type YearRange = [number, number];
 export function clampRange(start: number, end: number): YearRange {
@@ -51,11 +51,12 @@ export default function Timeline({
   const [from, to] = range;
   useEffect(() => dismissPreview(), [entities, selected, from, to, dismissPreview]);
   const span = range[1] - range[0];
-  const step = span > 100 ? 20 : span > 30 ? 10 : span > 12 ? 5 : 1;
+  const step =
+    span > 1000 ? 500 : span > 300 ? 100 : span > 100 ? 20 : span > 30 ? 10 : span > 12 ? 5 : 1;
   const ticks = Array.from(
     { length: Math.floor(span / step) + 2 },
     (_, i) => Math.ceil(range[0] / step) * step + i * step,
-  ).filter((y) => y <= range[1]);
+  ).filter((y) => y !== 0 && y <= range[1]);
   const track = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(720);
   const [cluster, setCluster] = useState<HistoricalEntity[] | null>(null);
@@ -75,7 +76,7 @@ export default function Timeline({
         <span className="eyebrow">03 / {t('timeline', locale)}</span>
         <div className="timeline-controls">
           <span className="range-value">
-            {range[0]} <span>→</span> {range[1]}
+            {formatYear(range[0])} <span>→</span> {formatYear(range[1])}
           </span>
           <button
             aria-label={t('panLeft', locale)}
@@ -103,7 +104,7 @@ export default function Timeline({
           </button>
           <button
             aria-label={`${t('timeline', locale)}: ${t('resetView', locale)}`}
-            onClick={() => onRange([MIN_YEAR, MAX_YEAR])}
+            onClick={() => onRange([Math.min(1650, ...entities.map(yearOf)), MAX_YEAR])}
           >
             <Icon name="reset" size={14} />
           </button>
@@ -117,7 +118,7 @@ export default function Timeline({
             className="time-tick"
             style={{ left: `${((year - range[0]) / span) * 100}%` }}
           >
-            <span>{year}</span>
+            <span>{formatYear(year)}</span>
           </div>
         ))}
         {groups.map((group, index) => {
@@ -125,8 +126,8 @@ export default function Timeline({
           const active = group.entities.some((e) => e.id === selected);
           const multiple = group.entities.length > 1;
           const label = multiple
-            ? `${t('cluster', locale)}: ${group.entities.map((e) => `${yearOf(e)} · ${e.title[locale]}`).join('; ')}`
-            : `${yearOf(entity)} · ${entity.title[locale]}`;
+            ? `${t('cluster', locale)}: ${group.entities.map((e) => `${displayYear(e)} · ${e.title[locale]}`).join('; ')}`
+            : `${displayYear(entity)} · ${entity.title[locale]}`;
           return (
             <button
               key={entity.id}
@@ -212,7 +213,7 @@ export default function Timeline({
                   setCluster(null);
                 }}
               >
-                <span>{yearOf(entity)}</span>
+                <span>{displayYear(entity)}</span>
                 {entity.title[locale]}
                 <Icon name="arrow" size={16} />
               </button>

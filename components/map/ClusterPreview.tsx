@@ -1,4 +1,5 @@
 'use client';
+import { displayYear } from '@/lib/graph';
 import { PreviewCard, useOverlayPreview } from '@/components/ui/OverlayPreview';
 import { domains } from '@/content/translations/ui';
 import { describeMapCluster, type MapCluster } from '@/lib/map-pins';
@@ -37,7 +38,7 @@ export function ClusterPreview({
           className={`glass-surface domain-${entity.domain}`}
         >
           <div className="node-preview-meta">
-            <span>{entity.startDate.slice(0, 4)}</span>
+            <span>{displayYear(entity)}</span>
             <span>{domains[entity.domain][locale]}</span>
           </div>
           <h3>{entity.title[locale]}</h3>

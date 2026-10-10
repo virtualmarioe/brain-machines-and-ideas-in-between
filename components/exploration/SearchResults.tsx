@@ -2,7 +2,7 @@
 import { relationships } from '@/content';
 import { domains } from '@/content/translations/ui';
 import { journeyText as copy } from '@/content/translations/journeys';
-import { yearOf } from '@/lib/graph';
+import { displayYear } from '@/lib/graph';
 import type { HistoricalEntity, Locale } from '@/types/history';
 export default function SearchResults({
   results,
@@ -40,7 +40,7 @@ export default function SearchResults({
               {group.items.slice(0, 3).map((entity) => (
                 <article key={entity.id} className={`search-result domain-${entity.domain}`}>
                   <p className="branch-meta">
-                    {yearOf(entity)} · {domains[entity.domain][locale]} ·{' '}
+                    {displayYear(entity)} · {domains[entity.domain][locale]} ·{' '}
                     {
                       relationships.filter((r) => r.source === entity.id || r.target === entity.id)
                         .length

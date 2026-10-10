@@ -1,4 +1,7 @@
 'use client';
+import Link from 'next/link';
+import { complexityCopy } from '@/lib/complexity';
+import { displayYear } from '@/lib/graph';
 import { useState } from 'react';
 import { entities, relationships } from '@/content';
 import { domains, relationLabels, t, typeLabels } from '@/content/translations/ui';
@@ -37,7 +40,7 @@ export default function EntityPanel({
           <span>{typeLabels[entity.type][locale]}</span>
         </div>
         <div className="entity-year">
-          {entity.startDate.slice(0, 4)}
+          {displayYear(entity)}
           <span className="year-rule" />
         </div>
         <h2>{entity.title[locale]}</h2>
@@ -46,6 +49,15 @@ export default function EntityPanel({
           {entity.locations.map((l) => l.name).join(' · ')}
         </p>
       </div>
+      {entity.research && (
+        <div className="research-notice">
+          <strong>{complexityCopy[locale].notice}</strong>
+          <p>{entity.research.dateLabel}</p>
+          <Link href={`/${locale}/research#${entity.research.catalogId}`}>
+            {complexityCopy[locale].research} ↗
+          </Link>
+        </div>
+      )}
       <div className="depth-tabs" role="tablist" aria-label={t('understand', locale)}>
         {(['why', 'understand', 'deeper'] as const).map((tab) => (
           <button

@@ -1,4 +1,5 @@
 'use client';
+import { displayYear } from '@/lib/graph';
 import { PreviewCard, useOverlayPreview } from './OverlayPreview';
 import { domains, t } from '@/content/translations/ui';
 import type { HistoricalEntity, Locale, LocationReference } from '@/types/history';
@@ -75,7 +76,7 @@ export function NodePreview({
       kind={location ? 'map' : 'graph'}
     >
       <div className="node-preview-meta">
-        <span>{entity.startDate.slice(0, 4)}</span>
+        <span>{displayYear(entity)}</span>
         <span>{domains[entity.domain][locale]}</span>
       </div>
       <h3>{entity.title[locale]}</h3>

@@ -13,7 +13,8 @@ async function openAtlas(page: Page, path = '/en') {
 async function openVisualizations(page: Page) {
   const frames = page.locator('.visualization-frame');
   for (const frame of await frames.all()) {
-    if ((await frame.getAttribute('open')) === null) await frame.locator(':scope > summary').click();
+    if ((await frame.getAttribute('open')) === null)
+      await frame.locator(':scope > summary').click();
   }
 }
 
@@ -197,7 +198,7 @@ test('search, disciplines and time range filter the shared visualizations', asyn
   await page
     .getByRole('button', { name: 'Navigate through time: Reset view', exact: true })
     .click();
-  await expect(page.getByRole('slider', { name: 'From year', exact: true })).toHaveValue('1870');
+  await expect(page.getByRole('slider', { name: 'From year', exact: true })).toHaveValue('1650');
   await expect(page.getByRole('slider', { name: 'To year', exact: true })).toHaveValue('2026');
 });
 
@@ -248,7 +249,7 @@ test('the brand returns filtered trace state to full exploration in one update',
   await expect(page.locator('.graph-node')).toHaveCount(1);
   await page.getByRole('link', { name: /^The Intelligence Atlas/ }).click();
   await expect(page.getByRole('searchbox', { name: 'Search the atlas' })).toHaveValue('');
-  await expect(page.getByRole('slider', { name: 'From year', exact: true })).toHaveValue('1870');
+  await expect(page.getByRole('slider', { name: 'From year', exact: true })).toHaveValue('1650');
   await expect(page.getByRole('slider', { name: 'To year', exact: true })).toHaveValue('2026');
   await expect(page.locator('.trace-banner')).toHaveCount(0);
   expect(Number.parseInt(await page.locator('.result-count').innerText(), 10)).toBeGreaterThan(5);

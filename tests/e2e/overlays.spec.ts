@@ -6,7 +6,8 @@ async function views(page: Page) {
   await page.goto('/en/architecture/neocognitron');
   await expect(page.locator('.entity-panel')).toBeVisible();
   for (const frame of await page.locator('.visualization-frame').all()) {
-    if ((await frame.getAttribute('open')) === null) await frame.locator(':scope > summary').click();
+    if ((await frame.getAttribute('open')) === null)
+      await frame.locator(':scope > summary').click();
   }
 }
 for (const theme of ['light', 'dark']) {
@@ -163,6 +164,7 @@ test('People category persists and resets when selecting a non-person connection
   page,
 }) => {
   await views(page);
+  await page.getByRole('button', { name: /2\. Connections/ }).click();
   await page.getByLabel('Node category', { exact: true }).selectOption('person');
   await expect(page.locator('.graph-node')).toHaveCount(3);
   await expect(page.locator('.entity-panel')).toHaveAttribute('data-entity-id', 'cajal');

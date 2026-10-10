@@ -8,6 +8,6 @@ if (errors.length) {
   process.exitCode = 1;
 } else {
   console.log(
-    `Content valid: ${entities.length} entities, ${relationships.length} relationships, ${references.length} references, ${claims.length} claims; all three locales complete.`,
+    `Content valid: ${entities.length} entities, ${relationships.length} relationships, ${references.length} references, ${claims.length} claims; all locale fields populated (${entities.filter((entity) => entity.research).length} research records retain their labeled English original).`,
   );
 }

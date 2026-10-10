@@ -1,4 +1,5 @@
 'use client';
+import { displayYear } from '@/lib/graph';
 import { useEffect, useRef, useState } from 'react';
 import { landPath, project } from '@/lib/map';
 import type { HistoricalEntity, HistoricalRelationship, Locale } from '@/types/history';
@@ -496,7 +497,7 @@ export default function WorldMap({
             {detailEntities.map((entity) => (
               <li key={entity.id}>
                 <button aria-pressed={entity.id === selected} onClick={() => onSelect(entity.id)}>
-                  <span>{entity.startDate.slice(0, 4)}</span> {entity.title[locale]}
+                  <span>{displayYear(entity)}</span> {entity.title[locale]}
                 </button>
               </li>
             ))}

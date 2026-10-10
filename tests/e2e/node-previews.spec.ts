@@ -4,7 +4,8 @@ async function openViews(page: Page, path: string) {
   await page.goto(path);
   await expect(page.locator('.entity-panel')).toBeVisible();
   for (const frame of await page.locator('.visualization-frame').all()) {
-    if ((await frame.getAttribute('open')) === null) await frame.locator(':scope > summary').click();
+    if ((await frame.getAttribute('open')) === null)
+      await frame.locator(':scope > summary').click();
   }
 }
 
@@ -59,7 +60,7 @@ test('map cards include localized geography and accurate longitude direction', a
 });
 
 test('co-located London discoveries are reachable through their city list', async ({ page }) => {
-  await openViews(page, '/en?q=DeepMind&scope=all&context=1');
+  await openViews(page, '/en?level=connections&q=DeepMind&scope=all&context=1');
   const selector = page.locator('.map-city-details select');
   await selector.selectOption('london, united kingdom');
   const buttons = page.locator('div.map-city-details li button');

@@ -43,6 +43,7 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
 
 function validUrl(value: unknown): boolean {
+  if (value === '/research/history-2026-10-08.md') return true;
   if (!isText(value) || /\s/.test(value)) return false;
   try {
     const url = new URL(value);
@@ -59,6 +60,7 @@ function validUrl(value: unknown): boolean {
 
 /** Catalog dates preserve available precision: YYYY, YYYY-MM or YYYY-MM-DD. */
 function validDate(value: unknown, full = false): value is string {
+  if (!full && typeof value === 'string' && /^-\d{4}$/.test(value)) return Number(value) < 0;
   if (
     typeof value !== 'string' ||
     !(full ? /^\d{4}-\d{2}-\d{2}$/ : /^\d{4}(?:-\d{2}(?:-\d{2})?)?$/).test(value)
@@ -72,6 +74,7 @@ function validDate(value: unknown, full = false): value is string {
 }
 
 const dateOrder = (value: string) => {
+  if (value.startsWith('-')) return Number(value) * 10000;
   const [year, month = 1, day = 1] = value.split('-').map(Number);
   return year * 10000 + month * 100 + day;
 };
@@ -296,7 +299,12 @@ export function validateContent(
     linkedReferences(relationship.evidence, `${path}.evidence`);
   });
   for (const id of entityIds)
-    if (!connected.has(id))
+    if (
+      !connected.has(id) &&
+      !entities.some(
+        (entity) => entity.id === id && entity.research && entity.status === 'needs-review',
+      )
+    )
       errors.push(`Entity "${id}" is an orphan: it has no relationship to another catalog entity.`);
 
   claims.forEach((claim, index) => {

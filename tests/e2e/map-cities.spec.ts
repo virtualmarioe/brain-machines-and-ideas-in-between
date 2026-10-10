@@ -7,7 +7,7 @@ test('city clusters expose every discovery and retain synchronized selection', a
   page,
   isMobile,
 }, info) => {
-  await page.goto('/en/architecture/neocognitron');
+  await page.goto('/en/architecture/neocognitron?level=connections');
   const frame = page.locator('#map-view');
   if (isMobile) await expect(frame).toHaveJSProperty('open', false);
   if ((await frame.getAttribute('open')) === null) await frame.locator(':scope > summary').click();
@@ -49,7 +49,7 @@ test('city clusters expose every discovery and retain synchronized selection', a
 });
 
 test('two-line city labels never overlap in either map mode', async ({ page, isMobile }) => {
-  await page.goto('/en/architecture/neocognitron');
+  await page.goto('/en/architecture/neocognitron?level=connections');
   const frame = page.locator('#map-view');
   if (isMobile) await expect(frame).toHaveJSProperty('open', false);
   if ((await frame.getAttribute('open')) === null) await frame.locator(':scope > summary').click();
@@ -83,7 +83,7 @@ test('geographic anchors stay fixed and marker diameter grows with zoom', async 
   page,
   isMobile,
 }, info) => {
-  await page.goto('/en/architecture/neocognitron');
+  await page.goto('/en/architecture/neocognitron?level=connections');
   const frame = page.locator('#map-view');
   if (isMobile) await expect(frame).toHaveJSProperty('open', false);
   if ((await frame.getAttribute('open')) === null) await frame.locator(':scope > summary').click();

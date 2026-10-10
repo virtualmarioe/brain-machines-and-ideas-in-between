@@ -5,7 +5,7 @@ test('clusters cover all ideas, split on zoom, and expose separate anchored card
   page,
   isMobile,
 }, info) => {
-  await page.goto('/en/architecture/neocognitron');
+  await page.goto('/en/architecture/neocognitron?level=connections');
   const frame = page.locator('#map-view');
   if (isMobile) await expect(frame).toHaveJSProperty('open', false);
   if ((await frame.getAttribute('open')) === null) await frame.locator(':scope > summary').click();

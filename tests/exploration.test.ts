@@ -10,12 +10,13 @@ describe('exploration URL and time state', () => {
   it('defaults to the visual-neuroscience entry and the full historical range', () => {
     expect(parse()).toEqual({
       selected: 'hubel-wiesel',
+      level: 'essentials',
       locale: 'en',
       mode: 'explore',
       query: '',
       domain: 'all',
       category: 'all',
-      from: 1870,
+      from: 1650,
       to: 2026,
       scope: 'all',
       nobel: false,
@@ -41,13 +42,13 @@ describe('exploration URL and time state', () => {
   it.each([
     'from=NaN&to=2000',
     'from=1950&to=Infinity',
-    'from=1869&to=2000',
+    'from=-401&to=2000',
     'from=2000&to=2027',
     'from=2000&to=1990',
     'from=2000&to=2003',
     'from=&to=2000',
   ])('rejects invalid or too narrow time ranges: %s', (query) => {
-    expect(parse(query)).toMatchObject({ from: 1870, to: 2026 });
+    expect(parse(query)).toMatchObject({ from: 1650, to: 2026 });
   });
   it('accepts the minimum four-year interval and rounds valid decimal endpoints', () => {
     expect(parse('from=1900&to=1904')).toMatchObject({ from: 1900, to: 1904 });
@@ -145,16 +146,16 @@ describe('responsive timeline clustering', () => {
   });
   it('leaves at least 28px between distinct group centers for the full catalog', () => {
     for (const width of [280, 390, 720, 1300]) {
-      const groups = clusterTimeline(entities, [1870, 2026], width);
+      const groups = clusterTimeline(entities, [-400, 2026], width);
       for (let i = 1; i < groups.length; i += 1)
         expect(groups[i].x - groups[i - 1].x).toBeGreaterThanOrEqual(28);
       expect(groups.flatMap((group) => group.entities)).toHaveLength(entities.length);
     }
   });
   it('clamps panning and zooming to the supported range with a four-year minimum', () => {
-    expect(clampRange(1800, 1900)).toEqual([1870, 1970]);
+    expect(clampRange(-500, -400)).toEqual([-400, -300]);
     expect(clampRange(2000, 2100)).toEqual([1926, 2026]);
     expect(clampRange(1900, 1901)).toEqual([1900, 1904]);
-    expect(clampRange(1800, 2200)).toEqual([1870, 2026]);
+    expect(clampRange(-500, 2200)).toEqual([-400, 2026]);
   });
 });

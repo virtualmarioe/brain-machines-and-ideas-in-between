@@ -2,7 +2,7 @@
 import type { HistoricalEntity, HistoricalRelationship, Locale } from '@/types/history';
 import { referenceById } from '@/content';
 import { relationLabels, t, text } from '@/content/translations/ui';
-import { yearOf } from '@/lib/graph';
+import { yearOf, displayYear } from '@/lib/graph';
 import { yearGap } from '@/lib/temporal';
 import { PreviewCard, useOverlayPreview } from './OverlayPreview';
 
@@ -49,7 +49,7 @@ export function ConnectionPreview({
         <div>
           <dt>{copy.interval[locale]}</dt>
           <dd>
-            {yearOf(source)} → {yearOf(target)}
+            {displayYear(source)} → {displayYear(target)}
             <br />
             {yearGap(yearOf(source), yearOf(target), locale)}
           </dd>

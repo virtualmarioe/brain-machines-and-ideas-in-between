@@ -118,6 +118,7 @@ export interface HistoricalEntity {
   references: string[];
   tags: string[];
   status: 'verified' | 'needs-review' | 'historically-disputed';
+  research?: { originalLanguage: 'en'; dateLabel: string; catalogId: string };
   editorialNotes?: LocalizedText;
   media?: MediaAsset[];
   demo?: DemoKind;

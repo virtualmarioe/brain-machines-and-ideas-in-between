@@ -1,0 +1,2737 @@
+{
+  "concepts": [
+    [
+      "c_aristotelian_syllogistic",
+      "Aristotelian syllogistic",
+      "c. 4th c. BCE",
+      "Logic / formal system",
+      "Aristotle",
+      "First sustained formal systematization of deductively valid argument; conceptual ancestor of formal reasoning.",
+      "5/4/2/4/5/1"
+    ],
+    [
+      "c_stoic_propositional_logic",
+      "Stoic propositional logic",
+      "c. 3rd c. BCE",
+      "Logic / formal system",
+      "Chrysippus and Stoic logicians",
+      "Early logic of whole propositions and conditional inference; relation to modern propositional logic should be marked conceptual.",
+      "4/3/1/3/4/1"
+    ],
+    [
+      "c_llull_combinatorial_reasoning",
+      "Llullian combinatorial reasoning",
+      "c. 1274–1308",
+      "Logic / method",
+      "Ramon Llull",
+      "Uses symbolic primitives and systematic combinations in an attempt to mechanize reasoning. SEP treats the *Art* as a combinatorial logical system rather than a modern computer.",
+      "4/3/1/5/3/1"
+    ],
+    [
+      "c_calculus_ratiocinator",
+      "Universal characteristic / calculus ratiocinator",
+      "1666 onward",
+      "Logic; philosophy / research program",
+      "G. W. Leibniz",
+      "Proposed universal representation plus calculational reasoning; major ancestor of formal symbolic AI.",
+      "5/5/3/5/5/2"
+    ],
+    [
+      "c_probability_theory",
+      "Mathematical probability",
+      "1654–1657",
+      "Probability / framework",
+      "Pascal, Fermat, Huygens",
+      "Quantitative representation of uncertainty; prerequisite of statistical and probabilistic AI.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_bayesian_inference",
+      "Bayesian inference",
+      "1763; generalized later by Laplace",
+      "Probability / inference framework",
+      "Bayes, Price, Laplace",
+      "Updating uncertainty about hypotheses from evidence. Bayes's essay appeared posthumously through Price.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_least_squares",
+      "Least-squares estimation",
+      "1805",
+      "Statistics; optimization / principle",
+      "Legendre, Gauss",
+      "Connects fitting noisy data to optimization; major ancestor of regression and loss minimization.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_analytical_engine",
+      "Analytical Engine",
+      "1830s",
+      "Computation / architecture",
+      "Charles Babbage",
+      "General programmable mechanical-computation architecture.",
+      "5/5/2/5/5/4"
+    ],
+    [
+      "c_lovelace_algorithmic_programming",
+      "Programming and symbolic machine manipulation",
+      "1843",
+      "Computation / conceptual demonstration",
+      "Ada Lovelace, Babbage",
+      "Algorithm specification for a general machine plus explicit reflection on manipulation beyond arithmetic.",
+      "5/5/3/5/4/3"
+    ],
+    [
+      "c_boolean_algebra",
+      "Boolean algebra",
+      "1847; 1854",
+      "Logic; mathematics / framework",
+      "George Boole",
+      "Algebraizes logical operations; later becomes the mathematical language of switching circuits. Boole's 1854 *Laws of Thought* is the canonical primary source.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_natural_selection",
+      "Natural selection",
+      "1858–1859",
+      "Biology / theory",
+      "Darwin, Wallace",
+      "Mechanism of adaptive evolution; direct conceptual source of evolutionary computation and artificial life. Darwin's 1859 first edition is preserved in contemporary digital collections.",
+      "5/4/4/5/5/4"
+    ],
+    [
+      "c_feedback_control",
+      "Feedback control",
+      "engineering precursors; mathematical treatment 1868",
+      "Control / principle",
+      "Maxwell and earlier engineers",
+      "Closed-loop regulation using output to alter future input; precursor of cybernetics, robotics and adaptive control.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_predicate_logic",
+      "Predicate / first-order logic",
+      "1879",
+      "Logic / formal system",
+      "Gottlob Frege",
+      "Quantifiers, variables and relations vastly extend traditional term logic; basis of theorem proving and logic programming.",
+      "5/5/5/5/5/4"
+    ],
+    [
+      "c_neuron_doctrine",
+      "Neuron doctrine",
+      "1880s–1890s",
+      "Neuroscience / scientific theory",
+      "Ramón y Cajal, Waldeyer and others",
+      "Nervous system understood in terms of discrete neural cells; biological substrate later abstracted by artificial-neuron models.",
+      "5/5/5/5/5/4"
+    ],
+    [
+      "c_regression_correlation",
+      "Regression and correlation",
+      "1880s–1890s",
+      "Statistics / framework",
+      "Galton, Pearson",
+      "Quantifies prediction and association; direct ancestor of statistical learning.",
+      "5/5/5/5/4/5"
+    ],
+    [
+      "c_law_of_effect",
+      "Law of effect",
+      "1898",
+      "Psychology / learning principle",
+      "Edward Thorndike",
+      "Behavior strengthened by consequences; important psychological ancestor of reinforcement learning.",
+      "5/5/4/5/4/3"
+    ],
+    [
+      "c_classical_conditioning",
+      "Classical conditioning",
+      "1900s–1920s",
+      "Psychology / experimental paradigm",
+      "Ivan Pavlov",
+      "Makes predictive associative learning experimentally tractable.",
+      "5/4/4/5/4/2"
+    ],
+    [
+      "c_markov_chains",
+      "Markov chains",
+      "1906",
+      "Probability / framework",
+      "Andrey Markov",
+      "State-transition stochastic processes; foundational to HMMs, MDPs, sequence models and probabilistic inference. Historical accounts place the start of the theory in Markov's 1906 work.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_gestalt_perception",
+      "Gestalt perceptual organization",
+      "1912 onward",
+      "Psychology / theory",
+      "Wertheimer, Köhler, Koffka",
+      "Perception as structured wholes rather than isolated local sensations; influential in visual grouping and cognitive theory.",
+      "4/3/3/5/4/2"
+    ],
+    [
+      "c_maximum_likelihood",
+      "Maximum likelihood",
+      "developed 1910s; systematic treatment 1922",
+      "Statistics / estimation principle",
+      "R. A. Fisher",
+      "Optimizes probability assigned to observations; ubiquitous training principle for probabilistic models. Fisher's 1922 paper is a principal source.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_homeostasis",
+      "Homeostasis",
+      "1920s–1932",
+      "Physiology / principle",
+      "Walter Cannon; Claude Bernard as precursor",
+      "Biological regulation around viable internal states; feeds cybernetic and embodied-regulation traditions.",
+      "5/4/4/5/4/3"
+    ],
+    [
+      "c_entscheidungsproblem",
+      "Hilbert program and Entscheidungsproblem",
+      "1928",
+      "Logic / research problem",
+      "Hilbert, Ackermann",
+      "Makes the existence of a general decision procedure an explicit foundational question.",
+      "5/5/3/5/5/2"
+    ],
+    [
+      "c_incompleteness",
+      "Gödel incompleteness",
+      "1931",
+      "Logic / theorem",
+      "Kurt Gödel",
+      "Establishes fundamental limits of sufficiently expressive axiomatic systems.",
+      "5/5/4/5/5/2"
+    ],
+    [
+      "c_lambda_calculus",
+      "Lambda calculus",
+      "1930s; 1936 computability result",
+      "Computation / formal model",
+      "Alonzo Church",
+      "Function abstraction/application as a model of computation; deep influence on programming languages. Church's 1936 work supplied an independent analysis of effective calculability.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_recursive_functions",
+      "General recursive functions",
+      "1930s",
+      "Computation / formal framework",
+      "Gödel, Herbrand, Kleene",
+      "Alternative mathematical characterization of computable functions.",
+      "5/5/4/4/5/3"
+    ],
+    [
+      "c_turing_machine",
+      "Turing machine",
+      "1936",
+      "Computation / formal model",
+      "Alan Turing",
+      "Formalizes mechanical symbolic procedure through an abstract machine; Turing's paper directly addressed the Entscheidungsproblem.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_church_turing_thesis",
+      "Church–Turing thesis",
+      "1936",
+      "Computation / thesis",
+      "Church, Turing",
+      "Identifies effectively calculable procedures with equivalent formal computation models; not itself an ordinary theorem.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_universal_computation",
+      "Universal computation",
+      "1936",
+      "Computation / principle",
+      "Turing",
+      "A single universal machine can emulate other effective machines from encoded descriptions.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_switching_boolean",
+      "Boolean switching circuits",
+      "1937–1938",
+      "Electrical engineering; computation",
+      "Claude Shannon",
+      "Maps Boolean algebra directly onto relay/switching circuit design, a decisive logic-to-hardware bridge.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_game_theory",
+      "Game theory and minimax",
+      "1928; major synthesis 1944",
+      "Economics; decision theory",
+      "von Neumann, Morgenstern",
+      "Formalizes strategic interaction; basis for adversarial search and much multi-agent AI. The 1944 book established the modern field.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_statistical_decision_theory",
+      "Statistical decision theory",
+      "1930s–1950",
+      "Statistics; decision theory",
+      "Abraham Wald",
+      "Integrates probability, actions and losses; bridge between inference and rational action.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_monte_carlo",
+      "Monte Carlo methods",
+      "1940s",
+      "Algorithms; probability",
+      "Ulam, von Neumann, Metropolis and collaborators",
+      "Turns random sampling into a general computational method for otherwise difficult integrals, inference and search.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_linear_programming",
+      "Linear programming / simplex",
+      "1947",
+      "Optimization",
+      "George Dantzig",
+      "Makes constrained optimization operational at industrial scale. RAND preserves Dantzig's canonical later synthesis.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_artificial_neuron",
+      "McCulloch–Pitts neuron",
+      "1943",
+      "Neural computation / model",
+      "Warren McCulloch, Walter Pitts",
+      "Combines simplified neurons with logical computation; one of AI's strongest biology–logic bridges.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_cybernetics",
+      "Cybernetics",
+      "1940s; book 1948",
+      "Control / paradigm",
+      "Wiener, Rosenblueth, Bigelow and others",
+      "Unifies feedback, communication, control and biological regulation.",
+      "5/5/4/5/5/4"
+    ],
+    [
+      "c_information_entropy",
+      "Information entropy",
+      "1948",
+      "Information theory / quantity",
+      "Claude Shannon",
+      "Quantifies uncertainty; becomes central to coding, statistical learning and representation objectives.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_information_theory",
+      "Mathematical information theory",
+      "1948",
+      "Information theory / theory",
+      "Shannon",
+      "Establishes limits of communication and compression and a mathematical language of information.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_hebbian_learning",
+      "Hebbian learning",
+      "1949",
+      "Neuroscience; psychology / learning principle",
+      "Donald Hebb",
+      "Local correlation-dependent synaptic change and cell assemblies; enduring source for biological learning algorithms.",
+      "5/5/5/5/5/4"
+    ],
+    [
+      "c_turing_test",
+      "Imitation game",
+      "1950",
+      "Philosophy of mind; AI / thought experiment",
+      "Alan Turing",
+      "Replaces a definitional argument over \"thinking\" with an operational behavioral test.",
+      "5/5/4/5/4/3"
+    ],
+    [
+      "c_stochastic_approximation",
+      "Robbins–Monro stochastic approximation",
+      "1951",
+      "Optimization; statistics",
+      "Herbert Robbins, Sutton Monro",
+      "Iterative learning from noisy measurements; mathematical ancestor of stochastic-gradient and RL convergence methods.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_dynamic_programming",
+      "Dynamic programming",
+      "early 1950s; book 1957",
+      "Optimization; control",
+      "Richard Bellman",
+      "Recursive decomposition of sequential optimization; gives Bellman equations and value recursion.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_markov_decision_process",
+      "Markov decision process",
+      "1950s",
+      "Decision theory; control / framework",
+      "Bellman and broader OR community",
+      "Combines Markov states, actions, transitions, rewards and optimization; canonical substrate of RL.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_dartmouth_ai",
+      "Artificial intelligence as a named field",
+      "proposal 1955; workshop 1956",
+      "AI / research program",
+      "McCarthy, Minsky, Rochester, Shannon",
+      "Gives an existing confluence of machine intelligence research a durable institutional name. The original proposal was dated August 31, 1955.",
+      "5/5/5/5/4/5"
+    ],
+    [
+      "c_logic_theorist",
+      "Logic Theorist",
+      "1955–1956",
+      "Symbolic AI / program",
+      "Newell, Simon, Shaw",
+      "Heuristic symbolic theorem proving and cognitive simulation; canonical early symbolic-AI program. RAND dates its report to 1956.",
+      "5/5/3/5/4/4"
+    ],
+    [
+      "c_heuristic_search",
+      "Heuristic search",
+      "1950s",
+      "Algorithms; reasoning / paradigm",
+      "Newell, Simon and others",
+      "Replaces exhaustive enumeration with informed selective search.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_perceptron",
+      "Perceptron",
+      "1957–1958",
+      "Neural networks / architecture + learning rule",
+      "Frank Rosenblatt",
+      "Trainable brain-inspired pattern-recognition architecture; launches first major neural-network wave.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_lms_delta_rule",
+      "LMS / Widrow–Hoff rule",
+      "1959–1960",
+      "Signal processing; neural learning",
+      "Widrow, Hoff",
+      "Online gradient learning of linear weights under squared error; major ancestor of gradient-based learning.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_kalman_filter",
+      "Kalman filter",
+      "1960",
+      "Control; signal processing",
+      "Rudolf Kálmán",
+      "Recursive probabilistic state estimation; foundational to navigation, tracking, robotics and sensor fusion.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_lisp",
+      "Lisp",
+      "1958–1960",
+      "Programming languages; symbolic AI",
+      "John McCarthy",
+      "Symbolic expressions, list processing, recursion and code/data symmetry make symbolic AI far easier to implement.",
+      "5/5/3/5/4/5"
+    ],
+    [
+      "c_means_ends_analysis",
+      "Means–ends analysis / GPS",
+      "late 1950s",
+      "Symbolic AI; cognitive science",
+      "Newell, Simon, Shaw",
+      "Goal-directed operator selection by reducing differences between current and desired states.",
+      "5/4/2/5/4/3"
+    ],
+    [
+      "c_nearest_neighbor",
+      "Nearest-neighbor learning",
+      "1950s; canonical analysis 1967",
+      "ML; pattern recognition",
+      "Fix, Hodges, Cover, Hart",
+      "Instance-based learning using nearby stored examples.",
+      "4/4/5/3/4/5"
+    ],
+    [
+      "c_kmeans",
+      "k-means",
+      "Lloyd 1957; MacQueen 1967",
+      "ML; optimization",
+      "Stuart Lloyd, James MacQueen",
+      "Iterative prototype clustering; classic case of partly independent development.",
+      "4/4/5/4/4/5"
+    ],
+    [
+      "c_fuzzy_logic",
+      "Fuzzy sets / fuzzy logic",
+      "1965",
+      "Logic; control",
+      "Lotfi Zadeh",
+      "Graded membership and approximate reasoning; major alternative to binary symbolic logic.",
+      "4/4/3/5/4/5"
+    ],
+    [
+      "c_resolution",
+      "Resolution theorem proving",
+      "1965",
+      "Logic; automated reasoning",
+      "J. Alan Robinson",
+      "Machine-oriented first-order inference rule; enabled systematic automated proof and logic programming.",
+      "5/5/4/4/5/4"
+    ],
+    [
+      "c_unification",
+      "Unification",
+      "1960s",
+      "Logic; programming",
+      "Robinson and others",
+      "Computes substitutions making symbolic expressions match; foundational in theorem proving and Prolog.",
+      "5/5/5/4/5/5"
+    ],
+    [
+      "c_semantic_networks",
+      "Semantic networks",
+      "1960s",
+      "Knowledge representation",
+      "Quillian and predecessors",
+      "Represents concepts and relations as graphs; important ancestor of graph-based knowledge systems.",
+      "5/5/5/5/4/5"
+    ],
+    [
+      "c_frames",
+      "Frames",
+      "1970s",
+      "Knowledge representation",
+      "Marvin Minsky",
+      "Rich stereotyped structures with slots/defaults; precursor to schemas and object-like knowledge models.",
+      "5/4/3/5/4/3"
+    ],
+    [
+      "c_production_systems",
+      "Production systems",
+      "1960s–1970s",
+      "Symbolic AI; cognition",
+      "Newell, Simon and others",
+      "Condition–action rules over working memory; basis of expert systems and cognitive architectures.",
+      "5/4/3/4/4/4"
+    ],
+    [
+      "c_physical_symbol_system",
+      "Physical symbol system hypothesis",
+      "1975–1976",
+      "Philosophy of AI",
+      "Newell, Simon",
+      "Strong statement that symbol manipulation supplies necessary and sufficient means for general intelligent action.",
+      "5/5/3/5/4/3"
+    ],
+    [
+      "c_expert_systems",
+      "Expert systems",
+      "mid-1960s onward",
+      "AI / paradigm",
+      "Feigenbaum, Buchanan, Lederberg, Shortliffe and teams",
+      "Moves AI toward knowledge-intensive narrow expertise; DENDRAL and MYCIN become canonical examples.",
+      "5/5/2/5/4/5"
+    ],
+    [
+      "c_strips",
+      "STRIPS planning",
+      "1969–1971",
+      "Planning; robotics",
+      "Fikes, Nilsson",
+      "Formal operators with preconditions/effects and search over world states.",
+      "5/5/5/4/5/5"
+    ],
+    [
+      "c_logic_programming",
+      "Logic programming / Prolog",
+      "early 1970s",
+      "Logic; programming languages",
+      "Colmerauer group, Kowalski",
+      "Reinterprets logical proof and unification as computation.",
+      "5/5/4/5/5/4"
+    ],
+    [
+      "c_nonmonotonic_reasoning",
+      "Default and nonmonotonic reasoning",
+      "late 1970s–1980",
+      "Logic; KR",
+      "McCarthy, Reiter and others",
+      "Allows conclusions to be withdrawn when new evidence defeats defaults.",
+      "5/4/3/4/5/3"
+    ],
+    [
+      "c_hidden_markov_models",
+      "Hidden Markov models",
+      "1960s–1970s",
+      "Probability; sequence modeling",
+      "Baum and collaborators",
+      "Latent Markov states generating observations; central to speech and sequence modeling before neural systems.",
+      "5/5/4/5/5/5"
+    ],
+    [
+      "c_em",
+      "Expectation–maximization",
+      "1977",
+      "Statistics; ML",
+      "Dempster, Laird, Rubin; earlier special cases",
+      "General latent/missing-data likelihood procedure.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_algorithmic_information",
+      "Algorithmic information / Kolmogorov complexity",
+      "1960s",
+      "Information; computation",
+      "Solomonoff, Kolmogorov, Chaitin",
+      "Connects shortest descriptions, computability and inductive inference.",
+      "5/4/4/5/5/3"
+    ],
+    [
+      "c_mdl",
+      "Minimum Description Length",
+      "1978",
+      "Information; statistics",
+      "Jorma Rissanen",
+      "Model selection through compression; important information-theoretic account of generalization.",
+      "4/4/4/5/5/3"
+    ],
+    [
+      "c_vc_dimension",
+      "VC theory",
+      "late 1960s–1970s",
+      "Learning theory",
+      "Vapnik, Chervonenkis",
+      "Formal capacity and uniform-convergence framework for statistical learning.",
+      "5/5/4/4/5/3"
+    ],
+    [
+      "c_genetic_algorithms",
+      "Genetic algorithms",
+      "1960s–1975",
+      "Evolutionary computation",
+      "John Holland",
+      "Explicit computational abstraction of biological variation, selection and recombination.",
+      "5/4/4/5/4/4"
+    ],
+    [
+      "c_cellular_automata",
+      "Cellular automata and self-reproducing automata",
+      "1940s; posthumous publication 1966",
+      "Complex systems; computation",
+      "von Neumann, Ulam",
+      "Links local rules, computation, emergence and self-reproduction.",
+      "5/4/4/5/5/3"
+    ],
+    [
+      "c_self_organization",
+      "Self-organization",
+      "cybernetic development 1940s–1960s",
+      "Complex systems",
+      "W. Ross Ashby and wider tradition",
+      "Explains adaptive global organization without centralized control.",
+      "5/4/5/5/4/3"
+    ],
+    [
+      "c_bayesian_networks",
+      "Bayesian networks",
+      "early 1980s; synthesis 1988",
+      "Probabilistic AI",
+      "Judea Pearl and collaborators",
+      "Graphical factorization and efficient reasoning under uncertainty.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_belief_propagation",
+      "Belief propagation",
+      "1980s",
+      "Probabilistic inference",
+      "Pearl and others",
+      "Local message passing over probabilistic graphs; later links to coding theory and factor graphs.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_hopfield_network",
+      "Hopfield networks",
+      "1982",
+      "Neural networks; physics",
+      "John Hopfield",
+      "Imports energy functions and statistical-physics intuitions into associative neural memory.",
+      "5/5/4/5/5/4"
+    ],
+    [
+      "c_boltzmann_machine",
+      "Boltzmann machines",
+      "1983–1985",
+      "Neural networks; generative models",
+      "Ackley, Hinton, Sejnowski",
+      "Stochastic energy-based neural learning; major physics–ML bridge.",
+      "5/5/4/5/5/4"
+    ],
+    [
+      "c_self_organizing_maps",
+      "Self-organizing maps",
+      "1981–1982",
+      "Neural networks",
+      "Teuvo Kohonen",
+      "Competitive topology-preserving unsupervised representations; partly inspired by cortical maps.",
+      "4/4/3/5/4/3"
+    ],
+    [
+      "c_neocognitron",
+      "Neocognitron",
+      "1979–1980",
+      "Neural networks; vision",
+      "Kunihiko Fukushima",
+      "Hierarchical receptive fields plus tolerance/pooling; crucial CNN precursor.",
+      "5/5/4/5/5/4"
+    ],
+    [
+      "c_distributed_representations",
+      "Distributed representations",
+      "1980s connectionist formulation",
+      "Representation; neural networks",
+      "Hinton, Rumelhart, McClelland and others",
+      "Information distributed over many units; fundamental to embeddings and deep representation learning.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_connectionism",
+      "Parallel distributed processing / connectionism",
+      "early-mid 1980s",
+      "Cognitive science; neural networks",
+      "Rumelhart, McClelland, Hinton and larger PDP community",
+      "Revives trainable neural networks as models of cognition and AI.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_backpropagation",
+      "Backpropagation",
+      "earlier reverse-differentiation roots; neural revival 1986",
+      "Neural networks; optimization",
+      "multiple contributors; influential 1986 paper by Rumelhart, Hinton, Williams",
+      "Efficient gradient credit assignment through multilayer networks; central training mechanism of deep learning.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_recurrent_neural_networks",
+      "Recurrent neural networks",
+      "1980s–1990",
+      "Neural networks; sequence learning",
+      "Jordan, Elman and others",
+      "Learned recurrent state enables temporal and sequence computation.",
+      "5/5/4/5/5/5"
+    ],
+    [
+      "c_actor_critic",
+      "Actor–critic learning",
+      "early 1980s",
+      "Reinforcement learning",
+      "Barto, Sutton, Anderson and others",
+      "Separates action-generating actor from value-estimating critic; template for modern policy optimization.",
+      "5/5/5/4/5/5"
+    ],
+    [
+      "c_td_learning",
+      "Temporal-difference learning",
+      "early 1980s; 1988 formal exposition",
+      "Reinforcement learning",
+      "Richard Sutton",
+      "Bootstraps predictions from successive estimates; combines dynamic programming and experience.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_reinforcement_learning",
+      "Modern reinforcement-learning synthesis",
+      "1980s–1990s",
+      "Reinforcement learning / paradigm",
+      "Sutton, Barto and broad predecessors",
+      "Unifies rewards, value functions, exploration, policies, trial-and-error learning and control.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_q_learning",
+      "Q-learning",
+      "1989; publication 1992",
+      "Reinforcement learning",
+      "Watkins, Dayan",
+      "Off-policy model-free action-value learning with convergence to Bellman-optimal values under standard conditions.",
+      "5/5/5/4/5/5"
+    ],
+    [
+      "c_policy_gradients",
+      "Policy-gradient / REINFORCE learning",
+      "late 1980s; 1992",
+      "Reinforcement learning",
+      "Ronald Williams and predecessors",
+      "Optimizes parameterized policies directly through stochastic reward-gradient estimators.",
+      "5/5/5/4/5/5"
+    ],
+    [
+      "c_dopamine_prediction_error",
+      "Dopamine reward-prediction error",
+      "experiments early 1990s; synthesis 1997",
+      "Neuroscience; computational RL",
+      "Schultz, Dayan, Montague",
+      "Empirically links dopamine activity to TD-like reward-prediction errors.",
+      "5/5/5/5/5/4"
+    ],
+    [
+      "c_pac_learning",
+      "PAC learning",
+      "1984",
+      "Computational learning theory",
+      "Leslie Valiant",
+      "Defines efficient learnability in probabilistic approximation terms.",
+      "5/5/5/4/5/4"
+    ],
+    [
+      "c_kernel_svm",
+      "Kernel methods / support vector machines",
+      "early-mid 1990s",
+      "ML; optimization",
+      "Vapnik, Cortes and predecessors",
+      "Large-margin learning in implicit high-dimensional feature spaces.",
+      "5/5/4/4/5/5"
+    ],
+    [
+      "c_boosting",
+      "Boosting / AdaBoost",
+      "theory 1989–1990; practical algorithm 1990s",
+      "ML; learning theory",
+      "Schapire, Freund",
+      "Turns weak learners into a strong ensemble; notable theory-to-algorithm bridge.",
+      "5/5/4/4/5/5"
+    ],
+    [
+      "c_reverse_mode_ad",
+      "Reverse-mode automatic differentiation",
+      "control precursors; general reverse accumulation 1970",
+      "Numerical analysis; optimization",
+      "Kelley, Linnainmaa, Werbos and others",
+      "Efficient gradients of scalar outputs with many parameters; computational substrate of backprop.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_lstm",
+      "Long short-term memory",
+      "1995–1997",
+      "Neural networks; sequences",
+      "Hochreiter, Schmidhuber",
+      "Gating and memory cells mitigate long-term credit-assignment problems in RNNs.",
+      "5/5/4/4/5/5"
+    ],
+    [
+      "c_artificial_life",
+      "Artificial life",
+      "1980s",
+      "Complex systems; biology",
+      "Christopher Langton and community",
+      "Shifts part of AI from reproducing human cognition to synthesizing life-like adaptive systems.",
+      "4/3/4/5/4/3"
+    ],
+    [
+      "c_affordances",
+      "Affordances",
+      "1960s–1979",
+      "Ecological psychology",
+      "James Gibson",
+      "Perception defined relative to possible action; important precursor to embodied robotics.",
+      "5/4/5/5/4/4"
+    ],
+    [
+      "c_behavior_based_robotics",
+      "Behavior-based robotics / subsumption",
+      "mid-1980s",
+      "Robotics; embodied AI",
+      "Rodney Brooks",
+      "Challenges centralized sense-model-plan-act architectures with layered situated behaviors.",
+      "5/5/4/5/4/5"
+    ],
+    [
+      "c_embodied_cognition",
+      "Embodied / enactive cognition",
+      "1980s–1991",
+      "Cognitive science; philosophy",
+      "Varela, Thompson, Rosch and broader traditions",
+      "Intelligence depends on body, action and environment rather than detached internal symbol manipulation alone.",
+      "5/4/5/5/4/4"
+    ],
+    [
+      "c_efficient_coding",
+      "Efficient coding",
+      "1950s–1961",
+      "Computational neuroscience",
+      "Horace Barlow and predecessors",
+      "Imports information theory into sensory neuroscience; ancestor of information-efficient representation theories.",
+      "5/4/5/5/5/3"
+    ],
+    [
+      "c_predictive_coding",
+      "Predictive coding",
+      "older precursors; canonical neural formulation 1999",
+      "Computational neuroscience",
+      "Rao, Ballard and predecessors",
+      "Hierarchical predictions and prediction-error updates; joins perception, Bayesian ideas and generative modeling.",
+      "5/4/5/5/5/3"
+    ],
+    [
+      "c_stdp",
+      "Spike-timing-dependent plasticity",
+      "1997–1998",
+      "Neuroscience",
+      "Markram group; Bi & Poo and others",
+      "Biological learning rule dependent on precise spike timing; temporal elaboration of Hebbian learning.",
+      "5/4/5/5/5/3"
+    ],
+    [
+      "c_neuromorphic_computing",
+      "Neuromorphic computing",
+      "late 1980s–1990",
+      "Electrical engineering; neuro-AI",
+      "Carver Mead",
+      "Implements neural-style computation directly in event-driven/analog hardware.",
+      "5/4/5/5/4/5"
+    ],
+    [
+      "c_spiking_networks",
+      "Spiking neural networks",
+      "long biological roots; formal ML framing 1990s",
+      "Neuro-AI",
+      "Maass and many predecessors",
+      "Uses discrete spike events and timing rather than only rate-valued activations.",
+      "4/4/5/5/5/4"
+    ],
+    [
+      "c_slam",
+      "Simultaneous localization and mapping",
+      "1980s–1990s",
+      "Robotics",
+      "Smith, Self, Cheeseman and community",
+      "Joint uncertain inference over robot location and environmental map.",
+      "5/4/5/5/5/5"
+    ],
+    [
+      "c_distributional_hypothesis",
+      "Distributional hypothesis",
+      "1950s",
+      "Linguistics",
+      "Zellig Harris, J. R. Firth",
+      "Meaning/function inferred from patterns of contextual occurrence; intellectual ancestor of embeddings.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_vector_space_semantics",
+      "Vector-space semantics",
+      "IR roots 1970s; LSA 1990",
+      "NLP; information retrieval",
+      "Salton, Deerwester, Dumais and others",
+      "Turns linguistic objects into points in continuous geometric spaces.",
+      "5/5/5/5/4/5"
+    ],
+    [
+      "c_word_embeddings",
+      "Learned word embeddings",
+      "neural antecedents; major revival 2013",
+      "NLP; representation",
+      "Bengio line; Mikolov and colleagues",
+      "Learned distributed lexical geometry; bridge from distributional linguistics to modern deep NLP.",
+      "5/5/5/5/4/5"
+    ],
+    [
+      "c_deep_pretraining",
+      "Deep belief nets / layerwise pretraining",
+      "2005–2006",
+      "Deep learning",
+      "Hinton, Osindero, Teh",
+      "Helped make deep multilayer learning workable before modern large supervised training.",
+      "5/5/3/4/4/5"
+    ],
+    [
+      "c_convolutional_neural_networks",
+      "Convolutional neural networks",
+      "neocognitron 1980; trainable convnets late 1980s onward",
+      "Vision; deep learning",
+      "Fukushima, LeCun and others",
+      "Local receptive fields, weight sharing and hierarchy transform computer vision.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_relu",
+      "Rectified linear units",
+      "earlier rectification; modern adoption around 2010",
+      "Deep learning",
+      "multiple precursors; Nair, Hinton as major modern popularizers",
+      "Non-saturating piecewise-linear activation simplifies optimization of deep nets.",
+      "4/5/5/3/4/5"
+    ],
+    [
+      "c_imagenet",
+      "ImageNet",
+      "2007–2009; ILSVRC later",
+      "Computer vision / dataset",
+      "Fei-Fei Li, Jia Deng and team",
+      "Makes visual data scale and standardized benchmarking decisive ingredients in deep learning.",
+      "5/5/4/4/3/5"
+    ],
+    [
+      "c_gpu_deep_learning",
+      "Accelerator-scale deep learning",
+      "late 2000s–2012 breakthrough",
+      "Computer engineering; deep learning",
+      "many groups; Krizhevsky, Sutskever, Hinton among key 2012 contributors",
+      "Changes feasible network and dataset size; engineering enabler of the modern deep-learning transition.",
+      "5/5/5/4/3/5"
+    ],
+    [
+      "c_dropout",
+      "Dropout",
+      "2012–2014",
+      "Deep learning",
+      "Srivastava, Hinton and collaborators",
+      "Stochastic regularization by dropping units; helps train large neural systems.",
+      "4/4/4/3/3/5"
+    ],
+    [
+      "c_seq2seq",
+      "Sequence-to-sequence learning",
+      "2014",
+      "NLP; deep learning",
+      "Sutskever, Vinyals, Le",
+      "End-to-end variable-length neural transduction.",
+      "5/5/4/4/4/5"
+    ],
+    [
+      "c_neural_attention",
+      "Neural attention",
+      "2014–2015",
+      "Deep learning; NLP",
+      "Bahdanau, Cho, Bengio",
+      "Dynamically selects relevant representations and removes fixed-vector seq2seq bottleneck.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_residual_connections",
+      "Residual / skip connections",
+      "2015–2016",
+      "Deep learning",
+      "He, Zhang, Ren, Sun",
+      "Makes very deep optimization practical and later becomes a fundamental transformer component.",
+      "5/5/5/4/4/5"
+    ],
+    [
+      "c_transformer",
+      "Transformer",
+      "2017",
+      "Deep learning; NLP",
+      "Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser, Polosukhin",
+      "Replaces recurrence with attention-centered parallel sequence computation; becomes dominant general foundation-model architecture.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_transfer_learning",
+      "Transfer learning",
+      "older roots; explicit ML formulations early 1990s",
+      "Machine learning / paradigm",
+      "many contributors",
+      "Reuses representations or inductive knowledge across tasks; conceptual prerequisite of modern pretraining.",
+      "5/5/5/5/4/5"
+    ],
+    [
+      "c_self_supervised_learning",
+      "Self-supervised learning",
+      "roots decades earlier; modern consolidation 2010s",
+      "ML / paradigm",
+      "many communities",
+      "Constructs supervisory targets from raw data itself; enables internet-scale pretraining.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_bert_masked_lm",
+      "Masked language modeling / BERT",
+      "2018",
+      "NLP; transfer learning",
+      "Devlin, Chang, Lee, Toutanova",
+      "Bidirectional contextual pretraining plus fine-tuning strongly establishes the pretrain–adapt paradigm.",
+      "5/5/4/4/4/5"
+    ],
+    [
+      "c_autoregressive_pretraining",
+      "GPT-style autoregressive pretraining",
+      "2018 onward",
+      "NLP; foundation models",
+      "Radford and collaborators; many predecessors",
+      "Large-scale next-token prediction becomes a general-purpose self-supervised training regime.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_in_context_learning",
+      "In-context learning",
+      "prominent demonstration 2020",
+      "Foundation models",
+      "Brown et al.",
+      "Models adapt from instructions/examples in their context without weight updates; GPT-3 made this phenomenon central.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_contrastive_learning",
+      "Contrastive representation learning",
+      "metric-learning roots; neural formulations 1990s–2000s",
+      "Representation learning",
+      "many contributors",
+      "Learns geometry by pulling related observations together and separating unrelated ones.",
+      "4/5/5/5/4/5"
+    ],
+    [
+      "c_clip",
+      "Contrastive language-image pretraining",
+      "2020–2021",
+      "Multimodal AI",
+      "Radford et al.",
+      "Aligns image and text representations from web-scale pairs and enables flexible zero-shot visual classification.",
+      "5/5/5/5/4/5"
+    ],
+    [
+      "c_vae",
+      "Variational autoencoders",
+      "2013–2014",
+      "Generative modeling",
+      "Kingma, Welling; Rezende and collaborators independently",
+      "Merges variational Bayesian latent-variable inference with gradient-trained neural networks.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_gan",
+      "Generative adversarial networks",
+      "2014",
+      "Generative modeling",
+      "Goodfellow and collaborators",
+      "Generator–discriminator minimax game becomes a new route to generative modeling.",
+      "5/5/4/5/5/5"
+    ],
+    [
+      "c_diffusion_models",
+      "Diffusion generative models",
+      "2015; major revival 2020",
+      "Generative modeling",
+      "Sohl-Dickstein et al.; Ho, Jain, Abbeel; score-model community",
+      "Reverses learned stochastic noising processes; now central to high-fidelity generative media.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_latent_diffusion",
+      "Latent diffusion",
+      "2021–2022",
+      "Generative modeling",
+      "Rombach and colleagues",
+      "Moves diffusion into learned compressed latent representations, greatly reducing high-resolution generation cost.",
+      "4/5/5/4/4/5"
+    ],
+    [
+      "c_scaling_laws",
+      "Neural scaling laws",
+      "2010s; major LM formulation 2020",
+      "Deep learning / empirical principle",
+      "Kaplan et al. and related groups",
+      "Quantifies smooth relationships among loss, parameters, data and compute; turns scale into an engineering variable.",
+      "5/5/5/5/4/5"
+    ],
+    [
+      "c_foundation_models",
+      "Foundation models",
+      "underlying paradigm 2018 onward; term 2021",
+      "AI / paradigm",
+      "broad community; Bommasani et al. introduced the umbrella term",
+      "Broadly pretrained models adapted to many downstream tasks; reorganizes AI around reusable model infrastructures.",
+      "5/5/5/5/4/5"
+    ],
+    [
+      "c_instruction_tuning",
+      "Instruction tuning",
+      "2021 onward",
+      "Foundation models / post-training",
+      "FLAN and parallel groups",
+      "Adapts pretrained models to natural-language task instructions and becomes a standard LLM post-training stage.",
+      "4/5/5/4/4/5"
+    ],
+    [
+      "c_rlhf",
+      "Reinforcement learning from human feedback",
+      "modern deep version 2017; LLM revival 2020s",
+      "RL; alignment",
+      "Christiano et al. and later model teams",
+      "Learns objectives/preferences from human comparisons and optimizes policies against them.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_chain_of_thought",
+      "Chain-of-thought prompting",
+      "2021–2022",
+      "Reasoning; prompting",
+      "Wei and collaborators, with precursors",
+      "Uses intermediate natural-language steps to elicit stronger multi-step reasoning from sufficiently capable models.",
+      "4/5/5/4/4/5"
+    ],
+    [
+      "c_rag",
+      "Retrieval-augmented generation",
+      "2020",
+      "Foundation models; IR",
+      "Lewis and collaborators; older retrieval traditions",
+      "Combines parametric generation with non-parametric external retrieval.",
+      "4/5/5/5/4/5"
+    ],
+    [
+      "c_mixture_of_experts",
+      "Mixture of experts",
+      "1991; sparse revival 2010s",
+      "ML; conditional computation",
+      "Jacobs, Jordan, Hinton and later Shazeer-led work",
+      "Learns routing among specialized components; later scales model capacity without proportional computation.",
+      "5/5/5/5/5/5"
+    ],
+    [
+      "c_tool_augmented_lm",
+      "Tool-augmented language models",
+      "2021–2023",
+      "Agents; foundation models",
+      "multiple groups",
+      "Lets LMs invoke search, calculators, code and APIs rather than rely only on parametric generation.",
+      "4/5/5/5/4/5"
+    ],
+    [
+      "c_react",
+      "Reason-and-act agents",
+      "2022–2023",
+      "Agents",
+      "Yao et al.",
+      "Interleaves language reasoning with actions and environmental observations.",
+      "4/5/5/5/4/5"
+    ],
+    [
+      "c_multimodal_foundation_models",
+      "Multimodal foundation models",
+      "2021 onward",
+      "Foundation models",
+      "many groups",
+      "Extends broad pretraining to text, images, audio and video; current systems increasingly unify perception and generation. CLIP was an important alignment precursor, while systems such as GPT-4o exemplified tightly integrated multimodality.",
+      "5/5/5/5/4/5"
+    ],
+    [
+      "c_test_time_compute",
+      "Test-time compute scaling / reasoning models",
+      "2024 onward",
+      "Reasoning; foundation models",
+      "multiple groups",
+      "Allocates additional inference computation to extended reasoning, search, verification or sampling; OpenAI's o1 work explicitly foregrounded learning to reason and inference-time computation, while DeepSeek-R1 provided another major public RL-based reasoning lineage in 2025.",
+      "4/5/5/5/4/5"
+    ],
+    [
+      "c_neuro_symbolic_ai",
+      "Neuro-symbolic AI",
+      "recurrent since at least 1990s; older hybrid roots",
+      "Hybrid AI / paradigm",
+      "many groups",
+      "Combines learned distributed representations with explicit logical, symbolic or constraint-based structure.",
+      "4/5/5/5/5/4"
+    ],
+    [
+      "c_active_inference",
+      "Active inference / free-energy framework",
+      "2000s–2010",
+      "Computational neuroscience",
+      "Karl Friston and collaborators",
+      "Recasts perception and action within variational generative-model inference; influential interdisciplinary framework but broad claims remain debated.",
+      "4/3/4/5/5/2"
+    ],
+    [
+      "c_multiagent_systems",
+      "Multi-agent systems",
+      "distributed-AI roots 1970s–1980s",
+      "AI; distributed systems",
+      "broad community",
+      "Models cooperation, competition, communication and coordination among autonomous agents.",
+      "4/4/5/5/4/5"
+    ],
+    [
+      "c_swarm_intelligence",
+      "Swarm intelligence",
+      "late 1980s",
+      "Multi-agent systems; biology",
+      "Beni, Wang and wider tradition",
+      "Biological collective behavior becomes a computational principle of decentralized coordination.",
+      "4/4/4/5/4/4"
+    ],
+    [
+      "c_differentiable_programming",
+      "Differentiable programming",
+      "mathematical substrate 1960s–1970s; modern framing 2010s",
+      "Computation; optimization",
+      "AD community",
+      "Generalizes backpropagation from fixed network templates to arbitrary differentiable computation graphs.",
+      "4/5/5/5/5/5"
+    ]
+  ],
+  "people": [
+    [
+      "p_aristotle",
+      "Aristotle",
+      "384–322 BCE",
+      "philosophy, logic, biology",
+      "Plato's Academy; later Lyceum",
+      "c_aristotelian_syllogistic; formal deductive reasoning"
+    ],
+    [
+      "p_ramon_llull",
+      "Ramon Llull",
+      "c. 1232–1316",
+      "philosophy, logic, theology",
+      "medieval intellectual networks; not a modern university genealogy",
+      "c_llull_combinatorial_reasoning; symbolic combinatorial reasoning"
+    ],
+    [
+      "p_leibniz",
+      "Gottfried Wilhelm Leibniz",
+      "1646–1716",
+      "mathematics, philosophy, logic",
+      "broad European scholarly network",
+      "c_calculus_ratiocinator; symbolic calculus; mechanical computation"
+    ],
+    [
+      "p_thomas_bayes",
+      "Thomas Bayes",
+      "c. 1701–1761",
+      "probability, mathematics, theology",
+      "historical education records should be separately versioned",
+      "c_bayesian_inference; special-case inverse probability"
+    ],
+    [
+      "p_richard_price",
+      "Richard Price",
+      "1723–1791",
+      "probability, philosophy, economics",
+      "editor/communicator of Bayes's posthumous work",
+      "c_bayesian_inference"
+    ],
+    [
+      "p_laplace",
+      "Pierre-Simon Laplace",
+      "1749–1827",
+      "mathematics, probability, physics",
+      "French mathematical-scientific network",
+      "general analytical inverse probability"
+    ],
+    [
+      "p_babbage",
+      "Charles Babbage",
+      "1791–1871",
+      "mathematics, engineering, computing",
+      "Cambridge",
+      "c_analytical_engine; programmable computation"
+    ],
+    [
+      "p_ada_lovelace",
+      "Ada Lovelace",
+      "1815–1852",
+      "mathematics, computation",
+      "privately educated; mentored by Mary Somerville and Augustus De Morgan rather than a PhD system",
+      "c_lovelace_algorithmic_programming"
+    ],
+    [
+      "p_boole",
+      "George Boole",
+      "1815–1864",
+      "mathematics, logic",
+      "largely self-taught mathematical development; Queen's College Cork career",
+      "c_boolean_algebra"
+    ],
+    [
+      "p_darwin",
+      "Charles Darwin",
+      "1809–1882",
+      "biology, evolution",
+      "Edinburgh; Cambridge",
+      "c_natural_selection"
+    ],
+    [
+      "p_wallace",
+      "Alfred Russel Wallace",
+      "1823–1913",
+      "biology, biogeography",
+      "largely self-directed field naturalist",
+      "independent co-discovery of natural selection"
+    ],
+    [
+      "p_frege",
+      "Gottlob Frege",
+      "1848–1925",
+      "logic, mathematics, philosophy",
+      "Jena/Göttingen intellectual environment",
+      "c_predicate_logic"
+    ],
+    [
+      "p_cajal",
+      "Santiago Ramón y Cajal",
+      "1852–1934",
+      "anatomy, neuroscience",
+      "Spanish medical research institutions",
+      "c_neuron_doctrine; decisive experimental evidence"
+    ],
+    [
+      "p_markov",
+      "Andrey Markov",
+      "1856–1922",
+      "probability, mathematics",
+      "St Petersburg; Chebyshev school",
+      "c_markov_chains"
+    ],
+    [
+      "p_fisher",
+      "Ronald A. Fisher",
+      "1890–1962",
+      "statistics, genetics, evolutionary biology",
+      "Cambridge; Rothamsted",
+      "c_maximum_likelihood plus broader mathematical statistics"
+    ],
+    [
+      "p_hilbert",
+      "David Hilbert",
+      "1862–1943",
+      "mathematics, logic",
+      "Königsberg; Göttingen",
+      "Entscheidungsproblem/Hilbert program; foundational problem setting"
+    ],
+    [
+      "p_godel",
+      "Kurt Gödel",
+      "1906–1978",
+      "logic, mathematics",
+      "Vienna Circle-era intellectual setting; later IAS",
+      "c_incompleteness; recursive-function foundations"
+    ],
+    [
+      "p_church",
+      "Alonzo Church",
+      "1903–1995",
+      "logic, mathematics, computation",
+      "Princeton",
+      "c_lambda_calculus; c_church_turing_thesis; doctoral advisor of Turing"
+    ],
+    [
+      "p_turing",
+      "Alan Turing",
+      "1912–1954",
+      "mathematics, logic, computation, AI",
+      "Cambridge; Princeton PhD under Church",
+      "c_turing_machine; c_universal_computation; c_church_turing_thesis; c_turing_test"
+    ],
+    [
+      "p_shannon",
+      "Claude Shannon",
+      "1916–2001",
+      "electrical engineering, mathematics, information theory",
+      "Michigan; MIT; Bell Labs",
+      "switching algebra; entropy; information theory; Dartmouth contributor"
+    ],
+    [
+      "p_von_neumann",
+      "John von Neumann",
+      "1903–1957",
+      "mathematics, physics, computation, economics",
+      "Budapest/ETH/Göttingen-era mathematical networks; IAS",
+      "game theory; Monte Carlo; automata; computing"
+    ],
+    [
+      "p_wiener",
+      "Norbert Wiener",
+      "1894–1964",
+      "mathematics, control, cybernetics",
+      "Harvard PhD; MIT career",
+      "c_cybernetics; feedback bridge between engineering and biology"
+    ],
+    [
+      "p_mcculloch",
+      "Warren McCulloch",
+      "1898–1969",
+      "neurophysiology, cybernetics, logic",
+      "interdisciplinary neuroscience/cybernetics network",
+      "c_artificial_neuron"
+    ],
+    [
+      "p_pitts",
+      "Walter Pitts",
+      "1923–1969",
+      "logic, neuroscience, computation",
+      "unconventional non-degree intellectual trajectory",
+      "c_artificial_neuron"
+    ],
+    [
+      "p_hebb",
+      "Donald Hebb",
+      "1904–1985",
+      "psychology, neuroscience",
+      "McGill; Harvard work with Lashley",
+      "c_hebbian_learning; cells/assemblies"
+    ],
+    [
+      "p_bellman",
+      "Richard Bellman",
+      "1920–1984",
+      "applied mathematics, OR, control",
+      "Princeton doctorate; RAND",
+      "c_dynamic_programming; major MDP lineage"
+    ],
+    [
+      "p_mccarthy",
+      "John McCarthy",
+      "1927–2011",
+      "AI, logic, computer science",
+      "Caltech; Princeton doctorate; MIT/Stanford",
+      "Dartmouth AI; Lisp; formal commonsense reasoning"
+    ],
+    [
+      "p_newell",
+      "Allen Newell",
+      "1927–1992",
+      "AI, cognitive science, computer science",
+      "RAND; Carnegie Tech/CMU",
+      "Logic Theorist; heuristic search; GPS; production systems; PSSH"
+    ],
+    [
+      "p_simon",
+      "Herbert Simon",
+      "1916–2001",
+      "economics, psychology, AI, decision theory",
+      "Chicago; Carnegie Tech/CMU",
+      "bounded rationality plus symbolic AI/cognitive simulation"
+    ],
+    [
+      "p_rosenblatt",
+      "Frank Rosenblatt",
+      "1928–1971",
+      "psychology, neural networks",
+      "Cornell; Cornell Aeronautical Laboratory",
+      "c_perceptron"
+    ],
+    [
+      "p_kalman",
+      "Rudolf Kálmán",
+      "1930–2016",
+      "control theory, engineering, mathematics",
+      "MIT; Columbia",
+      "c_kalman_filter; state-space control"
+    ],
+    [
+      "p_pearl",
+      "Judea Pearl",
+      "1936–",
+      "AI, probability, causal inference",
+      "engineering/computer-science career at UCLA",
+      "Bayesian networks; belief propagation; structural causal models"
+    ],
+    [
+      "p_vapnik",
+      "Vladimir Vapnik",
+      "1936–",
+      "learning theory, statistics, ML",
+      "Soviet statistical-learning tradition; later Bell Labs",
+      "VC theory; SVMs"
+    ],
+    [
+      "p_hopfield",
+      "John Hopfield",
+      "1933–",
+      "physics, biophysics, neural computation",
+      "Cornell physics doctorate; multidisciplinary career",
+      "Hopfield networks; physics–neural computation bridge"
+    ],
+    [
+      "p_hinton",
+      "Geoffrey Hinton",
+      "1947–",
+      "cognitive science, neural networks, ML",
+      "Cambridge; Edinburgh doctorate; CMU/Toronto",
+      "distributed representations; Boltzmann machines; backprop revival; deep learning"
+    ],
+    [
+      "p_sejnowski",
+      "Terrence Sejnowski",
+      "1947–",
+      "computational neuroscience, neural networks",
+      "Princeton-trained physicist/neuroscientist",
+      "Boltzmann machines and strong neuroscience–ML bridge"
+    ],
+    [
+      "p_fukushima",
+      "Kunihiko Fukushima",
+      "1936–",
+      "neural networks, vision",
+      "Japanese engineering research",
+      "c_neocognitron; CNN ancestry"
+    ],
+    [
+      "p_lecun",
+      "Yann LeCun",
+      "1960–",
+      "neural networks, computer vision, ML",
+      "French engineering/computer-science training",
+      "trainable CNNs; representation learning; self-supervision"
+    ],
+    [
+      "p_bengio",
+      "Yoshua Bengio",
+      "1964–",
+      "deep learning, NLP, representation",
+      "McGill doctorate; Montréal",
+      "neural language modeling; representation learning; attention/generative research"
+    ],
+    [
+      "p_sutton",
+      "Richard Sutton",
+      "1957–",
+      "reinforcement learning",
+      "Stanford; UMass doctorate with Barto",
+      "TD learning, Dyna, modern RL synthesis"
+    ],
+    [
+      "p_barto",
+      "Andrew Barto",
+      "1948–",
+      "RL, adaptive control",
+      "Michigan doctorate; UMass",
+      "actor–critic and modern RL synthesis"
+    ],
+    [
+      "p_dayan",
+      "Peter Dayan",
+      "1965–",
+      "computational neuroscience, RL",
+      "computational neuroscience/ML",
+      "Q-learning convergence; dopamine/RL bridge"
+    ],
+    [
+      "p_brooks",
+      "Rodney Brooks",
+      "1954–",
+      "robotics, AI",
+      "Stanford doctorate; MIT",
+      "subsumption, behavior-based robotics, embodied intelligence"
+    ],
+    [
+      "p_vaswani",
+      "Ashish Vaswani",
+      "contemporary",
+      "deep learning, NLP",
+      "Google research setting for 2017 contribution",
+      "Transformer co-creator"
+    ],
+    [
+      "p_shazeer",
+      "Noam Shazeer",
+      "contemporary",
+      "deep learning, conditional computation",
+      "Google research",
+      "Transformer coauthor; sparse mixture-of-experts lineage"
+    ],
+    [
+      "p_sutskever",
+      "Ilya Sutskever",
+      "1986–",
+      "deep learning, AI",
+      "Toronto doctorate under Hinton",
+      "AlexNet; seq2seq; GPT/OpenAI model line"
+    ],
+    [
+      "p_goodfellow",
+      "Ian Goodfellow",
+      "1985–",
+      "deep learning",
+      "Montréal PhD under Bengio",
+      "GANs"
+    ],
+    [
+      "p_friston",
+      "Karl Friston",
+      "1959–",
+      "neuroscience, computational modeling",
+      "medical/neuroscience training; UCL",
+      "free-energy principle; active inference"
+    ]
+  ],
+  "institutions": [
+    [
+      "i_goettingen",
+      "University of Göttingen",
+      "Göttingen, Germany",
+      "51.54, 9.92",
+      "late 19th–early 20th c.",
+      "Hilbertian formalism; mathematical logic; foundations"
+    ],
+    [
+      "i_cambridge_uk",
+      "University of Cambridge",
+      "Cambridge, UK",
+      "52.21, 0.12",
+      "multiple periods",
+      "Turing; Fisher; sensory coding; computation/statistics"
+    ],
+    [
+      "i_princeton",
+      "Princeton University",
+      "Princeton, US",
+      "40.34, −74.65",
+      "1930s onward",
+      "Church; Turing doctorate; game theory; logic"
+    ],
+    [
+      "i_ias",
+      "Institute for Advanced Study",
+      "Princeton, US",
+      "40.33, −74.67",
+      "1930s–1950s",
+      "Gödel; von Neumann; computing and automata"
+    ],
+    [
+      "i_bell_labs",
+      "Bell Labs",
+      "New Jersey, US",
+      "~40.68, −74.40",
+      "1920s onward",
+      "information theory; switching; signal processing; statistical ML"
+    ],
+    [
+      "i_mit",
+      "MIT and later AI Laboratory",
+      "Cambridge, MA, US",
+      "42.36, −71.09",
+      "1930s onward",
+      "switching logic; cybernetics; Lisp; symbolic AI; robotics"
+    ],
+    [
+      "i_rand",
+      "RAND Corporation",
+      "Santa Monica, CA, US",
+      "34.02, −118.49",
+      "1940s–1960s",
+      "dynamic programming; Logic Theorist; OR; early AI"
+    ],
+    [
+      "i_cmu",
+      "Carnegie Tech / Carnegie Mellon",
+      "Pittsburgh, PA, US",
+      "40.44, −79.94",
+      "1950s onward",
+      "symbolic AI, cognitive science, production systems, connectionism"
+    ],
+    [
+      "i_dartmouth",
+      "Dartmouth College",
+      "Hanover, NH, US",
+      "43.70, −72.29",
+      "1956",
+      "institutional naming of AI"
+    ],
+    [
+      "i_sri",
+      "Stanford Research Institute / SRI",
+      "Menlo Park, CA, US",
+      "37.45, −122.18",
+      "1960s onward",
+      "Shakey, STRIPS, probabilistic robotics"
+    ],
+    [
+      "i_stanford",
+      "Stanford University",
+      "Stanford, CA, US",
+      "37.43, −122.17",
+      "1950s onward",
+      "Lisp lineage, expert systems, robotics, ML, ImageNet"
+    ],
+    [
+      "i_ucla",
+      "UCLA",
+      "Los Angeles, CA, US",
+      "34.07, −118.45",
+      "1980s onward",
+      "Bayesian networks; probabilistic reasoning; causal AI"
+    ],
+    [
+      "i_toronto",
+      "University of Toronto",
+      "Toronto, Canada",
+      "43.66, −79.40",
+      "1980s onward",
+      "connectionism; backprop; deep belief nets; modern deep learning"
+    ],
+    [
+      "i_montreal",
+      "Université de Montréal / MILA ecosystem",
+      "Montréal, Canada",
+      "45.50, −73.62",
+      "1990s onward",
+      "neural NLP; attention; representation learning; generative models"
+    ],
+    [
+      "i_nhk",
+      "NHK Science & Technology Research Laboratories",
+      "Tokyo, Japan",
+      "~35.68, 139.65",
+      "1970s–1980s",
+      "neocognitron; neural visual recognition"
+    ],
+    [
+      "i_idsia",
+      "IDSIA",
+      "Lugano, Switzerland",
+      "46.00, 8.95",
+      "1990s onward",
+      "LSTM and recurrent deep learning"
+    ],
+    [
+      "i_msra",
+      "Microsoft Research Asia",
+      "Beijing, China",
+      "~39.90, 116.41",
+      "2010s",
+      "ResNet and deep computer vision"
+    ],
+    [
+      "i_google",
+      "Google / Google Brain / Google Research",
+      "California and distributed",
+      "Mountain View ~37.42, −122.08",
+      "2010s onward",
+      "seq2seq, attention, Transformer, BERT, MoE, instruction tuning"
+    ],
+    [
+      "i_deepmind",
+      "DeepMind / Google DeepMind",
+      "London, UK",
+      "~51.51, −0.13",
+      "2010s onward",
+      "deep RL; agents; multimodal systems"
+    ],
+    [
+      "i_openai",
+      "OpenAI",
+      "San Francisco, US",
+      "~37.77, −122.42",
+      "2015 onward",
+      "GPT-style LMs, scaling, CLIP, RLHF deployment, multimodality, reasoning models"
+    ],
+    [
+      "i_santa_fe",
+      "Santa Fe Institute",
+      "Santa Fe, NM, US",
+      "35.69, −105.94",
+      "1980s onward",
+      "complex systems; artificial life"
+    ],
+    [
+      "i_ucl",
+      "University College London",
+      "London, UK",
+      "~51.52, −0.13",
+      "1990s onward",
+      "computational neuroscience; free-energy / active inference"
+    ],
+    [
+      "i_los_alamos",
+      "Los Alamos",
+      "New Mexico, US",
+      "35.88, −106.30",
+      "1940s onward",
+      "Monte Carlo; complex systems; artificial-life precursors"
+    ]
+  ],
+  "publications": [
+    [
+      "pub_boole_1854",
+      "George Boole, *An Investigation of the Laws of Thought*",
+      "1854",
+      "book",
+      "digitized original",
+      "primary"
+    ],
+    [
+      "pub_frege_1879",
+      "Gottlob Frege, *Begriffsschrift*",
+      "1879",
+      "book",
+      "digitized historical copy",
+      "primary"
+    ],
+    [
+      "pub_bayes_1763",
+      "Thomas Bayes, communicated by Richard Price, \"An Essay towards solving a Problem in the Doctrine of Chances\"",
+      "1763",
+      "*Philosophical Transactions*",
+      "DOI 10.1098/rstl.1763.0053",
+      "primary"
+    ],
+    [
+      "pub_darwin_1859",
+      "Charles Darwin, *On the Origin of Species*",
+      "1859",
+      "book",
+      "Darwin Online first-edition archive",
+      "primary"
+    ],
+    [
+      "pub_church_1936",
+      "Alonzo Church, \"An Unsolvable Problem of Elementary Number Theory\"",
+      "1936",
+      "*American Journal of Mathematics*",
+      "contemporary journal record",
+      "primary"
+    ],
+    [
+      "pub_turing_1936",
+      "Alan Turing, \"On Computable Numbers, with an Application to the Entscheidungsproblem\"",
+      "1936–1937",
+      "*Proceedings LMS*",
+      "DOI 10.1112/plms/s2-42.1.230",
+      "primary"
+    ],
+    [
+      "pub_vnm_1944",
+      "von Neumann & Morgenstern, *Theory of Games and Economic Behavior*",
+      "1944",
+      "book",
+      "Princeton/JSTOR record",
+      "primary"
+    ],
+    [
+      "pub_mcculloch_pitts_1943",
+      "McCulloch & Pitts, \"A Logical Calculus of the Ideas Immanent in Nervous Activity\"",
+      "1943",
+      "*Bulletin of Mathematical Biophysics*",
+      "DOI 10.1007/BF02478259",
+      "primary"
+    ],
+    [
+      "pub_wiener_1948",
+      "Norbert Wiener, *Cybernetics*",
+      "1948",
+      "book",
+      "historical digital copy",
+      "primary"
+    ],
+    [
+      "pub_shannon_1948",
+      "Claude Shannon, \"A Mathematical Theory of Communication\"",
+      "1948",
+      "*Bell System Technical Journal*",
+      "IEEE historical record",
+      "primary"
+    ],
+    [
+      "pub_hebb_1949",
+      "Donald Hebb, *The Organization of Behavior*",
+      "1949",
+      "book",
+      "archival record",
+      "primary"
+    ],
+    [
+      "pub_robbins_monro_1951",
+      "Robbins & Monro, \"A Stochastic Approximation Method\"",
+      "1951",
+      "*Annals of Mathematical Statistics*",
+      "DOI 10.1214/aoms/1177729586",
+      "primary"
+    ],
+    [
+      "pub_bellman_1957",
+      "Richard Bellman, *Dynamic Programming*",
+      "1957",
+      "book",
+      "bibliographic record",
+      "primary"
+    ],
+    [
+      "pub_dartmouth_1955",
+      "McCarthy, Minsky, Rochester & Shannon, \"A Proposal for the Dartmouth Summer Research Project on Artificial Intelligence\"",
+      "1955",
+      "proposal",
+      "AAAI archival reproduction",
+      "primary"
+    ],
+    [
+      "pub_logic_theory_1956",
+      "Newell & Simon, *The Logic Theory Machine*",
+      "1956",
+      "RAND report",
+      "RAND archival record",
+      "primary"
+    ],
+    [
+      "pub_mccarthy_lisp_1960",
+      "John McCarthy, \"Recursive Functions of Symbolic Expressions...\"",
+      "1960",
+      "*CACM*",
+      "source reproduction",
+      "primary"
+    ],
+    [
+      "pub_kalman_1960",
+      "Rudolf Kálmán, \"A New Approach to Linear Filtering and Prediction Problems\"",
+      "1960",
+      "*Journal of Basic Engineering*",
+      "DOI 10.1115/1.3662552",
+      "primary"
+    ],
+    [
+      "pub_robinson_1965",
+      "J. A. Robinson, \"A Machine-Oriented Logic Based on the Resolution Principle\"",
+      "1965",
+      "*JACM*",
+      "DOI 10.1145/321250.321253",
+      "primary"
+    ],
+    [
+      "pub_strips_1971",
+      "Fikes & Nilsson, \"STRIPS: A New Approach...\"",
+      "1971",
+      "*Artificial Intelligence*",
+      "DOI 10.1016/0004-3702(71)90010-5",
+      "primary"
+    ],
+    [
+      "pub_sutton_1988",
+      "Richard Sutton, \"Learning to Predict by the Methods of Temporal Differences\"",
+      "1988",
+      "*Machine Learning*",
+      "DOI 10.1007/BF00115009",
+      "primary"
+    ],
+    [
+      "pub_qlearning_1992",
+      "Watkins & Dayan, \"Q-learning\"",
+      "1992",
+      "*Machine Learning*",
+      "DOI 10.1007/BF00992698",
+      "primary"
+    ],
+    [
+      "pub_reinforce_1992",
+      "Ronald Williams, \"Simple Statistical Gradient-Following Algorithms...\"",
+      "1992",
+      "*Machine Learning*",
+      "DOI 10.1007/BF00992696",
+      "primary"
+    ],
+    [
+      "pub_dopamine_1997",
+      "Schultz, Dayan & Montague, \"A Neural Substrate of Prediction and Reward\"",
+      "1997",
+      "*Science*",
+      "DOI 10.1126/science.275.5306.1593",
+      "primary"
+    ],
+    [
+      "pub_transformer_2017",
+      "Vaswani et al., \"Attention Is All You Need\"",
+      "2017",
+      "NeurIPS",
+      "arXiv 1706.03762",
+      "primary"
+    ],
+    [
+      "pub_gpt3_2020",
+      "Brown et al., \"Language Models are Few-Shot Learners\"",
+      "2020",
+      "NeurIPS",
+      "arXiv 2005.14165",
+      "primary"
+    ],
+    [
+      "pub_scaling_2020",
+      "Kaplan et al., \"Scaling Laws for Neural Language Models\"",
+      "2020",
+      "preprint",
+      "arXiv 2001.08361",
+      "primary"
+    ],
+    [
+      "pub_clip_2021",
+      "Radford et al., \"Learning Transferable Visual Models From Natural Language Supervision\"",
+      "2021",
+      "ICML",
+      "arXiv 2103.00020",
+      "primary"
+    ],
+    [
+      "pub_foundation_2021",
+      "Bommasani et al., *On the Opportunities and Risks of Foundation Models*",
+      "2021",
+      "Stanford CRFM report",
+      "arXiv 2108.07258",
+      "primary"
+    ],
+    [
+      "pub_cot_2022",
+      "Wei et al., \"Chain-of-Thought Prompting Elicits Reasoning in Large Language Models\"",
+      "2022",
+      "NeurIPS",
+      "arXiv 2201.11903",
+      "primary"
+    ],
+    [
+      "pub_vae_2013",
+      "Kingma & Welling, \"Auto-Encoding Variational Bayes\"",
+      "2013/2014",
+      "ICLR",
+      "arXiv 1312.6114",
+      "primary"
+    ],
+    [
+      "pub_gan_2014",
+      "Goodfellow et al., \"Generative Adversarial Nets\"",
+      "2014",
+      "NeurIPS",
+      "proceedings record",
+      "primary"
+    ],
+    [
+      "pub_ddpm_2020",
+      "Ho, Jain & Abbeel, \"Denoising Diffusion Probabilistic Models\"",
+      "2020",
+      "NeurIPS",
+      "arXiv 2006.11239",
+      "primary"
+    ],
+    [
+      "pub_latent_diffusion_2022",
+      "Rombach et al., \"High-Resolution Image Synthesis with Latent Diffusion Models\"",
+      "2022",
+      "CVPR",
+      "CVF record",
+      "primary"
+    ],
+    [
+      "pub_react_2022",
+      "Yao et al., \"ReAct: Synergizing Reasoning and Acting in Language Models\"",
+      "2022/2023",
+      "ICLR",
+      "arXiv record",
+      "primary"
+    ],
+    [
+      "pub_o1_2024",
+      "OpenAI, \"Learning to Reason with LLMs\"",
+      "2024",
+      "technical research report/post",
+      "official research record",
+      "primary"
+    ],
+    [
+      "pub_deepseek_r1_2025",
+      "DeepSeek-AI, *DeepSeek-R1*",
+      "2025",
+      "technical paper",
+      "arXiv record",
+      "primary"
+    ]
+  ],
+  "edges": [
+    [
+      "c_llull_combinatorial_reasoning",
+      "c_calculus_ratiocinator",
+      "INFLUENCED",
+      "17th c.",
+      "4",
+      "strongly_supported",
+      "Leibniz worked in an intellectual world in which Llullian combinatorics were known; avoid treating the systems as identical."
+    ],
+    [
+      "c_calculus_ratiocinator",
+      "c_boolean_algebra",
+      "PRECURSOR_OF",
+      "1840s",
+      "3",
+      "strongly_supported",
+      "Universal symbolic calculation is an antecedent of algebraic logic."
+    ],
+    [
+      "c_boolean_algebra",
+      "c_switching_boolean",
+      "MATHEMATICALLY_DERIVED_FROM",
+      "1937",
+      "5",
+      "documented",
+      "Shannon explicitly applied Boolean algebra to switching networks."
+    ],
+    [
+      "c_predicate_logic",
+      "c_entscheidungsproblem",
+      "ENABLES",
+      "1928",
+      "4",
+      "strongly_supported",
+      "Formalized logic makes mechanical decidability an exact question."
+    ],
+    [
+      "c_entscheidungsproblem",
+      "c_turing_machine",
+      "INSPIRED_BY",
+      "1936",
+      "5",
+      "documented",
+      "The Entscheidungsproblem is explicit in Turing's title and purpose."
+    ],
+    [
+      "c_lambda_calculus",
+      "c_church_turing_thesis",
+      "FORMALIZES",
+      "1936",
+      "5",
+      "documented",
+      "Church offered lambda-definability as a characterization of effective calculability."
+    ],
+    [
+      "c_turing_machine",
+      "c_church_turing_thesis",
+      "FORMALIZES",
+      "1936",
+      "5",
+      "documented",
+      "Turing supplied an independent machine analysis."
+    ],
+    [
+      "c_turing_machine",
+      "c_universal_computation",
+      "ENABLES",
+      "1936",
+      "5",
+      "documented",
+      "Universal-machine construction appears in Turing's framework."
+    ],
+    [
+      "c_probability_theory",
+      "c_bayesian_inference",
+      "ENABLES",
+      "1763",
+      "5",
+      "documented",
+      "Bayes/Price work is explicitly probabilistic inference from evidence."
+    ],
+    [
+      "c_probability_theory",
+      "c_markov_chains",
+      "ENABLES",
+      "1906",
+      "5",
+      "documented",
+      "Markov generalizes probability to dependent sequences."
+    ],
+    [
+      "c_markov_chains",
+      "c_hidden_markov_models",
+      "GENERALIZES",
+      "1960s",
+      "5",
+      "documented",
+      "HMMs add latent state and observations to Markov dynamics."
+    ],
+    [
+      "c_markov_chains",
+      "c_markov_decision_process",
+      "GENERALIZES",
+      "1950s",
+      "5",
+      "strongly_supported",
+      "MDPs add actions/rewards to Markovian state evolution."
+    ],
+    [
+      "c_maximum_likelihood",
+      "c_em",
+      "ENABLES",
+      "1977",
+      "5",
+      "documented",
+      "EM is explicitly a likelihood procedure for incomplete/latent data."
+    ],
+    [
+      "c_bayesian_inference",
+      "c_bayesian_networks",
+      "PRECURSOR_OF",
+      "1980s",
+      "5",
+      "strongly_supported",
+      "Bayesian networks computationalize structured probabilistic inference."
+    ],
+    [
+      "c_bayesian_networks",
+      "c_belief_propagation",
+      "ENABLES",
+      "1980s",
+      "5",
+      "documented",
+      "Message passing exploits graph factorization."
+    ],
+    [
+      "c_bayesian_networks",
+      "c_causal_graphical_models",
+      "EXTENDS",
+      "1990s",
+      "4",
+      "strongly_supported",
+      "Causal semantics add interventions and structural claims beyond observational factorization."
+    ],
+    [
+      "c_feedback_control",
+      "c_cybernetics",
+      "PRECURSOR_OF",
+      "1948",
+      "5",
+      "documented",
+      "Feedback is a core organizing idea of cybernetics."
+    ],
+    [
+      "c_homeostasis",
+      "c_cybernetics",
+      "BIOLOGICALLY_INSPIRED_BY",
+      "1940s",
+      "5",
+      "strongly_supported",
+      "Physiological regulation supplies the biological half of the animal/machine analogy."
+    ],
+    [
+      "c_feedback_control",
+      "c_kalman_filter",
+      "PRECURSOR_OF",
+      "1960",
+      "5",
+      "strongly_supported",
+      "State estimation becomes a central feedback-control component."
+    ],
+    [
+      "c_markov_decision_process",
+      "c_dynamic_programming",
+      "COMBINES",
+      "1950s",
+      "5",
+      "documented",
+      "Bellman recursion solves sequential state-based decision problems."
+    ],
+    [
+      "c_dynamic_programming",
+      "c_td_learning",
+      "PRECURSOR_OF",
+      "1988",
+      "5",
+      "documented",
+      "TD uses bootstrapped value targets analogous to sampled Bellman backups."
+    ],
+    [
+      "c_td_learning",
+      "c_q_learning",
+      "GENERALIZES",
+      "1989",
+      "5",
+      "documented",
+      "Q-learning is a TD control algorithm over state-action values."
+    ],
+    [
+      "c_td_learning",
+      "c_dopamine_prediction_error",
+      "EXPERIMENTALLY_SUPPORTS",
+      "1997",
+      "5",
+      "documented",
+      "Schultz, Dayan and Montague explicitly linked dopamine to prediction-error learning."
+    ],
+    [
+      "c_policy_gradients",
+      "c_rlhf",
+      "ENABLES",
+      "2017+",
+      "4",
+      "strongly_supported",
+      "Policy optimization is a common RLHF component."
+    ],
+    [
+      "c_neuron_doctrine",
+      "c_artificial_neuron",
+      "BIOLOGICALLY_INSPIRED_BY",
+      "1943",
+      "4",
+      "strongly_supported",
+      "Neural-cell thinking makes a neuron-like computational unit possible, though the model is radically simplified."
+    ],
+    [
+      "c_artificial_neuron",
+      "c_perceptron",
+      "PRECURSOR_OF",
+      "1958",
+      "5",
+      "strongly_supported",
+      "Perceptron systems add adaptive trainability to neuron-like threshold processing."
+    ],
+    [
+      "c_hebbian_learning",
+      "c_hopfield_network",
+      "INFLUENCED",
+      "1982",
+      "4",
+      "strongly_supported",
+      "Correlation-based associative memory connects the traditions."
+    ],
+    [
+      "c_hebbian_learning",
+      "c_stdp",
+      "GENERALIZES",
+      "1990s",
+      "5",
+      "strongly_supported",
+      "STDP provides a precise timing-sensitive biological elaboration of Hebbian association."
+    ],
+    [
+      "c_reverse_mode_ad",
+      "c_backpropagation",
+      "ENABLES",
+      "1970s–1980s",
+      "5",
+      "strongly_supported",
+      "Neural-network backprop is reverse differentiation specialized to compositional networks."
+    ],
+    [
+      "c_perceptron",
+      "c_backpropagation",
+      "PRECURSOR_OF",
+      "1986",
+      "5",
+      "strongly_supported",
+      "Backprop extends error-driven learning to networks with hidden nonlinear layers."
+    ],
+    [
+      "c_connectionism",
+      "c_backpropagation",
+      "REVIVES",
+      "1986",
+      "5",
+      "documented",
+      "Backprop-trained representations were central to the PDP connectionist revival."
+    ],
+    [
+      "c_neocognitron",
+      "c_convolutional_neural_networks",
+      "PRECURSOR_OF",
+      "1980s",
+      "5",
+      "strongly_supported",
+      "Hierarchical receptive fields and tolerance mechanisms precede trainable CNNs."
+    ],
+    [
+      "c_backpropagation",
+      "c_convolutional_neural_networks",
+      "ENABLES",
+      "late 1980s",
+      "5",
+      "documented",
+      "Backprop makes convolutional hierarchies end-to-end trainable."
+    ],
+    [
+      "c_recurrent_neural_networks",
+      "c_lstm",
+      "EXTENDS",
+      "1997",
+      "5",
+      "documented",
+      "LSTM changes recurrent memory dynamics through gating."
+    ],
+    [
+      "c_natural_selection",
+      "c_genetic_algorithms",
+      "BIOLOGICALLY_INSPIRED_BY",
+      "1960s–1970s",
+      "5",
+      "documented",
+      "Evolutionary operators explicitly abstract biological evolution."
+    ],
+    [
+      "c_cellular_automata",
+      "c_artificial_life",
+      "PRECURSOR_OF",
+      "1980s",
+      "5",
+      "documented",
+      "Cellular automata provide model worlds for emergence and synthetic life."
+    ],
+    [
+      "c_affordances",
+      "c_embodied_cognition",
+      "PRECURSOR_OF",
+      "1980s–1990s",
+      "4",
+      "strongly_supported",
+      "Ecological perception emphasizes agent-relative action possibilities."
+    ],
+    [
+      "c_cybernetics",
+      "c_behavior_based_robotics",
+      "PRECURSOR_OF",
+      "1980s",
+      "4",
+      "strongly_supported",
+      "Situated closed-loop action extends cybernetic regulatory thinking."
+    ],
+    [
+      "c_kalman_filter",
+      "c_slam",
+      "ENABLES",
+      "1980s–1990s",
+      "5",
+      "strongly_supported",
+      "Recursive probabilistic state estimation is foundational to early SLAM formulations."
+    ],
+    [
+      "c_distributional_hypothesis",
+      "c_vector_space_semantics",
+      "PRECURSOR_OF",
+      "1970s–1990s",
+      "5",
+      "strongly_supported",
+      "Contextual distribution becomes geometric statistical representation."
+    ],
+    [
+      "c_vector_space_semantics",
+      "c_word_embeddings",
+      "PRECURSOR_OF",
+      "2000s–2010s",
+      "5",
+      "strongly_supported",
+      "Learned embeddings continue the continuous distributional representation tradition."
+    ],
+    [
+      "c_distributed_representations",
+      "c_word_embeddings",
+      "PRECURSOR_OF",
+      "2000s",
+      "5",
+      "strongly_supported",
+      "Embeddings are a direct instance of distributed representation."
+    ],
+    [
+      "c_transfer_learning",
+      "c_foundation_models",
+      "PRECURSOR_OF",
+      "2010s",
+      "5",
+      "documented",
+      "Foundation models are useful precisely because representations transfer and adapt."
+    ],
+    [
+      "c_self_supervised_learning",
+      "c_autoregressive_pretraining",
+      "IMPLEMENTS",
+      "2018+",
+      "5",
+      "documented",
+      "Next-token targets are produced from raw sequences themselves."
+    ],
+    [
+      "c_neural_attention",
+      "c_transformer",
+      "PRECURSOR_OF",
+      "2017",
+      "5",
+      "documented",
+      "Transformer replaces recurrent sequence computation with stacked attention-centered blocks."
+    ],
+    [
+      "c_residual_connections",
+      "c_transformer",
+      "ENABLES",
+      "2017",
+      "4",
+      "documented",
+      "Residual connections are explicit components of Transformer layers."
+    ],
+    [
+      "c_transformer",
+      "c_autoregressive_pretraining",
+      "ENABLES",
+      "2018",
+      "5",
+      "documented",
+      "GPT-style models use causal Transformer stacks."
+    ],
+    [
+      "c_autoregressive_pretraining",
+      "c_in_context_learning",
+      "ENABLES",
+      "2020",
+      "5",
+      "documented",
+      "GPT-3 demonstrated few-shot adaptation through context at large scale."
+    ],
+    [
+      "c_transformer",
+      "c_scaling_laws",
+      "COMBINES",
+      "2020",
+      "5",
+      "documented",
+      "Modern language-model scaling studies were largely conducted on Transformer models."
+    ],
+    [
+      "c_scaling_laws",
+      "c_foundation_models",
+      "ENABLES",
+      "2020s",
+      "4",
+      "strongly_supported",
+      "Predictable scale-performance relations influence training allocation and model strategy."
+    ],
+    [
+      "c_transformer",
+      "c_foundation_models",
+      "ENABLES",
+      "2020s",
+      "5",
+      "strongly_supported",
+      "Transformer architectures dominate early language foundation-model development."
+    ],
+    [
+      "c_contrastive_learning",
+      "c_clip",
+      "ENABLES",
+      "2021",
+      "5",
+      "documented",
+      "CLIP directly uses contrastive learning over matched image-text pairs."
+    ],
+    [
+      "c_bayesian_inference",
+      "c_vae",
+      "MATHEMATICALLY_DERIVED_FROM",
+      "2013",
+      "5",
+      "documented",
+      "VAEs optimize a variational Bayesian objective."
+    ],
+    [
+      "c_game_theory",
+      "c_gan",
+      "MATHEMATICALLY_DERIVED_FROM",
+      "2014",
+      "4",
+      "documented",
+      "GAN training is posed as a two-player minimax game."
+    ],
+    [
+      "c_diffusion_models",
+      "c_latent_diffusion",
+      "EXTENDS",
+      "2022",
+      "5",
+      "documented",
+      "Latent diffusion performs diffusion in a learned compressed representation."
+    ],
+    [
+      "c_foundation_models",
+      "c_instruction_tuning",
+      "ENABLES",
+      "2021",
+      "5",
+      "documented",
+      "Instruction tuning adapts broad pretrained competence to following explicit tasks."
+    ],
+    [
+      "c_foundation_models",
+      "c_chain_of_thought",
+      "ENABLES",
+      "2022",
+      "5",
+      "documented",
+      "CoT becomes especially effective in sufficiently large pretrained models."
+    ],
+    [
+      "c_chain_of_thought",
+      "c_react",
+      "PRECURSOR_OF",
+      "2022",
+      "5",
+      "documented",
+      "ReAct explicitly interleaves reasoning traces with actions."
+    ],
+    [
+      "c_clip",
+      "c_multimodal_foundation_models",
+      "PRECURSOR_OF",
+      "2021+",
+      "5",
+      "strongly_supported",
+      "Large-scale vision-language alignment becomes a major ingredient of later multimodal systems."
+    ],
+    [
+      "c_chain_of_thought",
+      "c_test_time_compute",
+      "PRECURSOR_OF",
+      "2024",
+      "4",
+      "strongly_supported",
+      "Longer structured inference traces are one route to spending more inference computation."
+    ],
+    [
+      "c_reinforcement_learning",
+      "c_test_time_compute",
+      "COMBINES",
+      "2024+",
+      "5",
+      "documented",
+      "Contemporary reasoning systems use RL to improve extended reasoning behavior; public o1 and DeepSeek-R1 reports exemplify related but distinct approaches."
+    ],
+    [
+      "c_connectionism",
+      "c_neuro_symbolic_ai",
+      "COMBINES",
+      "1990s+",
+      "4",
+      "strongly_supported",
+      "Neuro-symbolic work explicitly attempts to combine trainable neural representation and explicit symbolic structure."
+    ],
+    [
+      "c_reverse_mode_ad",
+      "c_differentiable_programming",
+      "ENABLES",
+      "modern era",
+      "5",
+      "documented",
+      "Automatic differentiation is the underlying computational mechanism."
+    ]
+  ],
+  "aliases": {
+    "c_neuron_doctrine": "neuron-doctrine",
+    "c_turing_machine": "turing",
+    "c_artificial_neuron": "mcculloch-pitts",
+    "c_cybernetics": "cybernetics",
+    "c_information_theory": "shannon",
+    "c_information_entropy": "shannon",
+    "c_hebbian_learning": "hebb",
+    "c_dynamic_programming": "bellman",
+    "c_dartmouth_ai": "dartmouth",
+    "c_perceptron": "perceptron",
+    "c_hopfield_network": "hopfield",
+    "c_neocognitron": "neocognitron",
+    "c_backpropagation": "backpropagation",
+    "c_td_learning": "temporal-difference",
+    "c_q_learning": "q-learning",
+    "c_dopamine_prediction_error": "dopamine",
+    "c_predictive_coding": "predictive-coding",
+    "c_imagenet": "imagenet",
+    "c_gpu_deep_learning": "alexnet",
+    "c_transformer": "transformers",
+    "c_self_supervised_learning": "self-supervised-learning",
+    "c_foundation_models": "foundation-models"
+  }
+}
