@@ -92,18 +92,18 @@
   }
 }
 
-/* Pale categorical tints share a 70% glass material in both themes. */
+/* Pale categorical tints share a 75% glass material in both themes. */
 .complexity-options button {
   --level-color: var(--category-neuroscience);
   --level-ink: var(--category-neuroscience-ink);
   position: relative;
   background: color-mix(
     in srgb,
-    color-mix(in srgb, var(--level-color) 14%, var(--elevated)) 70%,
+    color-mix(in srgb, var(--level-color) 14%, var(--elevated)) 75%,
     transparent
   );
-  -webkit-backdrop-filter: blur(8px) saturate(1.1);
-  backdrop-filter: blur(8px) saturate(1.1);
+  -webkit-backdrop-filter: blur(1px) saturate(1.1);
+  backdrop-filter: blur(1px) saturate(1.1);
   border-color: color-mix(in srgb, var(--level-color) 35%, var(--border));
   transition:
     transform 180ms ease,

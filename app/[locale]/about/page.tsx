@@ -11,6 +11,7 @@ const copy = {
     intro:
       'An interactive atlas of the connected histories of neuroscience, computation, and machine learning. It follows ideas that travelled from biological cells to artificial systems and back again, through linked discoveries, timelines, idea graphs, and scientific demonstrations, in English, German, and Spanish.',
     accompanies: 'The Intelligence Atlas is a work in progress accompanying a',
+    lead: 'led by Mario Archila',
     universityIntro: 'at the',
     university: 'University of Jena',
     country: 'Germany',
@@ -30,6 +31,7 @@ const copy = {
     intro:
       'Ein interaktiver Atlas der miteinander verbundenen Geschichte von Neurowissenschaften, Informatik und maschinellem Lernen. Er verfolgt Ideen, die von biologischen Zellen zu künstlichen Systemen und wieder zurück wanderten, anhand verknüpfter Entdeckungen, Zeitachsen, Ideengraphen und wissenschaftlicher Demonstrationen, auf Englisch, Deutsch und Spanisch.',
     accompanies: 'The Intelligence Atlas wird laufend weiterentwickelt und begleitet einen',
+    lead: 'unter der Leitung von Mario Archila',
     universityIntro: 'an der',
     university: 'Universität Jena',
     country: 'Deutschland',
@@ -49,6 +51,7 @@ const copy = {
     intro:
       'Un atlas interactivo de las historias conectadas de la neurociencia, la computación y el aprendizaje automático. Sigue ideas que viajaron de las células biológicas a los sistemas artificiales y de vuelta, mediante descubrimientos enlazados, líneas de tiempo, grafos de ideas y demostraciones científicas, en inglés, alemán y español.',
     accompanies: 'The Intelligence Atlas es un proyecto en desarrollo que acompaña un',
+    lead: 'dirigido por Mario Archila',
     universityIntro: 'en la',
     university: 'Universidad de Jena',
     country: 'Alemania',
@@ -98,7 +101,7 @@ export default async function About({ params }: Props) {
         {c.accompanies}{' '}
         <a href="https://archilaresearch.github.io/teaching.html#neuro-ai">{c.course}</a>{' '}
         {c.researchIntro} <a href="https://archilaresearch.github.io/research.html">{c.research}</a>{' '}
-        {c.universityIntro}{' '}
+        {c.lead} {c.universityIntro}{' '}
         <a href={locale === 'de' ? 'https://www.uni-jena.de/' : 'https://www.uni-jena.de/en'}>
           {c.university}
         </a>

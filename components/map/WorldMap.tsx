@@ -1,5 +1,5 @@
 'use client';
-import { displayYear } from '@/lib/graph';
+import { displayYear, yearOf } from '@/lib/graph';
 import { useEffect, useRef, useState } from 'react';
 import { landPath, project } from '@/lib/map';
 import type { HistoricalEntity, HistoricalRelationship, Locale } from '@/types/history';
@@ -7,6 +7,7 @@ import { t, relationLabels } from '@/content/translations/ui';
 import { ConnectionPreview, useConnectionPreview } from '@/components/ui/ConnectionPreview';
 import { Icon } from '@/components/ui/Icon';
 import { NodePreview, useNodePreview } from '@/components/ui/NodePreview';
+import { useConnectionAnimation } from './useConnectionAnimation';
 import MapLabels from './MapLabels';
 import { ClusterPreview, useClusterPreview } from './ClusterPreview';
 import { clusterMapCities, describeMapCluster, groupMapCities } from '@/lib/map-pins';
@@ -37,6 +38,7 @@ export default function WorldMap({
     if (mapElement.current) observer.observe(mapElement.current);
     return () => observer.disconnect();
   }, []);
+  const [animateConnections, setAnimateConnections] = useState(true);
   const [cityMode, setCityMode] = useState(true);
   const [hoveredCity, setHoveredCity] = useState<string | null>(null);
   const [showConnections, setShowConnections] = useState(true);
@@ -88,6 +90,19 @@ export default function WorldMap({
       (cityMode || e.source === selected || e.target === selected) &&
       entities.some((entity) => entity.id === e.source && entity.locations.length) &&
       entities.some((entity) => entity.id === e.target && entity.locations.length),
+  );
+  edges.sort((a, b) => {
+    const date = (edge: HistoricalRelationship) =>
+      Math.max(
+        yearOf(entities.find((e) => e.id === edge.source)!),
+        yearOf(entities.find((e) => e.id === edge.target)!),
+      );
+    return date(a) - date(b) || a.id.localeCompare(b.id);
+  });
+  useConnectionAnimation(
+    mapElement,
+    edges.map((e) => e.id).join('|'),
+    showConnections && animateConnections,
   );
   const endpointIds = new Set(
     showConnections ? edges.flatMap((edge) => [edge.source, edge.target]) : [],
@@ -218,6 +233,30 @@ export default function WorldMap({
         />
         {copy.connections}
       </label>
+      {showConnections && (
+        <button
+          className="map-view-control"
+          aria-pressed={animateConnections}
+          onClick={() => setAnimateConnections((value) => !value)}
+        >
+          {
+            { en: 'Animate chronology', de: 'Chronologie animieren', es: 'Animar cronología' }[
+              locale
+            ]
+          }
+        </button>
+      )}
+      {showConnections && (
+        <p className="muted">
+          {
+            {
+              en: 'Connections appear when both discoveries exist, in date order. Moving lights indicate relationship direction, not travel or proven influence. Turn off animation to see every connection.',
+              de: 'Verbindungen erscheinen in zeitlicher Reihenfolge, sobald beide Entdeckungen existieren. Lichtpunkte zeigen die Beziehungsrichtung, keine Reisen oder belegten Einflüsse. Ohne Animation sind alle Verbindungen sichtbar.',
+              es: 'Las conexiones aparecen por fecha cuando existen ambos descubrimientos. Las luces indican la dirección de la relación, no viajes ni influencias probadas. Desactive la animación para ver todas las conexiones.',
+            }[locale]
+          }
+        </p>
+      )}
       <svg
         ref={mapElement}
         viewBox="0 0 720 295"
@@ -293,12 +332,20 @@ export default function WorldMap({
                   data-target={edge.target}
                 >
                   <path
+                    className="map-connection-trail"
+                    pathLength="1"
                     d={path}
                     fill="none"
                     stroke="var(--accent)"
                     strokeWidth={1.2 / scale}
-                    strokeDasharray={`${4 / scale} ${4 / scale}`}
                     opacity=".65"
+                  />
+                  <circle
+                    className="map-connection-head"
+                    r={3 / scale}
+                    fill="var(--accent)"
+                    opacity="0"
+                    pointerEvents="none"
                   />
                   <path
                     {...previewProps}
