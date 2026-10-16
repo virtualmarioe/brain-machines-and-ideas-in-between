@@ -1,10 +1,14 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import type { HistoricalEntity, Locale } from '@/types/history';
 import { chronological, yearOf, displayYear, formatYear } from '@/lib/graph';
 import { t } from '@/content/translations/ui';
+import WinterGuide from './WinterGuide';
+import { winterCopy, winterCards } from '@/content/ai-winters';
+import type { Complexity } from '@/lib/complexity';
 import { Icon } from '@/components/ui/Icon';
 import Modal from '@/components/ui/Modal';
+import { PreviewCard, useOverlayPreview } from '@/components/ui/OverlayPreview';
 import { TimelinePreview, useTimelinePreview } from '@/components/ui/TimelinePreview';
 export const MIN_YEAR = -400,
   MAX_YEAR = 2026;
@@ -37,6 +41,7 @@ export default function Timeline({
   onSelect,
   locale,
   nobel,
+  level,
 }: {
   entities: HistoricalEntity[];
   selected: string;
@@ -45,11 +50,31 @@ export default function Timeline({
   onSelect: (id: string) => void;
   locale: Locale;
   nobel: boolean;
+  level: Complexity;
 }) {
+  const cycleGradientId = useId();
+  const [guideOpen, setGuideOpen] = useState(false);
+  useEffect(() => {
+    const openLinkedGuide = () => {
+      if (window.location.hash === '#ai-winters-guide') setGuideOpen(true);
+    };
+    openLinkedGuide();
+    window.addEventListener('hashchange', openLinkedGuide);
+    return () => window.removeEventListener('hashchange', openLinkedGuide);
+  }, []);
   const preview = useTimelinePreview();
+  const winterPreview = useOverlayPreview<string>();
+  const dismissWinter = winterPreview.dismiss;
+  const minYear = entities.length
+    ? Math.max(MIN_YEAR, Math.floor(Math.min(...entities.map(yearOf)) / 10) * 10)
+    : MIN_YEAR;
+  useEffect(() => {
+    if (range[0] < minYear) onRange([minYear, Math.max(minYear + 4, range[1])]);
+  }, [minYear, range, onRange]);
   const dismissPreview = preview.dismiss;
   const [from, to] = range;
   useEffect(() => dismissPreview(), [entities, selected, from, to, dismissPreview]);
+  useEffect(() => dismissWinter(), [from, to, locale, level, dismissWinter]);
   const span = range[1] - range[0];
   const step =
     span > 1000 ? 500 : span > 300 ? 100 : span > 100 ? 20 : span > 30 ? 10 : span > 12 ? 5 : 1;
@@ -104,13 +129,88 @@ export default function Timeline({
           </button>
           <button
             aria-label={`${t('timeline', locale)}: ${t('resetView', locale)}`}
-            onClick={() => onRange([Math.min(1650, ...entities.map(yearOf)), MAX_YEAR])}
+            onClick={() => onRange([minYear, MAX_YEAR])}
           >
             <Icon name="reset" size={14} />
           </button>
         </div>
       </div>
       <div ref={track} className="time-track">
+        <svg
+          className="time-climate"
+          aria-hidden="true"
+          width="100%"
+          height="100%"
+          viewBox={`0 0 ${span} 1`}
+          preserveAspectRatio="none"
+        >
+          <defs>
+            {/* The buildup anchors are illustrative; winter boundaries are approximate. */}
+            <linearGradient
+              id={cycleGradientId}
+              gradientUnits="userSpaceOnUse"
+              x1={1945 - from}
+              x2={MAX_YEAR - from}
+              y1="0"
+              y2="0"
+            >
+              {[
+                [1945, 'warm', 0],
+                [1956, 'warm', 0.025],
+                [1965, 'warm', 0.065],
+                [1973, 'warm', 0.11],
+                [1973, 'cold', 0.11],
+                [1980, 'cold', 0],
+                [1980, 'warm', 0],
+                [1984, 'warm', 0.05],
+                [1987, 'warm', 0.11],
+                [1987, 'cold', 0.11],
+                [1993, 'cold', 0],
+                [1993, 'warm', 0],
+                [MAX_YEAR, 'warm', 0.11],
+              ].map(([year, phase, opacity], index) => (
+                <stop
+                  key={index}
+                  offset={`${((Number(year) - 1945) / (MAX_YEAR - 1945)) * 100}%`}
+                  stopColor={phase === 'warm' ? '#d85c52' : '#69bce8'}
+                  stopOpacity={opacity}
+                />
+              ))}
+            </linearGradient>
+          </defs>
+          <rect width={span} height="1" fill={`url(#${cycleGradientId})`} />
+        </svg>
+        {[
+          { start: 1973, end: 1980, label: 'firstAIWinter' as const },
+          { start: 1987, end: 1993, label: 'secondAIWinter' as const },
+        ].map((winter, index) => {
+          if (winter.end < from || winter.start > to) return null;
+          const anchor = ((Math.max(from, winter.start) - from) / span) * 100;
+          return (
+            <div
+              key={winter.start}
+              className="time-winter"
+              style={{ left: `${anchor}%`, top: 105 + index * 34, width: `${100 - anchor}%` }}
+            >
+              <button
+                type="button"
+                {...winterPreview.triggerProps(t(winter.label, locale), String(winter.start))}
+                onClick={(event) => {
+                  winterPreview.open(
+                    t(winter.label, locale),
+                    String(winter.start),
+                    event.currentTarget,
+                  );
+                  requestAnimationFrame(() =>
+                    document.getElementById(winterPreview.id)?.querySelector('a')?.focus(),
+                  );
+                }}
+              >
+                {t(winter.label, locale)} · ≈ {winter.start}–{winter.end}
+              </button>
+            </div>
+          );
+        })}
         <div className="time-line" />
         {ticks.map((year) => (
           <div
@@ -181,9 +281,9 @@ export default function Timeline({
           <input
             aria-label={t('from', locale)}
             type="range"
-            min={MIN_YEAR}
+            min={minYear}
             max={MAX_YEAR - 4}
-            value={range[0]}
+            value={Math.max(minYear, range[0])}
             onChange={(e) => onRange([Math.min(Number(e.target.value), range[1] - 4), range[1]])}
           />
         </label>
@@ -199,6 +299,93 @@ export default function Timeline({
           />
         </label>
       </div>
+      {winterPreview.current && (
+        <PreviewCard
+          preview={winterPreview}
+          kind="winter"
+          forId={winterPreview.current.key}
+          className="winter-preview"
+          role="dialog"
+          label={winterPreview.current.item}
+        >
+          <div className="winter-snow" aria-hidden="true">
+            {Array.from({ length: 28 }, (_, index) => (
+              <span
+                key={index}
+                className="winter-flake"
+                style={
+                  {
+                    left: `${(index * 37 + 11) % 100}%`,
+                    '--flake-size': `${1.5 + (index % 5) * 0.65}px`,
+                    '--flake-opacity': (0.25 + (index % 4) * 0.12) * 1.1 ** 3,
+                    '--fall-duration': `${9 + ((index * 7) % 17)}s`,
+                    '--fall-delay': `${-((index * 13) % 29)}s`,
+                    '--sway-duration': `${3 + (index % 5)}s`,
+                    '--drift': `${8 + (index % 4) * 5}px`,
+                    '--flake-blur': index % 5 === 0 ? '0.7px' : '0.15px',
+                  } as React.CSSProperties
+                }
+              >
+                <i />
+              </span>
+            ))}
+            {Array.from({ length: 28 }, (_, index) => (
+              <span
+                key={index}
+                className="winter-flake winter-crystal"
+                style={
+                  {
+                    left: `${(index * 37 + 29) % 100}%`,
+                    '--flake-size': `${1.5 + (index % 5) * 0.65}px`,
+                    '--flake-opacity': (0.25 + (index % 4) * 0.12) * 1.1 ** 3,
+                    '--fall-duration': `${9 + ((index * 7) % 17)}s`,
+                    '--fall-delay': `${-((index * 13) % 29)}s`,
+                    '--sway-duration': `${3 + (index % 5)}s`,
+                    '--drift': `${8 + (index % 4) * 5}px`,
+                    '--flake-blur': index % 5 === 0 ? '0.7px' : '0.15px',
+                  } as React.CSSProperties
+                }
+              >
+                <i>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  >
+                    {[0, 60, 120].map((angle) => (
+                      <path
+                        key={angle}
+                        transform={`rotate(${angle} 12 12)`}
+                        d="M12 1v22 M8 4l4 4 4-4 M8 20l4-4 4 4"
+                      />
+                    ))}
+                  </svg>
+                </i>
+              </span>
+            ))}
+          </div>
+          <div className="node-preview-meta">{t('aiWintersTitle', locale)}</div>
+          <h3>{winterPreview.current.item}</h3>
+          <p className="node-preview-description">
+            {winterCards[level][winterPreview.current.key === '1973' ? 'first' : 'second'][locale]}
+          </p>
+          <p className="node-preview-note">{t('aiWintersKey', locale)}</p>
+          <a
+            className="winter-learn-more"
+            href="#ai-winters-guide"
+            onClick={() => {
+              setGuideOpen(true);
+              winterPreview.dismiss(true);
+              requestAnimationFrame(() => document.getElementById('winter-guide-heading')?.focus());
+            }}
+          >
+            {winterCopy.learn[locale]} →
+          </a>
+        </PreviewCard>
+      )}
+      <WinterGuide locale={locale} level={level} open={guideOpen} onOpen={setGuideOpen} />
       <TimelinePreview preview={preview} locale={locale} />
       {cluster && (
         <Modal title={t('cluster', locale)} locale={locale} onClose={() => setCluster(null)}>

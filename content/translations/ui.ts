@@ -143,6 +143,23 @@ export const ui = {
   disputed: text('Contested interpretation', 'Umstrittene Deutung', 'Interpretación debatida'),
   experiment: text('Try the idea', 'Idee ausprobieren', 'Experimentar con la idea'),
   timeline: text('Navigate through time', 'Durch die Zeit navigieren', 'Navegar por el tiempo'),
+  aiWintersTitle: text(
+    'About the AI winters',
+    'Über die KI-Winter',
+    'Sobre los inviernos de la IA',
+  ),
+  aiWintersInfo: text(
+    'The AI winters describe periods when ambitious promises gave way to criticism, reduced funding and commercial disappointment. The timeline marks two approximate periods: 1973–1980 and 1987–1993. Research continued throughout, and the timing and impact varied across countries and fields.',
+    'Als KI-Winter werden Phasen bezeichnet, in denen auf ehrgeizige Versprechen Kritik, sinkende Förderung und kommerzielle Enttäuschungen folgten. Die Zeitleiste markiert zwei ungefähre Zeiträume: 1973–1980 und 1987–1993. Die Forschung ging weiter; Zeitpunkt und Auswirkungen unterschieden sich je nach Land und Fachgebiet.',
+    'Los inviernos de la IA describen periodos en los que las grandes promesas dieron paso a críticas, recortes de financiación y decepciones comerciales. La cronología señala dos periodos aproximados: 1973–1980 y 1987–1993. La investigación continuó, y las fechas y los efectos variaron según el país y el campo.',
+  ),
+  aiWintersKey: text(
+    'Warm tint: rising expectations. Ice blue: a winter, fading toward recovery. These are interpretive historical boundaries, not exact turning points.',
+    'Warmer Farbton: steigende Erwartungen. Eisblau: ein Winter, der zur Erholung hin verblasst. Die historischen Grenzen sind Deutungen, keine exakten Wendepunkte.',
+    'Tono cálido: expectativas crecientes. Azul hielo: un invierno que se desvanece hacia la recuperación. Los límites históricos son interpretativos, no puntos de inflexión exactos.',
+  ),
+  firstAIWinter: text('First AI Winter', 'Erster KI-Winter', 'Primer invierno de la IA'),
+  secondAIWinter: text('Second AI Winter', 'Zweiter KI-Winter', 'Segundo invierno de la IA'),
   from: text('From year', 'Ab Jahr', 'Desde el año'),
   to: text('To year', 'Bis Jahr', 'Hasta el año'),
   selected: text('Selected discovery', 'Ausgewählte Entdeckung', 'Descubrimiento seleccionado'),

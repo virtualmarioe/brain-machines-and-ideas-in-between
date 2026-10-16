@@ -1850,7 +1850,39 @@ footer :is(button, a) {
   outline-offset: 3px;
 }
 .time-track {
-  height: 110px;
+  height: 180px;
+  isolation: isolate;
+}
+.time-climate {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.time-winter {
+  position: absolute;
+  height: 7px;
+  border-left: 1px solid var(--muted);
+  pointer-events: none;
+  color: var(--muted);
+  font-size: var(--text-caption);
+  line-height: 18px;
+}
+.time-winter > button {
+  min-width: 100%;
+  position: absolute;
+  top: 9px;
+  right: 0;
+  width: max-content;
+  pointer-events: auto;
+  padding: 0 0 0 6px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: help;
+  white-space: nowrap;
 }
 .nobel-event {
   width: 24px;

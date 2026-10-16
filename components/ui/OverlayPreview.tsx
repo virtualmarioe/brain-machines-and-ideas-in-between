@@ -94,6 +94,16 @@ export function useOverlayPreview<T>() {
     open: show,
     dismiss,
     cardProps: {
+      onFocusCapture() {
+        cancelClose();
+        overCard.current = true;
+      },
+      onBlurCapture(event: FocusEvent<Element>) {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          overCard.current = false;
+          scheduleClose();
+        }
+      },
       onPointerEnter(event: PointerEvent<Element>) {
         pointerPoint = { x: event.clientX, y: event.clientY };
         cancelClose();
@@ -166,6 +176,8 @@ export function PreviewCard<T>({
   kind,
   forId,
   splitCards = false,
+  role = 'tooltip',
+  label,
 }: {
   preview: ReturnType<typeof useOverlayPreview<T>>;
   children: ReactNode;
@@ -173,6 +185,8 @@ export function PreviewCard<T>({
   kind: string;
   forId: string;
   splitCards?: boolean;
+  role?: 'tooltip' | 'dialog';
+  label?: string;
 }) {
   const card = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<ReturnType<typeof placeBubble>>(null);
@@ -330,7 +344,8 @@ export function PreviewCard<T>({
       <div
         ref={card}
         id={preview.id}
-        role="tooltip"
+        role={role}
+        aria-label={label}
         className={`node-preview ${splitCards ? 'cluster-preview' : 'glass-surface'} ${className}`}
         data-preview-for={forId}
         data-preview-kind={kind}

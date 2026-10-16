@@ -80,3 +80,71 @@
 .node-preview :is(p, li, h3, dd) {
   overflow-wrap: anywhere;
 }
+
+.winter-preview {
+  isolation: isolate;
+}
+.winter-snow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(160deg, rgb(137 194 222 / 9%), transparent 65%);
+}
+.winter-flake {
+  position: absolute;
+  top: -5%;
+  width: var(--flake-size);
+  height: var(--flake-size);
+  opacity: var(--flake-opacity);
+  animation: winter-snowfall var(--fall-duration) var(--fall-delay) linear infinite;
+}
+.winter-flake i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 45% 55% 60% 40%;
+  background: radial-gradient(circle at 35% 30%, #fff 10%, #c4deea 55%, #93bdd2 100%);
+  box-shadow: 0 0 3px rgb(189 223 239 / 35%);
+  filter: blur(var(--flake-blur));
+  animation: winter-snow-sway var(--sway-duration) var(--fall-delay) ease-in-out infinite alternate;
+}
+.winter-crystal i {
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: #a9d1e5;
+}
+.winter-crystal svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+@keyframes winter-snowfall {
+  from {
+    top: -5%;
+    transform: translateX(0);
+  }
+  to {
+    top: 105%;
+    transform: translateX(var(--drift));
+  }
+}
+@keyframes winter-snow-sway {
+  from {
+    transform: translateX(-7px) rotate(0deg);
+  }
+  to {
+    transform: translateX(7px) rotate(100deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .winter-flake {
+    animation-play-state: paused;
+  }
+  .winter-flake i {
+    animation: none;
+  }
+}

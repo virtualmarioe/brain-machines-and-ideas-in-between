@@ -744,6 +744,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
           )}
         </div>
         <Timeline
+          level={state.level}
           entities={searchEntities(entities, state.query, locale, references).filter(
             (e) =>
               atComplexity(e, state.level) &&
