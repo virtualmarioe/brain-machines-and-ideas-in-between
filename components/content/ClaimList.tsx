@@ -23,6 +23,11 @@ export default function ClaimList({ entityId, locale }: { entityId: string; loca
               locale,
             )}
           </span>
+          {claim.editorialNotes && (
+            <p className="small muted" lang="en">
+              {claim.editorialNotes}
+            </p>
+          )}
           <ReferenceList ids={claim.references} locale={locale} />
         </div>
       ))}

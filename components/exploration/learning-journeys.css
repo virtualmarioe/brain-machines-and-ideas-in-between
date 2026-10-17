@@ -1,0 +1,79 @@
+.learning-journeys {
+  margin: 16px var(--space-4);
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: var(--text-body);
+  line-height: 1.6;
+}
+.learning-journeys summary {
+  cursor: pointer;
+}
+.learning-journeys h2 {
+  font-size: 1.15rem;
+  margin: 0;
+}
+.learning-journey-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.learning-journey-options article {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.learning-journeys button {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--surface);
+  color: var(--text);
+}
+.learning-journeys button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.learning-journey-heading,
+.learning-journey-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.learning-journey-active ol {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.learning-journey-active [aria-current] {
+  border-color: var(--accent);
+  box-shadow: inset 0 -2px var(--accent);
+}
+.learning-journey-navigation {
+  margin-top: 16px;
+}
+.journey-reflection {
+  border-left: 2px solid var(--accent);
+  padding-left: 12px;
+  margin: 12px 0;
+}
+.reading-level-note {
+  margin: 12px 20px;
+  color: var(--muted);
+  font-size: var(--text-small);
+}
+.graph-chronology-note {
+  margin: 0;
+  font-size: var(--text-small);
+  color: var(--muted);
+}
+@media (max-width: 900px) {
+  .learning-journey-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,4 +1,6 @@
 'use client';
+import LearningJourneys from './exploration/LearningJourneys';
+import { learningJourneys } from '@/content/learning-journeys';
 import ComplexityControl from './exploration/ComplexityControl';
 import {
   atComplexity,
@@ -113,8 +115,8 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
     if (next.mode === 'story') next.story = next.selected;
     setState(next);
     const url = explorationUrl(next, entities);
-    if (push) window.history.pushState({ atlasNavigation: true }, '', url);
-    else window.history.replaceState({ atlasNavigation: true }, '', url);
+    if (push) window.history.pushState({ ...window.history.state, atlasNavigation: true }, '', url);
+    else window.history.replaceState({ ...window.history.state, atlasNavigation: true }, '', url);
   }
   function select(id: string) {
     const entity = entities.find((e) => e.id === id);
@@ -250,7 +252,8 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
   }
   const readingPanel = selected ? (
     <EntityPanel
-      key={selected.id}
+      key={`${selected.id}-${state.level}`}
+      level={state.level}
       entity={selected}
       locale={locale}
       onSelect={select}
@@ -380,6 +383,42 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
               true,
             )
           }
+        />
+        <LearningJourneys
+          locale={locale}
+          journeyId={state.journey}
+          step={state.journeyStep ?? 0}
+          selected={state.selected}
+          onExit={() => update({ journey: undefined, journeyStep: undefined }, true)}
+          onVisit={(journeyId, step) => {
+            const journey = learningJourneys.find((item) => item.id === journeyId)!;
+            const stops = journey.stops.map((stop) =>
+              entities.find((entity) => entity.id === stop.entityId)!,
+            );
+            const level =
+              complexityLevels[
+                Math.max(
+                  complexityLevels.indexOf(state.level),
+                  ...stops.map((entity) => complexityLevels.indexOf(minimumComplexity(entity))),
+                )
+              ];
+            update(
+              {
+                journey: journeyId,
+                journeyStep: step,
+                selected: stops[step].id,
+                level,
+                mode: 'explore',
+                query: '',
+                category: 'all',
+                domain: 'all',
+                scope: 'all',
+                from: Math.floor(Math.min(...stops.map(yearOf)) / 10) * 10,
+                to: MAX_YEAR,
+              },
+              true,
+            );
+          }}
         />
         <div className="atlas-toolbar">
           <label className="search-field">

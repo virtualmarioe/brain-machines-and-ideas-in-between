@@ -6,7 +6,7 @@ The October 2026 research expansion preserves 142 supplied concepts, 48 people, 
 
 Existing entries take precedence. An explicit alias table maps 22 supplied concepts to existing records, including two information-theory concepts that map to the Shannon record. The adapter adds 120 distinct concept nodes, bringing the atlas to 157 nodes. Supplied relationships preserve their direction and explanatory text. One relationship references `c_causal_graphical_models`, which has no corresponding concept row. It remains visible in the research register but is excluded from graph rendering.
 
-The source file supplied citation handles without resolvable source URLs. Imported concepts are therefore marked `needs-review`, and imported edges have low confidence pending verification. The register preserves supplied DOI and arXiv identifiers as outbound links. Original English text is explicitly labeled in every language version. Do not interpret populated language fields as completed translations.
+The source file supplied citation handles without resolvable source URLs. Imported concepts are therefore marked `needs-review`, and unchecked imported edges have low confidence pending verification. The register preserves supplied DOI and arXiv identifiers as outbound links. Original English text is explicitly labeled in every language version. Do not interpret populated language fields as completed translations.
 
 Some research concepts have no supplied edges. They remain searchable isolated nodes rather than acquiring invented connections to satisfy catalog connectivity. The validation exception is limited to imported records awaiting review. Institution coordinates are retained in the register, not automatically assigned as discovery locations. Dates retain the source wording; graph positions use the first stated year or an approximate mid-century anchor for ancient entries. These positions must not be presented as precise origin dates.
 
@@ -21,3 +21,11 @@ Some research concepts have no supplied edges. They remain searchable isolated n
 Counts derive from the catalog rather than UI constants. The `level` URL parameter preserves the chosen level across reloads, mode changes, language changes, and history. A direct entity link without an explicit level opens at its minimum supported level. Selecting a related discovery can raise the level. Choosing a lower level resets filters and selects an included discovery if necessary. Map, graph, search results, and timeline use the same level filter; the map includes only entries with established locations.
 
 The three levels encode reading scope, not historical importance, scientific certainty, or a canonical ranking of disciplines. New research records must not receive reused demonstrations solely to fill a coverage quota.
+
+## Scoped primary-source checks
+
+`content/research/reviews.ts` records 16 claim-level checks against publication metadata and author abstracts, with exact source links, review dates, and limits. Five proposed relationships have narrower source-supported explanations and medium confidence. These are conceptual connections, not evidence of personal influence. All imported entities retain `needs-review`; priority, original dates, attribution, and broader narratives remain open unless explicitly covered by a recorded claim.
+
+The research reader provides checked and pending filters. Discovery panels expose the checked claim and its limits, and the evidence section retains the review notes. The remaining 104 imported concepts have no recorded claim-level check. The unresolved relationship endpoint remains excluded from the graph. English review notes are explicitly identified in German and Spanish views.
+
+Complexity also selects the initial reading tab: Essentials opens Why it matters, Connections opens Understand the idea, and Expert opens Go deeper. Every tab remains available. This is progressive reading of existing content, not a claim that all imported research has been rewritten or translated.

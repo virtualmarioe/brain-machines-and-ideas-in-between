@@ -22,6 +22,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const locale = (await headers()).get('x-atlas-locale') || 'en';
   return (
     <html
+      data-scroll-behavior="smooth"
       lang={locale || 'en'}
       style={scientificColorVariables as CSSProperties}
       suppressHydrationWarning

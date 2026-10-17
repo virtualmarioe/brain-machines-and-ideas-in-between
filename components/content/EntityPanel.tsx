@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { complexityCopy } from '@/lib/complexity';
+import { complexityCopy, complexityLevels, type Complexity } from '@/lib/complexity';
 import { displayYear } from '@/lib/graph';
 import { useState } from 'react';
 import { entities, relationships } from '@/content';
@@ -8,6 +8,7 @@ import { domains, relationLabels, t, typeLabels } from '@/content/translations/u
 import type { HistoricalEntity, Locale } from '@/types/history';
 import { Icon } from '@/components/ui/Icon';
 import ReferenceList from './ReferenceList';
+import ResearchReview from './ResearchReview';
 import ClaimList from './ClaimList';
 export default function EntityPanel({
   entity,
@@ -15,14 +16,18 @@ export default function EntityPanel({
   onSelect,
   onDemo,
   nobel,
+  level,
 }: {
   entity: HistoricalEntity;
   locale: Locale;
   onSelect: (id: string) => void;
   onDemo: (kind: NonNullable<HistoricalEntity['demo']>) => void;
   nobel: boolean;
+  level: Complexity;
 }) {
-  const [depth, setDepth] = useState<'why' | 'understand' | 'deeper'>('why');
+  const [depth, setDepth] = useState<'why' | 'understand' | 'deeper'>(
+    level === 'essentials' ? 'why' : level === 'connections' ? 'understand' : 'deeper',
+  );
   const before = relationships.filter((r) => r.target === entity.id),
     after = relationships.filter((r) => r.source === entity.id);
   return (
@@ -58,6 +63,11 @@ export default function EntityPanel({
           </Link>
         </div>
       )}
+      {entity.research && <ResearchReview catalogId={entity.research.catalogId} locale={locale} />}
+      <p className="reading-level-note" data-reading-level={level}>
+        {complexityCopy[locale].names[complexityLevels.indexOf(level)]} ·{' '}
+        {t('readingDepthHint', locale)}
+      </p>
       <div className="depth-tabs" role="tablist" aria-label={t('understand', locale)}>
         {(['why', 'understand', 'deeper'] as const).map((tab) => (
           <button
@@ -162,7 +172,10 @@ export default function EntityPanel({
                   other && (
                     <button key={edge.id} onClick={() => onSelect(other.id)}>
                       <span>
-                        <small>{relationLabels[edge.type][locale]}</small>
+                        <small>
+                          {relationLabels[edge.type][locale]}
+                          {level === 'expert' ? ` · ${t(edge.confidence, locale)}` : ''}
+                        </small>
                         {other.title[locale]}
                       </span>
                       <Icon name="arrow" size={14} />

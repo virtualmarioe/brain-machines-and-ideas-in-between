@@ -1,3 +1,4 @@
+import { reviewedClaims } from './research/reviews';
 import { researchEntities, researchReferences, researchRelationships } from './research';
 import { gebEntities, gebReferences, gebRelationships, gebClaims } from './geb';
 import { initialEntities } from './entities/initial';
@@ -26,6 +27,6 @@ export const relationships = [
   ...gebRelationships,
   ...researchRelationships,
 ];
-export const claims = [...initialClaims, ...expansionClaims, ...gebClaims];
+export const claims = [...initialClaims, ...expansionClaims, ...gebClaims, ...reviewedClaims];
 export const entityById = new Map(entities.map((entity) => [entity.id, entity]));
 export const referenceById = new Map(references.map((reference) => [reference.id, reference]));

@@ -126,6 +126,9 @@ export default function IdeaGraph({
         <div>
           <h2 className="eyebrow">01 / {t('graph', locale)}</h2>
           <p>{t('graphHint', locale)}</p>
+          <p className="graph-chronology-note">
+            {t('graphChronology', locale)} <a href="#timeline-view">{t('timeline', locale)} →</a>
+          </p>
         </div>
         <div className="zoom-tools">
           <button

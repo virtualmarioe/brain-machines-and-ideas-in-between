@@ -63,7 +63,7 @@ export default function Timeline({
     return () => window.removeEventListener('hashchange', openLinkedGuide);
   }, []);
   const preview = useTimelinePreview();
-  const winterPreview = useOverlayPreview<string>();
+  const winterPreview = useOverlayPreview<{ title: string; activated: boolean }>();
   const dismissWinter = winterPreview.dismiss;
   const minYear = entities.length
     ? Math.max(MIN_YEAR, Math.floor(Math.min(...entities.map(yearOf)) / 10) * 10)
@@ -194,19 +194,21 @@ export default function Timeline({
             >
               <button
                 type="button"
-                {...winterPreview.triggerProps(t(winter.label, locale), String(winter.start))}
+                {...winterPreview.triggerProps(
+                  { title: t(winter.label, locale), activated: false },
+                  String(winter.start),
+                )}
                 onClick={(event) => {
                   winterPreview.open(
-                    t(winter.label, locale),
+                    { title: t(winter.label, locale), activated: true },
                     String(winter.start),
                     event.currentTarget,
                   );
-                  requestAnimationFrame(() =>
-                    document.getElementById(winterPreview.id)?.querySelector('a')?.focus(),
-                  );
                 }}
               >
-                {t(winter.label, locale)} · ≈ {winter.start}–{winter.end}
+                <span data-preview-anchor>
+                  {t(winter.label, locale)} · ≈ {winter.start}–{winter.end}
+                </span>
               </button>
             </div>
           );
@@ -306,7 +308,8 @@ export default function Timeline({
           forId={winterPreview.current.key}
           className="winter-preview"
           role="dialog"
-          label={winterPreview.current.item}
+          label={winterPreview.current.item.title}
+          autoFocus={winterPreview.current.item.activated}
         >
           <div className="winter-snow" aria-hidden="true">
             {Array.from({ length: 28 }, (_, index) => (
@@ -329,45 +332,80 @@ export default function Timeline({
                 <i />
               </span>
             ))}
-            {Array.from({ length: 28 }, (_, index) => (
-              <span
-                key={index}
-                className="winter-flake winter-crystal"
-                style={
-                  {
-                    left: `${(index * 37 + 29) % 100}%`,
-                    '--flake-size': `${1.5 + (index % 5) * 0.65}px`,
-                    '--flake-opacity': (0.25 + (index % 4) * 0.12) * 1.1 ** 3,
-                    '--fall-duration': `${9 + ((index * 7) % 17)}s`,
-                    '--fall-delay': `${-((index * 13) % 29)}s`,
-                    '--sway-duration': `${3 + (index % 5)}s`,
-                    '--drift': `${8 + (index % 4) * 5}px`,
-                    '--flake-blur': index % 5 === 0 ? '0.7px' : '0.15px',
-                  } as React.CSSProperties
-                }
-              >
-                <i>
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                  >
-                    {[0, 60, 120].map((angle) => (
-                      <path
-                        key={angle}
-                        transform={`rotate(${angle} 12 12)`}
-                        d="M12 1v22 M8 4l4 4 4-4 M8 20l4-4 4 4"
-                      />
-                    ))}
-                  </svg>
-                </i>
-              </span>
-            ))}
+            {[false, true].flatMap((large) =>
+              Array.from({ length: large ? 14 : 28 }, (_, index) => (
+                <span
+                  key={`${large ? 'large' : 'regular'}-${index}`}
+                  className={`winter-flake winter-crystal${large ? ' winter-crystal-large' : ''}`}
+                  style={
+                    {
+                      left: `${(index * 37 + (large ? 47 : 29)) % 100}%`,
+                      '--flake-size': `${(1.5 + (index % 5) * 0.65) * (large ? 4 : 1)}px`,
+                      '--flake-opacity': (0.25 + (index % 4) * 0.12) * 1.1 ** 3,
+                      '--fall-duration': `${9 + ((index * 7) % 17)}s`,
+                      '--fall-delay': `${-((index * 13) % 29)}s`,
+                      '--sway-duration': `${3 + (index % 5)}s`,
+                      '--drift': `${8 + (index % 4) * 5}px`,
+                      '--flake-blur': index % 5 === 0 ? '0.7px' : '0.15px',
+                      ...(large
+                        ? {
+                            '--fall-duration': `${18 + ((index * 7) % 19)}s`,
+                            '--sway-duration': `${6 + (index % 5)}s`,
+                            '--drift': `${(index % 2 ? -1 : 1) * (12 + (index % 4) * 7)}px`,
+                            '--flutter': `${4 + (index % 4) * 2}px`,
+                            '--spin-duration': `${13 + ((index * 5) % 17)}s`,
+                            '--spin-start': `${index * 47}deg`,
+                            '--spin-end': `${index * 47 + (index % 2 ? -65 : 80)}deg`,
+                            '--flake-blur': index % 5 === 0 ? '0.35px' : '0px',
+                          }
+                        : {}),
+                    } as React.CSSProperties
+                  }
+                >
+                  <i>
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={large ? 0.8 : 1.8}
+                      strokeLinecap="round"
+                    >
+                      {large ? (
+                        <>
+                          <path
+                            d="M12 8.6l2.94 1.7v3.4L12 15.4l-2.94-1.7v-3.4Z"
+                            fill="currentColor"
+                            fillOpacity="0.12"
+                          />
+                          {[0, 60, 120, 180, 240, 300].map((angle) => (
+                            <path
+                              key={angle}
+                              transform={`rotate(${angle} 12 12)`}
+                              d={
+                                index % 3 === 0
+                                  ? 'M12 12V1 M12 4L9.8 2.5 M12 4l2.2-1.5 M12 7L8.5 4.5 M12 7l3.5-2.5 M12 9L9.5 7.3 M12 9l2.5-1.7'
+                                  : 'M12 12V1.4 M12 4.5L10 2.8 M12 4.5l2-1.7 M12 8L8.3 5.2 M12 8l3.7-2.8 M9.7 6.3V4.6 M14.3 6.3V4.6'
+                              }
+                            />
+                          ))}
+                        </>
+                      ) : (
+                        [0, 60, 120].map((angle) => (
+                          <path
+                            key={angle}
+                            transform={`rotate(${angle} 12 12)`}
+                            d="M12 1v22 M8 4l4 4 4-4 M8 20l4-4 4 4"
+                          />
+                        ))
+                      )}
+                    </svg>
+                  </i>
+                </span>
+              )),
+            )}
           </div>
           <div className="node-preview-meta">{t('aiWintersTitle', locale)}</div>
-          <h3>{winterPreview.current.item}</h3>
+          <h3>{winterPreview.current.item.title}</h3>
           <p className="node-preview-description">
             {winterCards[level][winterPreview.current.key === '1973' ? 'first' : 'second'][locale]}
           </p>

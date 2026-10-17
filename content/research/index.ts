@@ -1,3 +1,4 @@
+import { researchReviewById, reviewedReferences, reviewedEdges } from './reviews';
 import catalog from './catalog.json' with { type: 'json' };
 import type {
   HistoricalEntity,
@@ -11,6 +12,7 @@ export const researchCatalog = catalog;
 export const researchId = (id: string) =>
   (catalog.aliases as Record<string, string>)[id] ?? id.replace(/^c_/, '').replaceAll('_', '-');
 export const researchReferences: Reference[] = [
+  ...reviewedReferences,
   {
     id: 'research-dossier-2026',
     type: 'archive',
@@ -47,7 +49,10 @@ export const researchEntities: HistoricalEntity[] = catalog.concepts
     domain: domain(discipline),
     people: [people],
     locations: [],
-    references: ['research-dossier-2026'],
+    references: [
+      'research-dossier-2026',
+      ...(researchReviewById.has(id) ? [researchReviewById.get(id)!.reference.id] : []),
+    ],
     tags: [discipline, title, people],
     status: 'needs-review',
     research: { originalLanguage: 'en', dateLabel: date, catalogId: id },
@@ -64,31 +69,35 @@ export const researchRelationships: HistoricalRelationship[] = catalog.edges
     ([source, target]) =>
       known.has(source) && known.has(target) && researchId(source) !== researchId(target),
   )
-  .map(([source, target, relation, date, , evidence, interpretation], index) => ({
-    id: `research-edge-${index}`,
-    source: researchId(source),
-    target: researchId(target),
-    type: /ANALOG/.test(relation)
-      ? 'conceptual-analogy'
-      : /BIOLOG/.test(relation)
-        ? 'biological-inspiration'
-        : /MATHEMATIC|FORMALIZES/.test(relation)
-          ? 'mathematical-formalization'
-          : /EXTEND|GENERALIZ/.test(relation)
-            ? 'extension'
-            : /CHALLENG|CRITI/.test(relation)
-              ? 'challenge'
-              : /ENABLES/.test(relation)
-                ? 'methodological-enabler'
-                : relation === 'IMPLEMENTS'
-                  ? 'implementation'
-                  : 'historical-context',
-    description: localized(
-      `${interpretation} Dossier relation: ${relation.replaceAll('_', ' ').toLowerCase()}; date: ${date}; dossier evidence classification: ${evidence.replaceAll('_', ' ')}. Pending independent source verification.`,
-    ),
-    evidence: ['research-dossier-2026'],
-    confidence: 'low',
-  }));
+  .map(([source, target, relation, date, , evidence, interpretation], index) => {
+    const review = reviewedEdges.find((edge) => edge.source === source && edge.target === target);
+    return {
+      id: `research-edge-${index}`,
+      source: researchId(source),
+      target: researchId(target),
+      type: /ANALOG/.test(relation)
+        ? 'conceptual-analogy'
+        : /BIOLOG/.test(relation)
+          ? 'biological-inspiration'
+          : /MATHEMATIC|FORMALIZES/.test(relation)
+            ? 'mathematical-formalization'
+            : /EXTEND|GENERALIZ/.test(relation)
+              ? 'extension'
+              : /CHALLENG|CRITI/.test(relation)
+                ? 'challenge'
+                : /ENABLES/.test(relation)
+                  ? 'methodological-enabler'
+                  : relation === 'IMPLEMENTS'
+                    ? 'implementation'
+                    : 'historical-context',
+      description: localized(
+        review?.claim ??
+          `${interpretation} Dossier relation: ${relation.replaceAll('_', ' ').toLowerCase()}; date: ${date}; dossier evidence classification: ${evidence.replaceAll('_', ' ')}. Pending independent source verification.`,
+      ),
+      evidence: review ? [`review-${review.reference}`] : ['research-dossier-2026'],
+      confidence: review ? 'medium' : 'low',
+    };
+  });
 
 function researchYear(date: string): string {
   if (date.includes('4th c. BCE')) return '-0350';

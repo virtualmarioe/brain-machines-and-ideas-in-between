@@ -142,6 +142,16 @@ export const ui = {
   review: text('Needs review', 'Prüfung erforderlich', 'Pendiente de revisión'),
   disputed: text('Contested interpretation', 'Umstrittene Deutung', 'Interpretación debatida'),
   experiment: text('Try the idea', 'Idee ausprobieren', 'Experimentar con la idea'),
+  readingDepthHint: text(
+    'Reading depth follows your level. You can explore any tab.',
+    'Die Lesetiefe folgt deiner Stufe. Alle Register bleiben verfügbar.',
+    'La profundidad sigue tu nivel. Puedes explorar cualquier pestaña.',
+  ),
+  graphChronology: text(
+    'Chronological order, not a proportional time scale. Spacing is for readability; nodes can be moved.',
+    'Chronologische Reihenfolge, kein proportionaler Zeitmaßstab. Abstände dienen der Lesbarkeit; Knoten sind verschiebbar.',
+    'Orden cronológico, no escala temporal proporcional. El espacio facilita la lectura; los nodos se pueden mover.',
+  ),
   timeline: text('Navigate through time', 'Durch die Zeit navigieren', 'Navegar por el tiempo'),
   aiWintersTitle: text(
     'About the AI winters',

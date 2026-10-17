@@ -40,9 +40,13 @@ The production server uses the same port as the development server, so stop the 
 - Mobile reading view with an early timeline and expandable, focused visualizations.
 - Keyboard-operable visualizations, textual relationships, visible focus, reduced-motion support, and responsive layouts.
 
-The current corpus contains 35 discoveries, 45 documented relationships, 55 references, and 46 individually tracked claims.
+The current corpus contains 157 discoveries, 110 relationships, 77 references, and 65 individually tracked claims.
 
 A discovery date identifies the specific contribution, not a person's lifetime. Geographic curves represent documented relationships between research locations, not personal travel itineraries. Artificial-network components are called units; a neuron is a biological cell.
+
+Three localized guided learning journeys add outcomes, five stops, reflection questions, and shareable progress. Reading tabs open at the depth selected by the complexity control. Graph spacing represents chronological order rather than proportional elapsed time; the timeline provides the date scale.
+
+The research review queue records 16 narrowly checked claims and five scoped relationships. Imported entries retain their review status: these checks do not certify their full historical narratives. See [research coverage](docs/RESEARCH_CATALOG.md) and the [release checklist](docs/RELEASE_CHECKLIST.md).
 
 ## Visual design system
 
@@ -88,7 +92,7 @@ Next.js and React provide routing and rendering. Native controls and SVG keep th
 
 This is a working MVP, not the complete historical corpus. Content provides concise introductions and technical explanations with source links. The longer 300–700 word essays envisioned by the PRD, broader geographical representation, individual institutional and publication entities, documented career itineraries, and additional simulations remain editorial and product expansion work. The map is an overview, not a street map. The graph uses a deterministic chronological layout suitable for this corpus; large-corpus virtualization is not yet needed.
 
-Historical content needs ongoing scholarly review, particularly claims of direct influence. An accessible interface and passing automated scans do not replace a full assistive-technology audit. Public deployment, analytics, authentication, and a database are not configured.
+Historical content needs ongoing scholarly review, particularly claims of direct influence. An accessible interface and passing automated scans do not replace a full assistive-technology audit. The public atlas is deployed at [brain-machines-and-ideas-in-between.vercel.app](https://brain-machines-and-ideas-in-between.vercel.app). Analytics, authentication, and a database are not configured.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the editorial workflow and [content/RESEARCH.md](content/RESEARCH.md) for initial verification notes.
 

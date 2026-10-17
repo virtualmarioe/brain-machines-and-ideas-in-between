@@ -19,6 +19,7 @@ export function useOverlayPreview<T>() {
   const hovered = useRef<Element | null>(null);
   const focused = useRef<PreviewItem<T> | null>(null);
   const overCard = useRef(false);
+  const cardFocused = useRef(false);
 
   function cancelClose() {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -39,6 +40,7 @@ export function useOverlayPreview<T>() {
       }, 150);
     }
     overCard.current = false;
+    cardFocused.current = false;
     hovered.current = null;
     if (keyboardAnchor === focused.current?.anchor) keyboardAnchor = null;
     focused.current = null;
@@ -46,7 +48,7 @@ export function useOverlayPreview<T>() {
   function scheduleClose() {
     cancelClose();
     closeTimer.current = setTimeout(() => {
-      if (!hovered.current && !overCard.current) {
+      if (!hovered.current && !overCard.current && !cardFocused.current) {
         const focus = focused.current;
         if (focus?.anchor.isConnected && focus.anchor === document.activeElement) setCurrent(focus);
         else dismiss();
@@ -96,11 +98,11 @@ export function useOverlayPreview<T>() {
     cardProps: {
       onFocusCapture() {
         cancelClose();
-        overCard.current = true;
+        cardFocused.current = true;
       },
       onBlurCapture(event: FocusEvent<Element>) {
         if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-          overCard.current = false;
+          cardFocused.current = false;
           scheduleClose();
         }
       },
@@ -177,6 +179,7 @@ export function PreviewCard<T>({
   forId,
   splitCards = false,
   role = 'tooltip',
+  autoFocus = false,
   label,
 }: {
   preview: ReturnType<typeof useOverlayPreview<T>>;
@@ -186,11 +189,19 @@ export function PreviewCard<T>({
   forId: string;
   splitCards?: boolean;
   role?: 'tooltip' | 'dialog';
+  autoFocus?: boolean;
   label?: string;
 }) {
   const card = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<ReturnType<typeof placeBubble>>(null);
   const current = preview.current;
+  const focusedItem = useRef<typeof current>(null);
+  useEffect(() => {
+    if (autoFocus && position && current && focusedItem.current !== current) {
+      card.current?.querySelector<HTMLElement>('a, button, input')?.focus();
+      focusedItem.current = current;
+    }
+  }, [autoFocus, position, current]);
   const dismiss = preview.dismiss;
   useEffect(() => {
     if (!current) return;
@@ -203,7 +214,8 @@ export function PreviewCard<T>({
         return;
       }
       if (!card.current) return;
-      const rect = anchor.getBoundingClientRect();
+      const visualAnchor = anchor.querySelector('[data-preview-anchor]') ?? anchor;
+      const rect = visualAnchor.getBoundingClientRect();
       let reserved = { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
       if (anchor instanceof SVGGraphicsElement) {
         // DOM bounds exclude the stroke, including the wider invisible hit target.

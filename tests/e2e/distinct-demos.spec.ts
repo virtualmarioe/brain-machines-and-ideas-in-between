@@ -62,5 +62,6 @@ test('About page has repository, unassigned DOI, localized text, and return navi
   const scan = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
   expect(scan.violations).toEqual([]);
   await page.getByRole('link', { name: 'Volver al atlas', exact: false }).click();
-  await expect(page).toHaveURL(/\/es$/);
+  await expect(page).toHaveURL(/\/es(?:\/experiment\/hubel-wiesel(?:\?|$)|$)/);
+  await expect(page.locator('.entity-panel')).toHaveAttribute('data-entity-id', 'hubel-wiesel');
 });

@@ -72,3 +72,25 @@
   max-width: 100%;
   min-height: 44px;
 }
+
+.research-audit {
+  margin: 28px 0;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.research-audit > ul {
+  max-height: 480px;
+  overflow: auto;
+  padding: 12px 24px;
+}
+.research-audit li {
+  margin-bottom: 16px;
+}
+.research-audit select {
+  padding: 8px;
+  max-width: 100%;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+}

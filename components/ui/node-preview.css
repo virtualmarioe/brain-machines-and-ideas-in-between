@@ -122,6 +122,55 @@
   width: 100%;
   height: 100%;
 }
+.winter-crystal-large {
+  animation-name: winter-crystal-fall;
+}
+.winter-crystal-large i {
+  color: #b9dce9;
+  animation: winter-crystal-drift var(--sway-duration) var(--fall-delay) ease-in-out infinite
+    alternate;
+}
+.winter-crystal-large svg {
+  filter: drop-shadow(0 0 0.45px rgb(255 255 255 / 65%));
+  animation: winter-crystal-tumble var(--spin-duration) var(--fall-delay) ease-in-out infinite
+    alternate;
+  transform-origin: center;
+}
+@keyframes winter-crystal-fall {
+  0% {
+    top: -8%;
+    transform: translateX(0);
+  }
+  35% {
+    transform: translateX(calc(var(--drift) * 0.2));
+  }
+  70% {
+    transform: translateX(calc(var(--drift) * 0.75));
+  }
+  100% {
+    top: 108%;
+    transform: translateX(var(--drift));
+  }
+}
+@keyframes winter-crystal-drift {
+  from {
+    transform: translateX(calc(var(--flutter) * -1));
+  }
+  to {
+    transform: translateX(var(--flutter));
+  }
+}
+@keyframes winter-crystal-tumble {
+  0% {
+    transform: rotate(var(--spin-start)) rotateX(15deg) rotateY(-20deg);
+  }
+  45% {
+    transform: rotate(calc(var(--spin-start) + 18deg)) rotateX(48deg) rotateY(15deg);
+  }
+  100% {
+    transform: rotate(var(--spin-end)) rotateX(-25deg) rotateY(40deg);
+  }
+}
 @keyframes winter-snowfall {
   from {
     top: -5%;
@@ -144,7 +193,8 @@
   .winter-flake {
     animation-play-state: paused;
   }
-  .winter-flake i {
+  .winter-flake i,
+  .winter-crystal-large svg {
     animation: none;
   }
 }

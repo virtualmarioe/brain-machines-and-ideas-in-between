@@ -1,10 +1,13 @@
 import { atComplexity, minimumComplexity, levelStart, type Complexity } from './complexity';
 import type { Domain, HistoricalEntity, Locale } from '@/types/history';
+import { learningJourneys } from '@/content/learning-journeys';
 import { isLocale } from './i18n';
 export interface ExplorationState {
   selected: string;
   level: Complexity;
   story?: string;
+  journey?: string;
+  journeyStep?: number;
   trail?: string[];
   mode: 'explore' | 'story' | 'trace';
   query: string;
@@ -23,6 +26,12 @@ export function parseExploration(
   entities: HistoricalEntity[],
   routeId?: string,
 ): ExplorationState {
+  const journey = learningJourneys.find((item) => item.id === params.get('journey'));
+  const rawStep = Number(params.get('step') ?? 0);
+  const journeyStep =
+    journey && Number.isInteger(rawStep)
+      ? Math.max(0, Math.min(journey.stops.length - 1, rawStep))
+      : 0;
   const requested = [routeId, params.get('node')]
     .map((id) => entities.find((e) => e.id === id))
     .find(Boolean);
@@ -56,6 +65,7 @@ export function parseExploration(
   return {
     selected,
     level,
+    ...(journey ? { journey: journey.id, journeyStep } : {}),
     ...(entities.some((e) => e.id === params.get('story')) ? { story: params.get('story')! } : {}),
     ...(params.get('trail')
       ? {
@@ -90,6 +100,10 @@ export function explorationUrl(state: ExplorationState, entities: HistoricalEnti
   const params = new URLSearchParams();
   if (state.level !== 'essentials') params.set('level', state.level);
   if (state.story) params.set('story', state.story);
+  if (state.journey) {
+    params.set('journey', state.journey);
+    params.set('step', String(state.journeyStep ?? 0));
+  }
   if (state.trail?.length) params.set('trail', state.trail.join(','));
   if (state.mode !== 'explore') params.set('mode', state.mode);
   if (state.query) params.set('q', state.query);

@@ -139,7 +139,7 @@ export default function WinterGuide({
         )}
         {level === 'expert' && (
           <>
-            <section aria-labelledby="winter-pressure-heading">
+            <section>
               <h3 id="winter-pressure-heading">{copy.comparison[locale]}</h3>
               <div
                 className="winter-table-scroll"

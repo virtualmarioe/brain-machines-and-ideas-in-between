@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n';
 import { complexityCopy } from '@/lib/complexity';
 import { researchCatalog, unresolvedResearchEdges } from '@/content/research';
+import ResearchAudit from '@/components/exploration/ResearchAudit';
 import ResearchTable from '@/components/exploration/ResearchTable';
 import sections from '@/content/research/sections.json';
 import './research.css';
@@ -99,6 +100,7 @@ export default async function Research({ params }: { params: Promise<{ locale: s
       </Link>
       <h1>{copy.research}</h1>
       <p>{copy.notice}</p>
+      <ResearchAudit locale={locale} />
       <div lang="en">
         <p>
           This catalog expands the atlas with the supplied 8 October 2026 research. Existing sourced
