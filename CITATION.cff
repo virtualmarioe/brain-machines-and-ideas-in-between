@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "Please cite this record for the application; cite the separately archived Knowledge Base for the scholarly dataset."
+type: software
+title: "The Intelligence Atlas"
+version: "0.1.0"
+authors:
+  - family-names: "Archila-Meléndez"
+    given-names: "Mario E."
+    orcid: "https://orcid.org/0000-0002-2994-3067"
+repository-code: "https://github.com/virtualmarioe/brain-machines-and-ideas-in-between"
+url: "https://brain-machines-and-ideas-in-between.vercel.app"
+license: Apache-2.0

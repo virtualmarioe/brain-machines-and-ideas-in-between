@@ -1,0 +1,13 @@
+The Intelligence Atlas
+Copyright 2026 Mario E. Archila-Meléndez and contributors.
+
+Original software code, including content assembly helpers, is licensed under
+Apache-2.0 (see LICENSE). Original scholarly text, translations, annotations,
+and data in content/ are licensed under CC BY 4.0 (see content/LICENSE).
+The same separation applies to exported knowledge-base snapshots.
+
+Third-party material, including quoted text, referenced publications, media,
+dependencies, and map data, retains its original terms. A citation or link does
+not relicense its target. Preserve individual source and attribution notices.
+The bundled World Atlas land outline derives from public-domain Natural Earth
+map data; see the map provenance section of README.md.

@@ -14,7 +14,8 @@
     "check": "npm run validate:content && npm run test && npm run typecheck && npm run lint",
     "format": "prettier --write app components content lib types tests scripts *.ts *.mjs *.json README.md CONTRIBUTING.md",
     "format:check": "prettier --check app components content lib types tests scripts *.ts *.mjs *.json README.md CONTRIBUTING.md",
-    "smoke:deployment": "node scripts/smoke-deployment.mjs"
+    "smoke:deployment": "node scripts/smoke-deployment.mjs",
+    "export:dataset": "tsx scripts/export-dataset.ts"
   },
   "dependencies": {
     "d3-geo": "^3.1.1",

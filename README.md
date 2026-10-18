@@ -104,3 +104,11 @@ The bundled land outline is World Atlas 2 `land-110m.json`, derived from Natural
 - [Natural Earth terms](https://www.naturalearthdata.com/about/terms-of-use/)
 
 The localized About page links to the repository and reserves a clearly marked Zenodo DOI placeholder. All 33 assigned demos are distinct; publication validation rejects duplicate assignments.
+
+## Licensing and citation
+
+Software is Apache-2.0 under [LICENSE](LICENSE). Original scholarly content is
+CC BY 4.0 under [content/LICENSE](content/LICENSE); third-party terms are retained
+as explained in [NOTICE](NOTICE). Use [CITATION.cff](CITATION.cff) for the software.
+See the [canonical knowledge base](content/README.md) for the separate dataset
+citation, DOI workflow, and `npm run export:dataset` archival package.
