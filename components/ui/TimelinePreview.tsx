@@ -1,4 +1,5 @@
 'use client';
+import NobelMedal from '@/components/ui/NobelMedal';
 import type { HistoricalEntity, Locale } from '@/types/history';
 import { entities, relationships } from '@/content';
 import { text, t, relationLabels } from '@/content/translations/ui';
@@ -71,7 +72,10 @@ export function TimelinePreview({
       className={`domain-${entity.domain}`}
     >
       <div className="node-preview-meta">
-        <span>{awardYear ? t('nobel', locale) : copy.date[locale]}</span>
+        <span>
+          {awardYear && <NobelMedal />}
+          {awardYear ? t('nobel', locale) : copy.date[locale]}
+        </span>
         <span>
           {awardYear ?? `${displayYear(entity)}${multiple ? `–${displayYear(group.at(-1)!)}` : ''}`}
         </span>

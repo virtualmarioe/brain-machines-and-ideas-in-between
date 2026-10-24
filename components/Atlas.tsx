@@ -1,4 +1,5 @@
 'use client';
+import NobelMedal from '@/components/ui/NobelMedal';
 import LearningJourneys from './exploration/LearningJourneys';
 import { learningJourneys } from '@/content/learning-journeys';
 import ComplexityControl from './exploration/ComplexityControl';
@@ -698,7 +699,10 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
                   checked={state.nobel}
                   onChange={(e) => update({ nobel: e.target.checked })}
                 />
-                <span>◇ {t('nobel', locale)}</span>
+                <span>
+                  <NobelMedal />
+                  {t('nobel', locale)}
+                </span>
               </label>
               <label>
                 <input

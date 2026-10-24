@@ -1,4 +1,5 @@
 'use client';
+import NobelMedal from '@/components/ui/NobelMedal';
 import { useEffect, useId, useRef, useState } from 'react';
 import type { HistoricalEntity, Locale } from '@/types/history';
 import { chronological, yearOf, displayYear, formatYear } from '@/lib/graph';
@@ -273,7 +274,7 @@ export default function Timeline({
               }}
               aria-label={`${year} · ${t('nobel', locale)}`}
             >
-              ◇
+              <NobelMedal />
             </button>
           ))}
       </div>
@@ -355,7 +356,10 @@ export default function Timeline({
                             '--flutter': `${4 + (index % 4) * 2}px`,
                             '--spin-duration': `${13 + ((index * 5) % 17)}s`,
                             '--spin-start': `${index * 47}deg`,
-                            '--spin-end': `${index * 47 + (index % 2 ? -65 : 80)}deg`,
+                            '--tilt-x': `${index * 31}deg`,
+                            '--tilt-y': `${index * 53}deg`,
+                            '--turn-y': `${index % 2 ? -360 : 360}deg`,
+                            '--turn-z': `${index % 3 ? 360 : -360}deg`,
                             '--flake-blur': index % 5 === 0 ? '0.35px' : '0px',
                           }
                         : {}),

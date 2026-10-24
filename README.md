@@ -40,11 +40,11 @@ The production server uses the same port as the development server, so stop the 
 - Mobile reading view with an early timeline and expandable, focused visualizations.
 - Keyboard-operable visualizations, textual relationships, visible focus, reduced-motion support, and responsive layouts.
 
-The current corpus contains 157 discoveries, 110 relationships, 77 references, and 65 individually tracked claims.
+The current corpus contains 164 discoveries, 117 relationships, 87 references, and 72 individually tracked claims.
 
 A discovery date identifies the specific contribution, not a person's lifetime. Geographic curves represent documented relationships between research locations, not personal travel itineraries. Artificial-network components are called units; a neuron is a biological cell.
 
-Three localized guided learning journeys add outcomes, five stops, reflection questions, and shareable progress. Reading tabs open at the depth selected by the complexity control. Graph spacing represents chronological order rather than proportional elapsed time; the timeline provides the date scale.
+Four localized guided learning journeys add outcomes, five or seven stops, reflection questions, and shareable progress. The neuroscience path follows seven papers from sensory rate coding (1926) to entorhinal grid cells (2005), with paper links, coauthor credits, and Nobel context. Reading tabs open at the depth selected by the complexity control. Graph spacing represents chronological order rather than proportional elapsed time; the timeline provides the date scale.
 
 The research review queue records 16 narrowly checked claims and five scoped relationships. Imported entries retain their review status: these checks do not certify their full historical narratives. See [research coverage](docs/RESEARCH_CATALOG.md) and the [release checklist](docs/RELEASE_CHECKLIST.md).
 

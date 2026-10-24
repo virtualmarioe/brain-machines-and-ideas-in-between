@@ -1,4 +1,5 @@
 'use client';
+import NobelMedal from '@/components/ui/NobelMedal';
 import Link from 'next/link';
 import { complexityCopy, complexityLevels, type Complexity } from '@/lib/complexity';
 import { displayYear } from '@/lib/graph';
@@ -142,7 +143,10 @@ export default function EntityPanel({
         )}
         {nobel && entity.nobel && (
           <div className="nobel-note">
-            <span>◇ {entity.nobel.year}</span>
+            <span>
+              <NobelMedal />
+              {entity.nobel.year}
+            </span>
             <p>{entity.nobel.label[locale]}</p>
             <small>{t('nobelNote', locale)}</small>
             <ReferenceList ids={[entity.nobel.reference]} locale={locale} />

@@ -1,7 +1,8 @@
 'use client';
+import NobelMedal from '@/components/ui/NobelMedal';
 import { useState } from 'react';
 import { useHydrated } from '../navigation/useHydrated';
-import { entities } from '@/content';
+import { entities, references } from '@/content';
 import { learningJourneys, learningCopy as copy } from '@/content/learning-journeys';
 import type { Locale } from '@/types/history';
 import './learning-journeys.css';
@@ -48,6 +49,8 @@ export default function LearningJourneys({
       </details>
     );
   const stop = journey.stops[step];
+  const discovery = entities.find((entity) => entity.id === stop.entityId);
+  const paper = references.find((reference) => reference.id === stop.referenceId);
   const visit = (index: number) => {
     setComplete(false);
     onVisit(journey.id, index);
@@ -65,7 +68,13 @@ export default function LearningJourneys({
         {journey.stops.map((item, index) => (
           <li key={item.entityId}>
             <button aria-current={index === step ? 'step' : undefined} onClick={() => visit(index)}>
-              {index + 1}. {entities.find((entity) => entity.id === item.entityId)?.title[locale]}
+              {index + 1}.{' '}
+              {item.referenceId && (
+                <strong>
+                  {entities.find((entity) => entity.id === item.entityId)?.startDate} ·{' '}
+                </strong>
+              )}
+              {entities.find((entity) => entity.id === item.entityId)?.title[locale]}
             </button>
           </li>
         ))}
@@ -76,6 +85,25 @@ export default function LearningJourneys({
         </p>
       ) : (
         <>
+          {paper && discovery && (
+            <div className="journey-paper">
+              <p>
+                <strong>
+                  {paper.year} · {discovery.title[locale]}
+                </strong>
+              </p>
+              <p>{paper.authors.join(' · ')}</p>
+              <a href={paper.url}>
+                {copy.paper[locale]}: <span lang="en">{paper.title}</span> ↗
+              </a>
+              {discovery.nobel && (
+                <p className="journey-award">
+                  <NobelMedal />
+                  {copy.award[locale]} · {discovery.nobel.year}
+                </p>
+              )}
+            </div>
+          )}
           <p>
             <strong>{copy.question[locale]}:</strong> {stop.question[locale]}
           </p>

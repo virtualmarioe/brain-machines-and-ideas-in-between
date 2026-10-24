@@ -110,7 +110,19 @@ describe('published demonstration coverage', () => {
         .filter((e) => !e.demo && !e.research)
         .map((e) => e.id)
         .sort(),
-    ).toEqual(['ai-winters', 'dartmouth', 'douglas-hofstadter', 'godel-escher-bach']);
+    ).toEqual([
+      'adrian-rate-coding',
+      'ai-winters',
+      'barlow-hill-direction',
+      'dartmouth',
+      'desimone-gross-faces',
+      'douglas-hofstadter',
+      'godel-escher-bach',
+      'hafting-moser-grid',
+      'hartline-receptive-fields',
+      'hubel-wiesel-1959',
+      'okeefe-dostrovsky-place',
+    ]);
   });
   it('provides complete localized explanations and control labels', () => {
     for (const kind of conceptDemoKinds)

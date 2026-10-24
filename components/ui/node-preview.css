@@ -127,13 +127,13 @@
 }
 .winter-crystal-large i {
   color: #b9dce9;
+  perspective: 80px;
   animation: winter-crystal-drift var(--sway-duration) var(--fall-delay) ease-in-out infinite
     alternate;
 }
 .winter-crystal-large svg {
   filter: drop-shadow(0 0 0.45px rgb(255 255 255 / 65%));
-  animation: winter-crystal-tumble var(--spin-duration) var(--fall-delay) ease-in-out infinite
-    alternate;
+  animation: winter-crystal-tumble var(--spin-duration) var(--fall-delay) linear infinite;
   transform-origin: center;
 }
 @keyframes winter-crystal-fall {
@@ -162,13 +162,11 @@
 }
 @keyframes winter-crystal-tumble {
   0% {
-    transform: rotate(var(--spin-start)) rotateX(15deg) rotateY(-20deg);
-  }
-  45% {
-    transform: rotate(calc(var(--spin-start) + 18deg)) rotateX(48deg) rotateY(15deg);
+    transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) rotateZ(var(--spin-start));
   }
   100% {
-    transform: rotate(var(--spin-end)) rotateX(-25deg) rotateY(40deg);
+    transform: rotateX(calc(var(--tilt-x) + 360deg)) rotateY(calc(var(--tilt-y) + var(--turn-y)))
+      rotateZ(calc(var(--spin-start) + var(--turn-z)));
   }
 }
 @keyframes winter-snowfall {

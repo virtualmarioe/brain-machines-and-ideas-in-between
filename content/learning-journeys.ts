@@ -1,12 +1,19 @@
+import { neuroscienceJourney } from './neuroscience-path';
 import { text } from './translations/ui';
 import type { LocalizedText } from '@/types/history';
 export interface LearningJourney {
   id: string;
   title: LocalizedText;
   outcome: LocalizedText;
-  stops: { entityId: string; question: LocalizedText; takeaway: LocalizedText }[];
+  stops: {
+    entityId: string;
+    referenceId?: string;
+    question: LocalizedText;
+    takeaway: LocalizedText;
+  }[];
 }
 export const learningJourneys: LearningJourney[] = [
+  neuroscienceJourney,
   {
     id: 'neurons-to-networks',
     title: text(
@@ -247,9 +254,9 @@ export const learningJourneys: LearningJourney[] = [
 export const learningCopy = {
   title: text('Guided learning journeys', 'Geführte Lernwege', 'Recorridos de aprendizaje'),
   intro: text(
-    'Choose a question and follow five discoveries. These are teaching sequences, not claims of direct historical influence.',
-    'Wähle eine Frage und erkunde fünf Entdeckungen. Dies sind didaktische Folgen, keine Behauptungen direkter historischer Einflüsse.',
-    'Elige una pregunta y recorre cinco descubrimientos. Son secuencias didácticas, no afirmaciones de influencia histórica directa.',
+    'Choose a question and follow a sequence of discoveries. These are teaching sequences, not claims of direct historical influence.',
+    'Wähle eine Frage und erkunde eine Folge von Entdeckungen. Dies sind didaktische Folgen, keine Behauptungen direkter historischer Einflüsse.',
+    'Elige una pregunta y recorre una secuencia de descubrimientos. Son secuencias didácticas, no afirmaciones de influencia histórica directa.',
   ),
   start: text('Start journey', 'Lernweg starten', 'Iniciar recorrido'),
   previous: text('Previous stop', 'Vorherige Station', 'Parada anterior'),
@@ -271,6 +278,8 @@ export const learningCopy = {
     'Estás explorando fuera de este recorrido.',
   ),
   resume: text('Return to current stop', 'Zur aktuellen Station', 'Volver a la parada actual'),
+  paper: text('Read the milestone paper', 'Meilenstein-Studie lesen', 'Leer el artículo del hito'),
+  award: text('Nobel recognition', 'Nobel-Auszeichnung', 'Reconocimiento Nobel'),
   winter: text(
     'Explore the winter guide and search demo',
     'Wintererklärung und Suchdemo erkunden',

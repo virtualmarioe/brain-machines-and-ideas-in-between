@@ -1,4 +1,5 @@
 'use client';
+import NobelMedal from '@/components/ui/NobelMedal';
 import { displayYear, yearOf } from '@/lib/graph';
 import { useEffect, useRef, useState } from 'react';
 import { landPath, project } from '@/lib/map';
@@ -491,11 +492,7 @@ export default function WorldMap({
                       strokeWidth={isActive ? 1.5 : 1}
                     />
                     <circle r={isActive ? 4 : 2} fill="var(--domain)" />
-                    {nobel && entity.nobel && (
-                      <text x="12" y="5" fill="var(--gold)" fontSize="15" aria-hidden="true">
-                        ◇
-                      </text>
-                    )}
+                    {nobel && entity.nobel && <NobelMedal x={12} y={-10} size={20} />}
                   </g>
                 </g>
               );

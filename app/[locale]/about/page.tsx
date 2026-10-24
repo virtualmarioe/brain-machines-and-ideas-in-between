@@ -108,6 +108,20 @@ export default async function About({ params }: Props) {
         , {c.country}.
       </p>
       <p>{c.evidence}</p>
+      <p className="muted">
+        {
+          {
+            en: 'Nobel medal photograph',
+            de: 'Foto der Nobelmedaille',
+            es: 'Fotografía de la medalla Nobel',
+          }[locale]
+        }
+        :{' '}
+        <a href="https://mouseion.jax.org/snellmedals/1/">
+          The Jackson Laboratory, George Davis Snell collection
+        </a>
+        .
+      </p>
       <h2>{c.source}</h2>
       <a href="https://github.com/virtualmarioe/brain-machines-and-ideas-in-between">
         GitHub: brain-machines-and-ideas-in-between

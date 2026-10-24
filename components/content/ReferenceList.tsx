@@ -1,3 +1,4 @@
+import NobelMedal from '@/components/ui/NobelMedal';
 import { referenceById } from '@/content';
 import { sourceLabels, t } from '@/content/translations/ui';
 import type { Locale } from '@/types/history';
@@ -10,7 +11,10 @@ export default function ReferenceList({ ids, locale }: { ids: string[]; locale: 
         return source ? (
           <li key={id}>
             <a href={source.url} target="_blank" rel="noopener noreferrer">
-              <span>{source.title}</span>
+              <span>
+                {source.type === 'nobel' && <NobelMedal />}
+                {source.title}
+              </span>
               <Icon name="external" size={13} />
             </a>
             <p>

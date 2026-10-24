@@ -77,3 +77,17 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.journey-paper {
+  border-left: 3px solid var(--accent);
+  padding: 8px 16px;
+  margin: 16px 0;
+  overflow-wrap: anywhere;
+}
+.journey-paper p {
+  margin: 4px 0 8px;
+}
+.journey-award {
+  font-size: var(--text-small);
+  color: var(--muted);
+}

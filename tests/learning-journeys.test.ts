@@ -7,9 +7,9 @@ import { explorationUrl, parseExploration } from '../lib/exploration';
 
 describe('curated learning journeys', () => {
   it('uses real discoveries and complete localized teaching prompts', () => {
-    expect(new Set(learningJourneys.map((journey) => journey.id)).size).toBe(3);
+    expect(new Set(learningJourneys.map((journey) => journey.id)).size).toBe(4);
     for (const journey of learningJourneys) {
-      expect(journey.stops).toHaveLength(5);
+      expect(journey.stops).toHaveLength(journey.id === 'neuroscience-neural-codes' ? 7 : 5);
       for (const stop of journey.stops) {
         expect(entities.some((entity) => entity.id === stop.entityId)).toBe(true);
         for (const locale of ['en', 'de', 'es'] as const) {

@@ -10,7 +10,7 @@ test('complexity is visible, nested, persistent and keyboard accessible', async 
   await page
     .locator('.complexity-control')
     .screenshot({ path: `/tmp/intelligence-atlas-complexity-${test.info().project.name}.png` });
-  await expect(expert).toContainText('157 nodes');
+  await expect(expert).toContainText('164 nodes');
   await connections.focus();
   await page.keyboard.press('Enter');
   await expect(connections).toHaveAttribute('aria-pressed', 'true');
