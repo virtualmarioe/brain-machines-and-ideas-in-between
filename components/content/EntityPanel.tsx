@@ -3,7 +3,7 @@ import NobelMedal from '@/components/ui/NobelMedal';
 import Link from 'next/link';
 import { complexityCopy, complexityLevels, type Complexity } from '@/lib/complexity';
 import { displayYear } from '@/lib/graph';
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { entities, relationships } from '@/content';
 import { domains, relationLabels, t, typeLabels } from '@/content/translations/ui';
 import type { HistoricalEntity, Locale } from '@/types/history';
@@ -29,6 +29,22 @@ export default function EntityPanel({
   const [depth, setDepth] = useState<'why' | 'understand' | 'deeper'>(
     level === 'essentials' ? 'why' : level === 'connections' ? 'understand' : 'deeper',
   );
+  const readingTabs = useRef<HTMLDivElement>(null);
+  const tabPosition = useRef<number | null>(null);
+  function changeDepth(next: typeof depth) {
+    if (next === depth) return;
+    if (window.matchMedia('(max-width: 650px)').matches) {
+      tabPosition.current = readingTabs.current?.getBoundingClientRect().top ?? null;
+    }
+    setDepth(next);
+  }
+  useLayoutEffect(() => {
+    if (tabPosition.current === null || !readingTabs.current) return;
+    // Reading length changes can make the browser anchor to material below the panel.
+    const shift = readingTabs.current.getBoundingClientRect().top - tabPosition.current;
+    window.scrollTo({ top: window.scrollY + shift, behavior: 'instant' });
+    tabPosition.current = null;
+  }, [depth]);
   const before = relationships.filter((r) => r.target === entity.id),
     after = relationships.filter((r) => r.source === entity.id);
   return (
@@ -69,7 +85,12 @@ export default function EntityPanel({
         {complexityCopy[locale].names[complexityLevels.indexOf(level)]} ·{' '}
         {t('readingDepthHint', locale)}
       </p>
-      <div className="depth-tabs" role="tablist" aria-label={t('understand', locale)}>
+      <div
+        ref={readingTabs}
+        className="depth-tabs"
+        role="tablist"
+        aria-label={t('understand', locale)}
+      >
         {(['why', 'understand', 'deeper'] as const).map((tab) => (
           <button
             id={`depth-${tab}`}
@@ -93,18 +114,17 @@ export default function EntityPanel({
                         : -1;
               if (next >= 0) {
                 event.preventDefault();
-                setDepth(tabs[next]);
-                document.getElementById(`depth-${tabs[next]}`)?.focus();
+                changeDepth(tabs[next]);
+                document.getElementById(`depth-${tabs[next]}`)?.focus({ preventScroll: true });
               }
             }}
-            onClick={() => setDepth(tab)}
+            onClick={() => changeDepth(tab)}
           >
             {t(tab, locale)}
           </button>
         ))}
       </div>
       <div
-        key={depth}
         className="entity-reading"
         id="entity-reading"
         role="tabpanel"

@@ -1715,6 +1715,7 @@ footer :is(button, a) {
     max-width: 24ch;
   }
   .entity-reading {
+    overflow-anchor: none;
     border: 0;
   }
   .depth-tabs {
