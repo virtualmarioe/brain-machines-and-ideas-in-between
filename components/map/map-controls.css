@@ -129,3 +129,156 @@
   outline: 2px solid var(--focus);
   outline-offset: -3px;
 }
+
+/* A compact instrument panel keeps the geography visually prominent. */
+.map-section .map-display-controls {
+  margin: 0 var(--space-5);
+  padding: var(--space-3) 0;
+  border-block: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-5);
+}
+.map-display-controls .map-view-control {
+  margin: 0;
+  font-size: var(--text-small);
+}
+.map-display-controls .map-animation-hint {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: var(--text-caption);
+}
+.map-section .map-navigation {
+  border: 0;
+  padding: var(--space-4) 0 var(--space-2);
+  margin-block: 0;
+  background: transparent;
+}
+.map-navigation > label {
+  font-weight: 600;
+}
+.map-navigation input {
+  background: var(--surface);
+  font-weight: 400;
+  border-radius: 0.6rem;
+}
+.map-navigation-actions button {
+  background: var(--surface);
+  font-size: var(--text-small);
+}
+.map-navigation-actions output {
+  font-size: var(--text-small);
+  color: var(--accent);
+}
+.map-navigation #map-navigation-help {
+  font-size: var(--text-caption);
+}
+.map-region-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+}
+.map-region-presets button {
+  min-height: var(--control-size);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: 2rem;
+  background: var(--surface);
+  font-size: var(--text-small);
+}
+.map-region-presets button:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.map-section .world-map {
+  border-block: 1px solid var(--border);
+  background: var(--surface);
+}
+.world-map:active {
+  cursor: grabbing;
+}
+.map-ocean {
+  fill: color-mix(in srgb, var(--accent) 6%, var(--surface));
+}
+.map-land {
+  fill: var(--surface);
+  stroke: var(--reference);
+  stroke-width: 0.7;
+  stroke-linejoin: round;
+}
+.map-graticule {
+  fill: none;
+  stroke: var(--accent);
+  stroke-opacity: 0.13;
+  stroke-width: 0.6;
+  pointer-events: none;
+}
+.map-city-halo {
+  stroke: transparent;
+  stroke-width: 2;
+}
+.map-city[aria-pressed='true'] .map-city-halo {
+  fill: color-mix(in srgb, var(--accent) 12%, transparent);
+  stroke: var(--accent);
+}
+.map-city:hover .map-node-border,
+.map-city:focus-visible .map-node-border {
+  stroke: var(--focus);
+  stroke-width: 3;
+}
+.map-city .map-node-border {
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 15%));
+}
+.map-reading-key {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  margin: 0;
+  padding: var(--space-3) var(--space-5);
+  color: var(--muted);
+  font-size: var(--text-caption);
+  line-height: 1.5;
+}
+.map-key-symbol {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  border: 1px solid var(--reference);
+  border-radius: 50%;
+  color: var(--text);
+  background: var(--surface);
+  font-weight: 600;
+}
+.map-section div.map-city-details {
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  background: var(--surface);
+}
+@media (max-width: 650px) {
+  .map-section .map-display-controls {
+    gap: var(--space-2);
+  }
+  .map-region-presets {
+    gap: var(--space-1);
+  }
+  .map-region-presets button {
+    padding-inline: var(--space-3);
+  }
+}
+@media (forced-colors: active) {
+  .map-land {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+  .map-ocean {
+    fill: Canvas;
+  }
+  .map-graticule {
+    stroke: GrayText;
+  }
+}

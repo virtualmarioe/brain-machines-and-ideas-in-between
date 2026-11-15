@@ -18,3 +18,11 @@ Existing evidence, geographic caveats, connection animation, scientific colors, 
 Content validation, 140 unit tests, TypeScript, lint, and the production build passed. Browser coverage includes desktop and phone search, keyboard panning, reset, locating a discovery, numerical verification of viewport-center preservation, cluster expansion, synchronized selection, label collision checks, and accessibility scans. The new mobile test waits for the compact layout to hydrate before opening the map, matching the existing map tests. Desktop and phone screenshots were visually inspected.
 
 The local production preview was rebuilt and restarted on port 3001. No commit or push was performed for this refinement.
+
+## Visual and direct-interaction refinement
+
+The next refinement groups display controls into one compact toolbar, adds a pale ocean surface with projected latitude/longitude lines and defined coastlines, and uses an explicit halo for the chosen city. Location details use a bounded reading surface. A city-mode key explains discovery counts and chosen-location rings.
+
+Regional shortcuts provide reproducible views of the world, Europe, the Americas, and East Asia. Double-clicking the map centers and doubles magnification at the chosen point. Buttons and keyboard zoom remain available as alternatives. Regional labels and gesture guidance are translated into all three interface languages.
+
+Validation: 140 unit tests, content validation, TypeScript, lint, and production build passed. Twenty desktop/phone map browser tests passed, including animation, label collisions, region shortcuts, direct zoom, cluster selection, search, and accessibility scans. Desktop and phone screenshots were inspected. No geographic source or scientific content was changed.

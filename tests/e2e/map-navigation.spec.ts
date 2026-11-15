@@ -73,3 +73,27 @@ test('zoom preserves the viewport center and crowded clusters can be expanded', 
   await map.getByRole('button', { name: 'Expand this cluster' }).click();
   await expect(map.locator('.map-navigation output')).toHaveText('2.0×');
 });
+
+test('regional shortcuts and direct zoom work in both map modes', async ({
+  page,
+  isMobile,
+}, info) => {
+  await page.goto('/en/architecture/neocognitron?level=connections');
+  const frame = page.locator('#map-view');
+  if (isMobile) await expect(frame).toHaveJSProperty('open', false);
+  if ((await frame.getAttribute('open')) === null) await frame.locator('summary').first().click();
+  const map = page.locator('.map-section');
+  for (const mode of ['cities', 'discoveries']) {
+    await map.getByRole('combobox', { name: 'Map view', exact: true }).selectOption(mode);
+    await map.getByRole('button', { name: 'Europe', exact: true }).click();
+    await expect(map.locator('.map-navigation output')).toHaveText('3.5×');
+    await map.getByRole('button', { name: 'World', exact: true }).click();
+    await expect(map.locator('.map-navigation output')).toHaveText('1.0×');
+    await map.locator('svg.world-map').dblclick({ position: { x: 35, y: 35 } });
+    await expect(map.locator('.map-navigation output')).toHaveText('2.0×');
+  }
+  await map.getByRole('button', { name: 'World', exact: true }).click();
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  expect((await new AxeBuilder({ page }).include('.map-section').analyze()).violations).toEqual([]);
+  await map.screenshot({ path: info.outputPath('map-refined.png') });
+});

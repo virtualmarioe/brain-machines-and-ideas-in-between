@@ -2,7 +2,7 @@
 import NobelMedal from '@/components/ui/NobelMedal';
 import { displayYear, yearOf } from '@/lib/graph';
 import { useEffect, useRef, useState } from 'react';
-import { landPath, project } from '@/lib/map';
+import { graticulePath, landPath, project } from '@/lib/map';
 import type { HistoricalEntity, HistoricalRelationship, Locale } from '@/types/history';
 import { t, relationLabels } from '@/content/translations/ui';
 import { ConnectionPreview, useConnectionPreview } from '@/components/ui/ConnectionPreview';
@@ -91,6 +91,35 @@ export default function WorldMap({
       sites: 'Instituciones',
       open: 'Seleccione un descubrimiento para explorarlo.',
       note: 'Las posiciones aproximan lugares asociados, incluidas ciudades de publicación. Las etiquetas próximas aparecen al ampliar. La lista de ciudades permite acceder a todos los descubrimientos.',
+    },
+  }[locale];
+  const regionCopy = {
+    en: {
+      title: 'Explore a region',
+      world: 'World',
+      europe: 'Europe',
+      americas: 'Americas',
+      asia: 'East Asia',
+      legend: 'Numbers count discoveries. Rings mark the chosen location.',
+      gesture: 'Double-click to zoom into a place.',
+    },
+    de: {
+      title: 'Eine Region erkunden',
+      world: 'Welt',
+      europe: 'Europa',
+      americas: 'Amerika',
+      asia: 'Ostasien',
+      legend: 'Zahlen zählen Entdeckungen. Ringe markieren den gewählten Ort.',
+      gesture: 'Doppelklicken, um einen Ort zu vergrößern.',
+    },
+    es: {
+      title: 'Explorar una región',
+      world: 'Mundo',
+      europe: 'Europa',
+      americas: 'América',
+      asia: 'Asia oriental',
+      legend: 'Los números cuentan descubrimientos. Los anillos marcan el lugar elegido.',
+      gesture: 'Haz doble clic para ampliar un lugar.',
     },
   }[locale];
   const [locationQuery, setLocationQuery] = useState('');
@@ -286,69 +315,71 @@ export default function WorldMap({
         <h3>{infoTitle}</h3>
         <p className="node-preview-description">{infoText}</p>
       </PreviewCard>
-      <label className="map-view-control">
-        {copy.mode}
-        <select
-          value={cityMode ? 'cities' : 'discoveries'}
-          onChange={(event) => {
-            setCityMode(event.target.value === 'cities');
-            setCityKey(null);
-            setClusterKey(null);
-            clusterPreview.dismiss(true);
-            preview.dismiss(true);
-            connectionPreview.dismiss(true);
-            setScale(1);
-            setOffset({ x: 0, y: 0 });
-          }}
-        >
-          <option value="discoveries">{copy.selected}</option>
-          <option value="cities">{copy.cities}</option>
-        </select>
-      </label>
-      <label className="map-view-control">
-        <input
-          type="checkbox"
-          checked={showConnections}
-          onChange={(event) => {
-            setShowConnections(event.target.checked);
-            connectionPreview.dismiss(true);
-          }}
-        />
-        {copy.connections}
-      </label>
-      {showConnections && (
-        <button
-          className="map-view-control map-animation-switch"
-          role="switch"
-          aria-checked={animateConnections}
-          onClick={() => setAnimateConnections((value) => !value)}
-        >
-          <span className="map-switch-track" aria-hidden="true">
-            <span />
-          </span>
-          {
-            { en: 'Animate chronology', de: 'Chronologie animieren', es: 'Animar cronología' }[
-              locale
-            ]
-          }
-          <span className="map-switch-state" aria-hidden="true">
-            {animateConnections
-              ? { en: 'On', de: 'An', es: 'Sí' }[locale]
-              : { en: 'Off', de: 'Aus', es: 'No' }[locale]}
-          </span>
-        </button>
-      )}
-      {showConnections && (
-        <p className="muted map-animation-hint">
-          {
+      <div className="map-display-controls">
+        <label className="map-view-control">
+          {copy.mode}
+          <select
+            value={cityMode ? 'cities' : 'discoveries'}
+            onChange={(event) => {
+              setCityMode(event.target.value === 'cities');
+              setCityKey(null);
+              setClusterKey(null);
+              clusterPreview.dismiss(true);
+              preview.dismiss(true);
+              connectionPreview.dismiss(true);
+              setScale(1);
+              setOffset({ x: 0, y: 0 });
+            }}
+          >
+            <option value="discoveries">{copy.selected}</option>
+            <option value="cities">{copy.cities}</option>
+          </select>
+        </label>
+        <label className="map-view-control">
+          <input
+            type="checkbox"
+            checked={showConnections}
+            onChange={(event) => {
+              setShowConnections(event.target.checked);
+              connectionPreview.dismiss(true);
+            }}
+          />
+          {copy.connections}
+        </label>
+        {showConnections && (
+          <button
+            className="map-view-control map-animation-switch"
+            role="switch"
+            aria-checked={animateConnections}
+            onClick={() => setAnimateConnections((value) => !value)}
+          >
+            <span className="map-switch-track" aria-hidden="true">
+              <span />
+            </span>
             {
-              en: 'Turn off animation to see every connection.',
-              de: 'Ohne Animation sind alle Verbindungen sichtbar.',
-              es: 'Desactive la animación para ver todas las conexiones.',
-            }[locale]
-          }
-        </p>
-      )}
+              { en: 'Animate chronology', de: 'Chronologie animieren', es: 'Animar cronología' }[
+                locale
+              ]
+            }
+            <span className="map-switch-state" aria-hidden="true">
+              {animateConnections
+                ? { en: 'On', de: 'An', es: 'Sí' }[locale]
+                : { en: 'Off', de: 'Aus', es: 'No' }[locale]}
+            </span>
+          </button>
+        )}
+        {showConnections && (
+          <p className="muted map-animation-hint">
+            {
+              {
+                en: 'Turn off animation to see every connection.',
+                de: 'Ohne Animation sind alle Verbindungen sichtbar.',
+                es: 'Desactive la animación para ver todas las conexiones.',
+              }[locale]
+            }
+          </p>
+        )}
+      </div>
       <div className="map-navigation">
         <label>
           {navigation.search}
@@ -395,9 +426,29 @@ export default function WorldMap({
           </div>
         )}
         <p id="map-navigation-help" className="muted">
-          {navigation.help}
+          {navigation.help} {regionCopy.gesture}
         </p>
       </div>
+      <nav className="map-region-presets" aria-label={regionCopy.title}>
+        <button onClick={resetMap}>{regionCopy.world}</button>
+        {(
+          [
+            { name: 'europe', lon: 12, lat: 50, zoom: 3.5 },
+            { name: 'americas', lon: -95, lat: 30, zoom: 2 },
+            { name: 'asia', lon: 125, lat: 32, zoom: 3 },
+          ] as const
+        ).map((region) => (
+          <button
+            key={region.name}
+            onClick={() => {
+              const [x, y] = project(region.lon, region.lat);
+              zoomTo(region.zoom, x, y);
+            }}
+          >
+            {regionCopy[region.name]}
+          </button>
+        ))}
+      </nav>
       <svg
         ref={mapElement}
         viewBox="0 0 720 295"
@@ -424,6 +475,15 @@ export default function WorldMap({
           }
         }}
         aria-label={t('mapAlt', locale)}
+        onDoubleClick={(event) => {
+          const matrix = event.currentTarget.getScreenCTM();
+          if (!matrix) return;
+          const point = new DOMPoint(event.clientX, event.clientY).matrixTransform(
+            matrix.inverse(),
+          );
+          zoomTo(scale * 2, (point.x - mapX) / scale, (point.y - mapY) / scale);
+          event.preventDefault();
+        }}
         onPointerDown={(e) => {
           if (e.button !== 0) return;
           clusterPreview.dismiss();
@@ -452,16 +512,12 @@ export default function WorldMap({
           drag.current = null;
         }}
       >
-        <defs>
-          <pattern id="map-grid" width="60" height="60" patternUnits="userSpaceOnUse">
-            <path d="M60 0H0V60" fill="none" stroke="var(--map-grid)" strokeWidth=".7" />
-          </pattern>
-        </defs>
-        <rect width="720" height="295" fill="url(#map-grid)" />
+        <rect width="720" height="295" className="map-ocean" />
         <g
           transform={`translate(${(scale === 1 ? 0 : 360 - cx * scale) + offset.x} ${(scale === 1 ? 0 : 147 - cy * scale) + offset.y}) scale(${scale})`}
         >
-          <path d={landPath} fill="var(--land)" stroke="var(--land-border)" strokeWidth=".5" />
+          <path d={graticulePath} className="map-graticule" vectorEffect="non-scaling-stroke" />
+          <path d={landPath} className="map-land" vectorEffect="non-scaling-stroke" />
           {showConnections &&
             edges.map((edge) => {
               const a = lookup.get(edge.source)?.locations[0],
@@ -664,7 +720,7 @@ export default function WorldMap({
                     }
                   }}
                 >
-                  <circle r="13" fill="transparent" />
+                  <circle r="18" className="map-city-halo" fill="transparent" />
                   <circle
                     className="map-node-border"
                     r="11"
@@ -686,6 +742,14 @@ export default function WorldMap({
         </g>
         <MapLabels anchors={labelAnchors} scale={uiScale} />
       </svg>
+      {cityMode && (
+        <p className="map-reading-key">
+          <span className="map-key-symbol" aria-hidden="true">
+            3
+          </span>
+          {regionCopy.legend}
+        </p>
+      )}
       {chosenCity && (
         <div className="map-city-details">
           <label>

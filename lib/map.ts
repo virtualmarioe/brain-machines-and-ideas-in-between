@@ -1,4 +1,4 @@
-import { geoNaturalEarth1, geoPath } from 'd3-geo';
+import { geoGraticule10, geoNaturalEarth1, geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 import type { GeometryCollection, Topology } from 'topojson-specification';
 import land from '@/public/diagrams/world-land.json';
@@ -33,3 +33,5 @@ export function project(lon: number, lat: number): [number, number] {
   return projection([lon, lat]) ?? [360, 147];
 }
 export const landPath = geoPath(projection)(geography) ?? '';
+
+export const graticulePath = geoPath(projection)(geoGraticule10()) ?? '';
