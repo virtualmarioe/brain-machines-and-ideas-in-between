@@ -1,0 +1,218 @@
+/* Learning surfaces reuse the atlas palette, type scale, and spacing tokens. */
+.learning-entry {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  padding: 0 var(--page-gutter) var(--space-5);
+}
+.learning-entry button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: left;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+  background: var(--surface);
+  min-height: 5rem;
+}
+.learning-entry button:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.learning-entry strong,
+.learning-entry small {
+  display: block;
+}
+.learning-entry strong {
+  font-size: var(--text-label);
+  margin-bottom: var(--space-2);
+}
+.learning-entry small {
+  font-size: var(--text-small);
+  line-height: 1.5;
+  color: var(--muted);
+}
+.learning-entry button > span:last-child {
+  margin-left: auto;
+}
+.entry-number {
+  color: var(--accent);
+  font-family: var(--font-reading);
+  font-size: 1.4rem;
+}
+.atlas-shell .complexity-control {
+  margin: 0 var(--page-gutter) var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.atlas-shell .complexity-steps {
+  display: none;
+}
+.atlas-shell .complexity-options button {
+  padding: var(--space-3);
+  border-radius: var(--radius);
+}
+.atlas-shell .learning-journeys {
+  margin-inline: var(--page-gutter);
+}
+.atlas-shell .explore-banner {
+  padding-block: var(--space-4);
+}
+.search-recovery {
+  padding: var(--space-4) var(--page-gutter);
+  background: var(--accent-soft);
+  border-bottom: 1px solid var(--border);
+  font-size: var(--text-small);
+}
+.search-recovery button {
+  text-decoration: underline;
+  margin-left: var(--space-3);
+  min-height: var(--control-size);
+}
+.search-recovery p {
+  margin: 0;
+  color: var(--muted);
+}
+.recent-discoveries {
+  padding: var(--space-3) var(--page-gutter);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  font-size: var(--text-small);
+}
+.recent-discoveries summary {
+  padding-block: var(--space-2);
+}
+.recent-discoveries nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+.recent-discoveries button,
+.experiment-library button {
+  min-height: var(--control-size);
+  border: 1px solid var(--border);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.recent-discoveries p {
+  color: var(--muted);
+  margin: var(--space-3) 0 0;
+}
+.recent-discoveries p button {
+  border: 0;
+  text-decoration: underline;
+}
+.library-search {
+  display: grid;
+  gap: var(--space-2);
+  font-size: var(--text-label);
+}
+.library-search input {
+  width: 100%;
+  min-height: var(--control-size);
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.experiment-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+.experiment-grid article {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--domain);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.experiment-grid h3 {
+  font-family: var(--font-reading);
+  font-size: var(--text-subheading);
+  margin: var(--space-3) 0;
+}
+.experiment-grid p {
+  font-size: var(--text-small);
+  line-height: var(--leading-body);
+}
+.experiment-grid button {
+  margin-top: auto;
+  color: var(--accent);
+}
+#reading-view,
+.learning-journeys {
+  scroll-margin-top: 6rem;
+}
+.atlas-shell[data-reading-focus='true'] .atlas-workspace {
+  display: block;
+  max-width: 56rem;
+  margin-inline: auto;
+  border: 1px solid var(--border);
+}
+.atlas-shell[data-reading-focus='true'] .discovery-sidebar,
+.atlas-shell[data-reading-focus='true'] .visualization-column,
+.atlas-shell[data-reading-focus='true'] .view-links a:not([href='#reading-view']) {
+  display: none;
+}
+.atlas-shell[data-reading-focus='true'] .entity-panel {
+  display: flex;
+  border: 0;
+  max-height: none;
+}
+.atlas-shell[data-reading-focus='true'] .entity-reading {
+  overflow: visible;
+  border: 0;
+}
+.atlas-shell[data-reading-focus='true'] .entity-heading h2 {
+  max-width: 30ch;
+}
+.atlas-shell[data-reading-focus='true'] .entity-reading > p {
+  max-width: var(--measure);
+}
+@media (max-width: 700px) {
+  .learning-entry {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+  .learning-entry button {
+    min-height: var(--control-size);
+    padding: var(--space-3);
+  }
+  .learning-entry strong {
+    margin-bottom: 0;
+  }
+  .learning-entry small {
+    font-size: var(--text-caption);
+  }
+  .experiment-grid {
+    grid-template-columns: 1fr;
+  }
+  .search-recovery button {
+    display: block;
+    margin-left: 0;
+    text-align: left;
+  }
+}
+.atlas-shell[data-reading-focus='true'] .intro,
+.atlas-shell[data-reading-focus='true'] .learning-entry,
+.atlas-shell[data-reading-focus='true'] .complexity-control,
+.atlas-shell[data-reading-focus='true'] .mode-guide {
+  display: none;
+}
+.atlas-shell .intro {
+  padding-block: var(--space-6);
+}
+.atlas-shell .complexity-current {
+  position: static;
+  grid-column: 1 / -1;
+  justify-self: end;
+  line-height: 1;
+}

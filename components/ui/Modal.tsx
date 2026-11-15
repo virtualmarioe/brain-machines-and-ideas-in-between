@@ -42,7 +42,10 @@ export default function Modal({
       if (exitTimer.current) clearTimeout(exitTimer.current);
       dialog?.close();
       document.body.style.overflow = previous;
-      returnTarget?.focus({ preventScroll: true });
+      const target = returnTarget?.isConnected
+        ? returnTarget
+        : document.querySelector<HTMLElement>('.learning-entry button:nth-child(2)');
+      target?.focus({ preventScroll: true });
     };
   }, []);
   return (

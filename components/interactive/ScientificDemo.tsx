@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import PredictionCheckpoint from './PredictionCheckpoint';
 import { useId, useState } from 'react';
 import {
   distinctKinds,
@@ -734,7 +735,7 @@ function BackpropagationDemo({ locale }: DemoProps) {
   );
 }
 
-export default function ScientificDemo({ kind, locale }: { kind: DemoKind; locale: Locale }) {
+function DemoContent({ kind, locale }: { kind: DemoKind; locale: Locale }) {
   if (kind === 'perceptron') return <PerceptronDemo locale={locale} />;
   if (kind === 'convolution')
     return (
@@ -747,4 +748,13 @@ export default function ScientificDemo({ kind, locale }: { kind: DemoKind; local
   if ((distinctKinds as readonly string[]).includes(kind))
     return <DistinctDemo key={kind} kind={kind as DistinctKind} locale={locale} />;
   return <ConceptDemo key={kind} kind={kind as ConceptDemoKind} locale={locale} />;
+}
+
+export default function ScientificDemo({ kind, locale }: { kind: DemoKind; locale: Locale }) {
+  return (
+    <>
+      <PredictionCheckpoint key={kind} kind={kind} locale={locale} />
+      <DemoContent kind={kind} locale={locale} />
+    </>
+  );
 }

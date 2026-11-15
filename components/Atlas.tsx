@@ -1,4 +1,8 @@
 'use client';
+import LearningEntry from './exploration/LearningEntry';
+import ExperimentLibrary from './exploration/ExperimentLibrary';
+import RecentDiscoveries, { rememberDiscovery } from './exploration/RecentDiscoveries';
+import { experienceCopy } from '@/content/translations/experience';
 import NobelMedal from '@/components/ui/NobelMedal';
 import LearningJourneys from './exploration/LearningJourneys';
 import { learningJourneys } from '@/content/learning-journeys';
@@ -24,7 +28,7 @@ import {
   parseExploration,
   type ExplorationState,
 } from '@/lib/exploration';
-import type { Domain, HistoricalEntity, HistoricalRelationship, Locale } from '@/types/history';
+import type { Domain, HistoricalRelationship, Locale } from '@/types/history';
 import IdeaGraph from './graph/IdeaGraph';
 import WorldMap from './map/WorldMap';
 import Timeline, { MAX_YEAR } from './timeline/Timeline';
@@ -55,10 +59,10 @@ const storyIds = [
 ];
 export default function Atlas({ initialState }: { initialState: ExplorationState }) {
   const [state, setState] = useState(initialState);
+  const [library, setLibrary] = useState(false);
   const [focusPath, setFocusPath] = useState(true);
   const [theme, setTheme] = useTheme();
   const compact = useCompactLayout();
-  const [demo, setDemo] = useState<HistoricalEntity['demo']>();
   const [edge, setEdge] = useState<HistoricalRelationship | null>(null);
   const locale = state.locale;
   const story = storyIds.filter((id) => entities.some((e) => e.id === id));
@@ -119,12 +123,13 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
     if (push) window.history.pushState({ ...window.history.state, atlasNavigation: true }, '', url);
     else window.history.replaceState({ ...window.history.state, atlasNavigation: true }, '', url);
   }
-  function select(id: string) {
+  function select(id: string, openLab = false) {
     const entity = entities.find((e) => e.id === id);
     if (!entity) return;
     update(
       {
         selected: id,
+        lab: openLab && entity.demo ? true : undefined,
         level:
           complexityLevels[
             Math.max(
@@ -151,28 +156,39 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
     );
   }
   function switchMode(mode: ExplorationState['mode'], id = state.selected) {
+    const targetId =
+      mode === 'story'
+        ? story.includes(state.story ?? '')
+          ? state.story!
+          : story.includes(id)
+            ? id
+            : story[0]
+        : id;
+    const target = entities.find((entity) => entity.id === targetId);
+    const level = target
+      ? complexityLevels[
+          Math.max(
+            complexityLevels.indexOf(state.level),
+            complexityLevels.indexOf(minimumComplexity(target)),
+          )
+        ]
+      : state.level;
     update(
       {
         mode,
-        selected:
-          mode === 'story'
-            ? story.includes(state.story ?? '')
-              ? state.story!
-              : story.includes(id)
-                ? id
-                : story[0]
-            : id,
+        selected: targetId,
+        level,
         ...(mode === 'story' || mode === 'trace'
           ? {
               category: 'all',
               domain: 'all',
               query: '',
-              from: levelStart(state.level),
+              from: levelStart(level),
               to: MAX_YEAR,
               scope: 'all',
             }
           : {}),
-        ...(mode === 'trace' ? { trail: [id] } : {}),
+        ...(mode === 'trace' ? { trail: [targetId] } : {}),
       },
       true,
     );
@@ -192,8 +208,23 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
       ),
     [state.level, state.query, state.domain, state.category, state.from, state.to, locale],
   );
+  const defaultFrom = Math.max(
+    levelStart(state.level),
+    Math.floor(
+      Math.min(...entities.filter((entity) => atComplexity(entity, state.level)).map(yearOf)) / 10,
+    ) * 10,
+  );
   const selected = filtered.find((e) => e.id === state.selected) ?? filtered[0];
+  const demo = state.lab ? selected?.demo : undefined;
   usePageMetadata(locale, selected, state.mode);
+  useEffect(() => {
+    if (selected) rememberDiscovery(selected.id);
+  }, [selected]);
+  const allSearchMatches = useMemo(
+    () => (state.query.trim() ? searchEntities(entities, state.query, locale, references) : []),
+    [state.query, locale],
+  );
+  const hiddenMatches = allSearchMatches.length - filtered.length;
   const trail = state.trail?.at(-1) === selected?.id ? state.trail : selected ? [selected.id] : [];
   const focusIds =
     state.mode === 'trace' && focusPath
@@ -234,6 +265,10 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
     state.trail,
     compact,
   ]);
+  const mapEdges = useMemo(() => {
+    const ids = new Set(filtered.map((entity) => entity.id));
+    return relationships.filter((edge) => ids.has(edge.source) && ids.has(edge.target));
+  }, [filtered]);
   const graphIds = new Set(graphEntities.map((e) => e.id));
   const graphEdges = relationships.filter(
     (r) =>
@@ -258,12 +293,16 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
       entity={selected}
       locale={locale}
       onSelect={select}
-      onDemo={setDemo}
+      onDemo={() => update({ lab: true }, true)}
       nobel={state.nobel}
     />
   ) : null;
   return (
-    <div className="atlas-shell" data-mode={state.mode}>
+    <div
+      className="atlas-shell"
+      data-mode={state.mode}
+      data-reading-focus={state.view === 'reading'}
+    >
       <a href="#discoveries" className="skip-link">
         {t('skip', locale)}
       </a>
@@ -341,6 +380,9 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
         </div>
       </header>
       <main>
+        {state.view === 'reading' && (
+          <h1 className="sr-only">{selected?.title[locale] || t('noResults', locale)}</h1>
+        )}
         <section className="intro">
           <div>
             <p className="eyebrow">{t('eyebrow', locale)}</p>
@@ -365,6 +407,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
             <Icon name="arrow" />
           </button>
         </section>
+        <LearningEntry locale={locale} onLibrary={() => setLibrary(true)} />
         <ComplexityControl
           level={state.level}
           locale={locale}
@@ -451,6 +494,24 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
             </label>
           </div>
         </div>
+        {hiddenMatches > 0 && (
+          <section className="search-recovery" aria-label={experienceCopy.outside[locale]}>
+            <strong>
+              {hiddenMatches} · {experienceCopy.outside[locale]}
+            </strong>
+            <button
+              onClick={() =>
+                update(
+                  { level: 'expert', from: -400, to: MAX_YEAR, domain: 'all', category: 'all' },
+                  true,
+                )
+              }
+            >
+              {experienceCopy.all[locale]} →
+            </button>
+            <p>{experienceCopy.allHint[locale]}</p>
+          </section>
+        )}
         {state.mode === 'story' && (
           <section key="story" className="story-banner mode-guide" aria-labelledby="mode-title">
             <div>
@@ -544,7 +605,18 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
             {state.mode !== 'story' && state.story && (
               <button onClick={() => switchMode('story')}>{journey.resume[locale]}</button>
             )}
+            <button
+              aria-pressed={state.view === 'reading'}
+              onClick={() => {
+                update({ view: state.view === 'reading' ? undefined : 'reading' }, true);
+              }}
+            >
+              {state.view === 'reading'
+                ? experienceCopy.atlas[locale]
+                : experienceCopy.focus[locale]}
+            </button>
             <nav className="view-links" aria-label={journey.orientation[locale]}>
+              <a href="#reading-view">{experienceCopy.read[locale]}</a>
               <a
                 href="#graph-view"
                 onClick={() =>
@@ -570,7 +642,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
         {(state.query ||
           state.domain !== 'all' ||
           state.category !== 'all' ||
-          state.from !== levelStart(state.level) ||
+          state.from > defaultFrom ||
           state.to !== MAX_YEAR) && (
           <nav className="filter-summary" aria-label={journey.filters[locale]}>
             <strong>{journey.filters[locale]}</strong>
@@ -590,7 +662,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
             {state.category !== 'all' && (
               <button onClick={() => update({ category: 'all' })}>{t('persons', locale)} ×</button>
             )}
-            {(state.from !== levelStart(state.level) || state.to !== MAX_YEAR) && (
+            {(state.from > defaultFrom || state.to !== MAX_YEAR) && (
               <button onClick={() => update({ from: levelStart(state.level), to: MAX_YEAR })}>
                 {formatYear(state.from)}–{formatYear(state.to)} ×
               </button>
@@ -618,6 +690,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
             onFocus={setFocusPath}
           />
         )}
+        <RecentDiscoveries locale={locale} selected={selected?.id || ''} onSelect={select} />
         <div className="atlas-workspace" id="discoveries">
           <aside className="discovery-sidebar">
             <div className="node-category">
@@ -717,59 +790,65 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
           {filtered.length > 0 && selected ? (
             <>
               {state.mode === 'story' && readingPanel}
-              <div className="visualization-column">
-                <details
-                  id="graph-view"
-                  className="visualization-frame"
-                  open={compact ? undefined : true}
-                >
-                  <summary>
-                    <Icon name="network" size={18} />
-                    {t('graph', locale)}
-                    <span>+</span>
-                  </summary>
-                  <IdeaGraph
-                    focusIds={focusIds}
-                    compact={compact}
-                    entities={graphEntities}
-                    relationships={graphEdges}
-                    selected={selected.id}
-                    locale={locale}
-                    onSelect={select}
-                    onEdge={setEdge}
-                  />
-                </details>
-                <details
-                  id="map-view"
-                  className="visualization-frame"
-                  open={compact ? undefined : true}
-                >
-                  <summary>
-                    <Icon name="globe" size={18} />
-                    {t('map', locale)}
-                    <span>+</span>
-                  </summary>
-                  <WorldMap
-                    onEdge={setEdge}
-                    nobel={state.nobel}
-                    entities={filtered}
-                    relationships={relationships.filter(
-                      (edge) =>
-                        filtered.some((entity) => entity.id === edge.source) &&
-                        filtered.some((entity) => entity.id === edge.target),
-                    )}
-                    selected={selected.id}
-                    locale={locale}
-                    onSelect={select}
-                  />
-                </details>
-              </div>
+              {state.view !== 'reading' && (
+                <div className="visualization-column">
+                  <details
+                    id="graph-view"
+                    className="visualization-frame"
+                    open={compact ? undefined : true}
+                  >
+                    <summary>
+                      <Icon name="network" size={18} />
+                      {t('graph', locale)}
+                      <span>+</span>
+                    </summary>
+                    <IdeaGraph
+                      focusIds={focusIds}
+                      compact={compact}
+                      entities={graphEntities}
+                      relationships={graphEdges}
+                      selected={selected.id}
+                      locale={locale}
+                      onSelect={select}
+                      onEdge={setEdge}
+                    />
+                  </details>
+                  <details
+                    id="map-view"
+                    className="visualization-frame"
+                    open={compact ? undefined : true}
+                  >
+                    <summary>
+                      <Icon name="globe" size={18} />
+                      {t('map', locale)}
+                      <span>+</span>
+                    </summary>
+                    <WorldMap
+                      onEdge={setEdge}
+                      nobel={state.nobel}
+                      entities={filtered}
+                      relationships={mapEdges}
+                      selected={selected.id}
+                      locale={locale}
+                      onSelect={select}
+                    />
+                  </details>
+                </div>
+              )}
               {state.mode !== 'story' && readingPanel}
             </>
           ) : (
             <div className="empty-state">
               <Icon name="search" size={32} />
               <h2>{t('noResults', locale)}</h2>
+              {state.view === 'reading' && (
+                <button
+                  className="primary-button"
+                  onClick={() => update({ view: undefined }, true)}
+                >
+                  {experienceCopy.atlas[locale]}
+                </button>
+              )}
               <p>{t('emptyTimeline', locale)}</p>
               {state.level !== 'expert' && (
                 <button
@@ -816,11 +895,27 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
         </Link>
         <span>350 BCE → 2026</span>
       </footer>
+      {library && (
+        <Modal
+          title={experienceCopy.library[locale]}
+          locale={locale}
+          onClose={() => setLibrary(false)}
+          wide
+        >
+          <ExperimentLibrary
+            locale={locale}
+            onOpen={(entity) => {
+              select(entity.id, true);
+              setLibrary(false);
+            }}
+          />
+        </Modal>
+      )}
       {demo && (
         <Modal
           title={t('experiment', locale)}
           locale={locale}
-          onClose={() => setDemo(undefined)}
+          onClose={() => update({ lab: undefined })}
           wide
         >
           <ScientificDemo kind={demo} locale={locale} />

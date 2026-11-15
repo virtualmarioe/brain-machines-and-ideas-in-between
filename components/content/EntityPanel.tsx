@@ -49,6 +49,8 @@ export default function EntityPanel({
     after = relationships.filter((r) => r.source === entity.id);
   return (
     <aside
+      id="reading-view"
+      tabIndex={-1}
       className={`entity-panel domain-${entity.domain}`}
       aria-label={t('selected', locale)}
       data-entity-id={entity.id}

@@ -48,6 +48,14 @@ Four localized guided learning journeys add outcomes, five or seven stops, refle
 
 The research review queue records 16 narrowly checked claims and five scoped relationships. Imported entries retain their review status: these checks do not certify their full historical narratives. See [research coverage](docs/RESEARCH_CATALOG.md) and the [release checklist](docs/RELEASE_CHECKLIST.md).
 
+## Learning entry and focused exploration
+
+Three entry actions lead to guided paths, the searchable library of all 33 existing experiments, or concept search. Search offers full-catalog recovery when current filters hide matches. Focused reading keeps the same discovery and sources while removing the graph and map from the rendered view; `view=reading` preserves that choice in shared URLs. Experiment URLs use `lab=1` and support reload and browser history.
+
+Optional prediction checkpoints in the perceptron, convolution, backpropagation, entropy, and attention labs pair feedback with controlled experiments. Recent discoveries stay on the current device and can be cleared. No account or new dependency is required.
+
+See the [learning experience audit and priorities](docs/ux/EXPERIENCE_REVIEW.md) and [validation report](docs/ux/VALIDATION.md) for implementation details, evidence, and remaining opportunities.
+
 ## Visual design system
 
 Shared typography, spacing, reading measures, and control tokens live in `app/design-system.css`. Story emphasizes the narrative with chapter progress, Explore supports open discovery, and Trace frames each selection as a genealogy. All three share the same scientific palette and component language. Responsive layouts reorganize filters, text, and visualizations from phones through ultrawide displays.

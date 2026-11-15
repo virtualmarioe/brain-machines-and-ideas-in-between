@@ -4,6 +4,8 @@ import { learningJourneys } from '@/content/learning-journeys';
 import { isLocale } from './i18n';
 export interface ExplorationState {
   selected: string;
+  view?: 'reading';
+  lab?: true;
   level: Complexity;
   story?: string;
   journey?: string;
@@ -64,6 +66,10 @@ export function parseExploration(
     scope = params.get('scope');
   return {
     selected,
+    ...(params.get('lab') === '1' && entities.find((entity) => entity.id === selected)?.demo
+      ? { lab: true as const }
+      : {}),
+    ...(params.get('view') === 'reading' ? { view: 'reading' as const } : {}),
     level,
     ...(journey ? { journey: journey.id, journeyStep } : {}),
     ...(entities.some((e) => e.id === params.get('story')) ? { story: params.get('story')! } : {}),
@@ -98,6 +104,8 @@ export function parseExploration(
 export function explorationUrl(state: ExplorationState, entities: HistoricalEntity[]) {
   const entity = entities.find((e) => e.id === state.selected);
   const params = new URLSearchParams();
+  if (state.lab && entity?.demo) params.set('lab', '1');
+  if (state.view === 'reading') params.set('view', 'reading');
   if (state.level !== 'essentials') params.set('level', state.level);
   if (state.story) params.set('story', state.story);
   if (state.journey) {
