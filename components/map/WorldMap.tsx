@@ -93,6 +93,33 @@ export default function WorldMap({
       note: 'Las posiciones aproximan lugares asociados, incluidas ciudades de publicación. Las etiquetas próximas aparecen al ampliar. La lista de ciudades permite acceder a todos los descubrimientos.',
     },
   }[locale];
+  const [locationQuery, setLocationQuery] = useState('');
+  const navigation = {
+    en: {
+      search: 'Find a city or institution',
+      locate: 'Locate selected discovery',
+      expand: 'Expand this cluster',
+      help: 'Drag to pan. Focus the map and use arrow keys to pan, + or − to zoom, and Home to reset.',
+      empty: 'No matching locations. Try another city or institution.',
+      zoom: 'Map zoom',
+    },
+    de: {
+      search: 'Stadt oder Institution suchen',
+      locate: 'Ausgewählte Entdeckung lokalisieren',
+      expand: 'Diese Gruppe vergrößern',
+      help: 'Zum Verschieben ziehen. Mit Fokus auf der Karte: Pfeiltasten zum Verschieben, + oder − zum Zoomen und Pos1 zum Zurücksetzen.',
+      empty: 'Keine passenden Orte. Versuche eine andere Stadt oder Institution.',
+      zoom: 'Kartenzoom',
+    },
+    es: {
+      search: 'Buscar ciudad o institución',
+      locate: 'Localizar descubrimiento seleccionado',
+      expand: 'Ampliar este grupo',
+      help: 'Arrastra para desplazar. Con el foco en el mapa: flechas para desplazar, + o − para ampliar y Inicio para restablecer.',
+      empty: 'No hay lugares coincidentes. Prueba otra ciudad o institución.',
+      zoom: 'Zoom del mapa',
+    },
+  }[locale];
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const drag = useRef<{ x: number; y: number; ox: number; oy: number } | null>(null);
@@ -181,6 +208,35 @@ export default function WorldMap({
               : 1,
       }));
 
+  const locationMatches = cities.filter((city) =>
+    `${city.name} ${city.institutions.join(' ')}`
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLocaleLowerCase(locale)
+      .includes(
+        locationQuery
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLocaleLowerCase(locale)
+          .trim(),
+      ),
+  );
+  function zoomTo(next: number, x = (360 - mapX) / scale, y = (147 - mapY) / scale) {
+    const zoom = Math.max(1, Math.min(12, next));
+    setScale(zoom);
+    setOffset({
+      x: 360 - x * zoom - (zoom === 1 ? 0 : 360 - cx * zoom),
+      y: 147 - y * zoom - (zoom === 1 ? 0 : 147 - cy * zoom),
+    });
+    clusterPreview.dismiss(true);
+    preview.dismiss(true);
+    connectionPreview.dismiss(true);
+  }
+  function resetMap() {
+    setScale(1);
+    setOffset({ x: 0, y: 0 });
+    setClusterKey(null);
+  }
   const routeLanes = new Map<string, number>();
   const focusPoint = (x: number, y: number) =>
     setOffset({
@@ -197,22 +253,18 @@ export default function WorldMap({
         <div className="zoom-tools">
           <button
             aria-label={`${t('map', locale)}: ${t('zoomOut', locale)}`}
-            onClick={() => setScale((v) => Math.max(1, v - 0.5))}
+            disabled={scale <= 1}
+            onClick={() => zoomTo(scale - 0.5)}
           >
             −
           </button>
-          <button
-            aria-label={`${t('map', locale)}: ${t('resetView', locale)}`}
-            onClick={() => {
-              setScale(1);
-              setOffset({ x: 0, y: 0 });
-            }}
-          >
+          <button aria-label={`${t('map', locale)}: ${t('resetView', locale)}`} onClick={resetMap}>
             <Icon name="reset" size={14} />
           </button>
           <button
             aria-label={`${t('map', locale)}: ${t('zoomIn', locale)}`}
-            onClick={() => setScale((v) => Math.min(12, v + 0.5))}
+            disabled={scale >= 12}
+            onClick={() => zoomTo(scale + 0.5)}
           >
             +
           </button>
@@ -297,11 +349,80 @@ export default function WorldMap({
           }
         </p>
       )}
+      <div className="map-navigation">
+        <label>
+          {navigation.search}
+          <input
+            type="search"
+            value={locationQuery}
+            onChange={(event) => setLocationQuery(event.target.value)}
+          />
+        </label>
+        <div className="map-navigation-actions">
+          <output aria-label={navigation.zoom}>{scale.toFixed(1)}×</output>
+          <button
+            disabled={!center}
+            onClick={() => {
+              setCityKey(null);
+              setClusterKey(null);
+              zoomTo(3, cx, cy);
+            }}
+          >
+            {navigation.locate}
+          </button>
+        </div>
+        {locationQuery.trim() && (
+          <div className="map-location-results">
+            <p role="status">
+              {locationMatches.length
+                ? `${locationMatches.length} · ${copy.cities}`
+                : navigation.empty}
+            </p>
+            {locationMatches.map((city) => (
+              <button
+                key={city.key}
+                onClick={() => {
+                  setCityKey(city.key);
+                  setClusterKey(null);
+                  setCityMode(true);
+                  const [x, y] = project(city.lon, city.lat);
+                  zoomTo(3, x, y);
+                }}
+              >
+                {city.name} <span>({city.entities.length})</span>
+              </button>
+            ))}
+          </div>
+        )}
+        <p id="map-navigation-help" className="muted">
+          {navigation.help}
+        </p>
+      </div>
       <svg
         ref={mapElement}
         viewBox="0 0 720 295"
         className="world-map"
         role="group"
+        tabIndex={0}
+        aria-describedby="map-navigation-help"
+        onKeyDown={(event) => {
+          if (event.target !== event.currentTarget) return;
+          const movement: Record<string, [number, number]> = {
+            ArrowLeft: [40, 0],
+            ArrowRight: [-40, 0],
+            ArrowUp: [0, 40],
+            ArrowDown: [0, -40],
+          };
+          if (movement[event.key]) {
+            event.preventDefault();
+            const [x, y] = movement[event.key];
+            setOffset((value) => ({ x: value.x + x, y: value.y + y }));
+          } else if (['+', '=', '-', 'Home'].includes(event.key)) {
+            event.preventDefault();
+            if (event.key === 'Home') resetMap();
+            else zoomTo(scale + (event.key === '-' ? -0.5 : 0.5));
+          }
+        }}
         aria-label={t('mapAlt', locale)}
         onPointerDown={(e) => {
           if (e.button !== 0) return;
@@ -595,6 +716,18 @@ export default function WorldMap({
               : chosenCity.institutions
             ).join(' · ')}
           </p>
+          {chosenCluster && chosenCluster.cities.length > 1 && (
+            <button
+              className="map-cluster-expand"
+              disabled={scale >= 12}
+              onClick={() => {
+                zoomTo(scale * 2, chosenCluster.x, chosenCluster.y);
+                setClusterKey(null);
+              }}
+            >
+              {navigation.expand} →
+            </button>
+          )}
           {chosenCluster && (
             <p>
               <strong>{describeMapCluster(chosenCluster, locale)}</strong>
