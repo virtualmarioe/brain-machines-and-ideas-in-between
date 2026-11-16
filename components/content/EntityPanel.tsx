@@ -1,4 +1,5 @@
 'use client';
+import ShareView from './ShareView';
 import NobelMedal from '@/components/ui/NobelMedal';
 import Link from 'next/link';
 import { complexityCopy, complexityLevels, type Complexity } from '@/lib/complexity';
@@ -68,6 +69,7 @@ export default function EntityPanel({
           <span className="year-rule" />
         </div>
         <h2>{entity.title[locale]}</h2>
+        <ShareView key={entity.id} locale={locale} />
         <p className="entity-location">
           <Icon name="globe" size={13} />
           {entity.locations.map((l) => l.name).join(' · ')}

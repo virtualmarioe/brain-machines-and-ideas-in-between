@@ -1,4 +1,5 @@
 'use client';
+import { timelineTicks } from '@/lib/timeline-ticks';
 import NobelMedal from '@/components/ui/NobelMedal';
 import { useEffect, useId, useRef, useState } from 'react';
 import type { HistoricalEntity, Locale } from '@/types/history';
@@ -77,14 +78,9 @@ export default function Timeline({
   useEffect(() => dismissPreview(), [entities, selected, from, to, dismissPreview]);
   useEffect(() => dismissWinter(), [from, to, locale, level, dismissWinter]);
   const span = range[1] - range[0];
-  const step =
-    span > 1000 ? 500 : span > 300 ? 100 : span > 100 ? 20 : span > 30 ? 10 : span > 12 ? 5 : 1;
-  const ticks = Array.from(
-    { length: Math.floor(span / step) + 2 },
-    (_, i) => Math.ceil(range[0] / step) * step + i * step,
-  ).filter((y) => y !== 0 && y <= range[1]);
   const track = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(720);
+  const ticks = timelineTicks(range[0], range[1], width);
   const [cluster, setCluster] = useState<HistoricalEntity[] | null>(null);
   useEffect(() => {
     const observer = new ResizeObserver((entries) => setWidth(entries[0].contentRect.width));

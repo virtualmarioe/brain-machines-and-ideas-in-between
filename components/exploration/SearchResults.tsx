@@ -1,4 +1,6 @@
 'use client';
+import { useState } from 'react';
+import { siteCopy } from '@/content/translations/site-experience';
 import { relationships } from '@/content';
 import { domains } from '@/content/translations/ui';
 import { journeyText as copy } from '@/content/translations/journeys';
@@ -17,6 +19,7 @@ export default function SearchResults({
   onTrace: (id: string) => void;
   onQuery: (query: string) => void;
 }) {
+  const [limits, setLimits] = useState<Record<string, number>>({});
   const groups = [
     { key: 'people', items: results.filter((e) => e.type === 'person') },
     { key: 'concepts', items: results.filter((e) => e.type === 'concept' || e.type === 'field') },
@@ -27,7 +30,7 @@ export default function SearchResults({
   ] as const;
   const researchers = [...new Set(results.slice(0, 6).flatMap((e) => e.people))].slice(0, 6);
   return (
-    <section className="search-results" aria-label={copy.searchTitle[locale]}>
+    <section id="search-results" className="search-results" aria-label={copy.searchTitle[locale]}>
       <h2>{copy.searchTitle[locale]}</h2>
       <div className="search-groups">
         {groups
@@ -37,7 +40,7 @@ export default function SearchResults({
               <h3>
                 {copy[group.key][locale]} <span>{group.items.length}</span>
               </h3>
-              {group.items.slice(0, 3).map((entity) => (
+              {group.items.slice(0, limits[group.key] ?? 3).map((entity) => (
                 <article key={entity.id} className={`search-result domain-${entity.domain}`}>
                   <p className="branch-meta">
                     {displayYear(entity)} · {domains[entity.domain][locale]} ·{' '}
@@ -56,6 +59,21 @@ export default function SearchResults({
                   </button>
                 </article>
               ))}
+              {group.items.length > (limits[group.key] ?? 3) && (
+                <button
+                  className="search-show-more"
+                  onClick={() =>
+                    setLimits((previous) => ({
+                      ...previous,
+                      [group.key]: (previous[group.key] ?? 3) + 6,
+                    }))
+                  }
+                >
+                  {siteCopy.showMore[locale]} ·{' '}
+                  {Math.min(limits[group.key] ?? 3, group.items.length)} / {group.items.length}{' '}
+                  {siteCopy.showing[locale]}
+                </button>
+              )}
             </div>
           ))}
       </div>

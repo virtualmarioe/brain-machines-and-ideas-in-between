@@ -1,0 +1,269 @@
+/* Shared navigation and learning surfaces extend the existing atlas tokens. */
+.section-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-6);
+  padding: var(--space-4) var(--page-gutter);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.section-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+  font-family: var(--font-reading);
+  font-size: var(--text-reading);
+}
+.section-brand svg {
+  width: 2rem;
+  height: 2.5rem;
+}
+.section-header nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+}
+.section-header nav a {
+  min-height: var(--control-size);
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-small);
+  text-decoration: none;
+}
+.section-header nav a:hover {
+  text-decoration: underline;
+}
+.section-header nav a[aria-current] {
+  color: var(--accent);
+  box-shadow: inset 0 -2px var(--accent);
+}
+.section-settings {
+  margin-left: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+.section-settings select {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  min-height: var(--control-size);
+  padding: var(--space-2);
+  max-width: 9rem;
+  background: var(--surface);
+}
+.about-page,
+.research-page {
+  background: var(--surface);
+}
+.about-page {
+  margin-block: var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.about-page h1,
+.research-page h1 {
+  letter-spacing: -0.035em;
+}
+.about-page h2 {
+  font-family: var(--font-reading);
+}
+.research-page section {
+  scroll-margin-top: var(--space-5);
+}
+.research-page .research-table thead {
+  background: var(--background);
+}
+.research-page .research-table tbody tr:hover {
+  background: var(--accent-soft);
+}
+.search-show-more {
+  min-height: var(--control-size);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface);
+  font-size: var(--text-small);
+  text-align: left;
+}
+.search-groups > div {
+  min-width: 0;
+}
+.share-view {
+  font-family: var(--font-interface);
+  font-size: var(--text-caption);
+  margin-block: var(--space-3);
+}
+.share-view button {
+  min-height: var(--control-size);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--accent);
+  background: var(--surface);
+}
+.share-view [role='status']:not(:empty) {
+  display: block;
+  line-height: 1.5;
+  margin-top: var(--space-2);
+}
+.discovery-picker {
+  display: none;
+}
+.atlas-shell .learning-journey-options {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.learning-journey-options article {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--space-3);
+  border-top: 3px solid var(--accent);
+}
+.learning-journey-options article h2 {
+  font-family: var(--font-reading);
+  font-weight: 400;
+  font-size: var(--text-subheading);
+  line-height: 1.3;
+}
+.learning-journey-options article p {
+  margin: 0;
+}
+.learning-journey-options article button {
+  margin-top: auto;
+  min-height: var(--control-size);
+}
+.journey-stop-count {
+  color: var(--accent);
+  font-size: var(--text-small);
+  font-variant-numeric: tabular-nums;
+}
+.journey-reading-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-block: var(--space-4);
+}
+.journey-reading-actions progress {
+  flex: 1;
+  min-width: 6rem;
+  accent-color: var(--accent);
+  height: 0.5rem;
+}
+@media (max-width: 1200px) {
+  .discovery-picker {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--page-gutter);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    font-size: var(--text-small);
+  }
+  .discovery-picker select {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    min-height: var(--control-size);
+    padding: var(--space-2);
+  }
+}
+@media (max-width: 650px) {
+  .section-header {
+    gap: var(--space-3);
+  }
+  .section-header > nav {
+    order: 3;
+    flex-basis: 100%;
+    border-top: 1px solid var(--border);
+    padding-top: var(--space-2);
+  }
+  .section-settings {
+    margin-left: 0;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .about-page {
+    margin-block: 0;
+    border: 0;
+    border-radius: 0;
+  }
+  .atlas-shell .complexity-options {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+  .atlas-shell .complexity-options button {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-2);
+  }
+  .atlas-shell .complexity-options button strong {
+    font-size: var(--text-small);
+    overflow-wrap: anywhere;
+  }
+  .atlas-shell .complexity-options button > span:not(.complexity-current):not(.complexity-steps) {
+    font-size: var(--text-caption);
+  }
+  .atlas-shell .complexity-options small {
+    font-size: var(--text-caption);
+  }
+  .atlas-shell .complexity-current {
+    font-size: 0.625rem;
+    justify-self: start;
+  }
+  .atlas-shell .learning-journey-options {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 650px) {
+  .visualization-column,
+  .visualization-frame {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+  .viz-heading {
+    flex-wrap: wrap;
+  }
+  .viz-heading > div:first-child {
+    min-width: 0;
+    flex: 1 1 10rem;
+  }
+  .map-display-controls .map-view-control {
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+  .map-city-details select {
+    max-width: 100%;
+  }
+}
+.complexity-explanation {
+  display: none;
+}
+@media (max-width: 650px) {
+  .atlas-shell .complexity-options small {
+    display: none;
+  }
+  .complexity-explanation {
+    display: block;
+    margin-top: var(--space-4);
+    font-size: var(--text-small);
+    line-height: 1.6;
+  }
+  .complexity-explanation summary {
+    min-height: var(--control-size);
+    padding-top: var(--space-2);
+  }
+  .complexity-explanation dt {
+    font-weight: 600;
+  }
+  .complexity-explanation dd {
+    margin: 0 0 var(--space-3);
+  }
+}

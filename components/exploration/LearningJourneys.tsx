@@ -1,4 +1,6 @@
 'use client';
+import { siteCopy } from '@/content/translations/site-experience';
+import { focusReading } from '@/lib/reading-navigation';
 import NobelMedal from '@/components/ui/NobelMedal';
 import { useState } from 'react';
 import { useHydrated } from '../navigation/useHydrated';
@@ -33,6 +35,9 @@ export default function LearningJourneys({
           {learningJourneys.map((item) => (
             <article key={item.id}>
               <h2>{item.title[locale]}</h2>
+              <p className="journey-stop-count">
+                {item.stops.length} {siteCopy.stops[locale]}
+              </p>
               <p>{item.outcome[locale]}</p>
               <button
                 disabled={!ready}
@@ -64,6 +69,21 @@ export default function LearningJourneys({
       <p>
         <strong>{copy.outcome[locale]}:</strong> {journey.outcome[locale]}
       </p>
+      <div className="journey-reading-actions">
+        <progress
+          value={step + 1}
+          max={journey.stops.length}
+          aria-label={siteCopy.position[locale]}
+        />
+        <button
+          onClick={() => {
+            if (selected !== stop.entityId) visit(step);
+            focusReading();
+          }}
+        >
+          {siteCopy.readStop[locale]} →
+        </button>
+      </div>
       <ol aria-label={copy.progress[locale]}>
         {journey.stops.map((item, index) => (
           <li key={item.entityId}>

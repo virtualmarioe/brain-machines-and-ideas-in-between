@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import SectionHeader, { ResumeLink } from '@/components/navigation/SectionHeader';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n';
 import { complexityCopy } from '@/lib/complexity';
@@ -94,86 +94,91 @@ export default async function Research({ params }: { params: Promise<{ locale: s
   if (!isLocale(locale)) notFound();
   const copy = complexityCopy[locale];
   return (
-    <main className="research-page">
-      <Link href={`/${locale}?level=expert`}>
-        ← {locale === 'de' ? 'Zum Atlas' : locale === 'es' ? 'Volver al atlas' : 'Return to atlas'}
-      </Link>
-      <h1>{copy.research}</h1>
-      <p>{copy.notice}</p>
-      <ResearchAudit locale={locale} />
-      <div lang="en">
-        <p>
-          This catalog expands the atlas with the supplied 8 October 2026 research. Existing sourced
-          entries are retained. New entries remain under review: the dossier’s citation handles were
-          not accompanied by resolvable links. Dates may represent periods, precursors, or later
-          revivals. Scores and relationship classifications are the dossier’s editorial assessments.
-        </p>
-        <p>
-          Institutions are listed with their supplied approximate coordinates. These are not
-          automatically treated as discovery locations or evidence of historical influence. Original
-          English text is preserved in all language versions.
-        </p>
-        <a href="/research/history-2026-10-08.md" download>
-          Download the complete research dossier (.md)
-        </a>
-        <nav aria-label="Research sections">
-          {Object.keys(headers).map((key) => (
-            <a href={`#${key}`} key={key}>
-              {key} (
-              {
-                researchCatalog[
-                  key as 'concepts' | 'people' | 'institutions' | 'publications' | 'edges'
-                ].length
-              }
-              )
-            </a>
-          ))}
-          <a href="#discussion">Historical discussion</a>
-        </nav>
-        {(['concepts', 'people', 'institutions', 'publications', 'edges'] as const).map((key) => (
-          <section id={key} key={key}>
-            <h2>
-              {key[0].toUpperCase() + key.slice(1)} <small>({researchCatalog[key].length})</small>
-            </h2>
-            {key === 'concepts' && (
-              <p>
-                Editorial scores (1–5): historical importance / influence on AI / current relevance
-                / cross-disciplinary reach / theoretical importance / technological impact. These
-                are judgments, not citation counts.
-              </p>
-            )}
-            <ResearchTable
-              kind={key}
-              rows={researchCatalog[key]}
-              headers={headers[key]}
-              locale={locale}
-            />
-          </section>
-        ))}
-        {unresolvedResearchEdges.length > 0 && (
-          <p role="note">
-            {unresolvedResearchEdges.length} relationship(s) refer to a concept absent from the
-            supplied concept table. They remain in this register but are excluded from graph
-            rendering until resolved.
+    <>
+      <SectionHeader locale={locale} section="research" />
+      <main className="research-page">
+        <ResumeLink locale={locale}>
+          ←{' '}
+          {locale === 'de' ? 'Zum Atlas' : locale === 'es' ? 'Volver al atlas' : 'Return to atlas'}
+        </ResumeLink>
+        <h1>{copy.research}</h1>
+        <p>{copy.notice}</p>
+        <ResearchAudit locale={locale} />
+        <div lang="en">
+          <p>
+            This catalog expands the atlas with the supplied 8 October 2026 research. Existing
+            sourced entries are retained. New entries remain under review: the dossier’s citation
+            handles were not accompanied by resolvable links. Dates may represent periods,
+            precursors, or later revivals. Scores and relationship classifications are the dossier’s
+            editorial assessments.
           </p>
-        )}
-        <section id="discussion">
-          <h2>Historical discussion and research notes</h2>
-          {sections
-            .filter(
-              (section) =>
-                !/Core concept|Person nodes|Institution nodes|Publication nodes|Graph edges/i.test(
-                  section.title,
-                ),
-            )
-            .map((section, index) => (
-              <details key={index}>
-                <summary>{section.title}</summary>
-                <Reading body={section.body} />
-              </details>
+          <p>
+            Institutions are listed with their supplied approximate coordinates. These are not
+            automatically treated as discovery locations or evidence of historical influence.
+            Original English text is preserved in all language versions.
+          </p>
+          <a href="/research/history-2026-10-08.md" download>
+            Download the complete research dossier (.md)
+          </a>
+          <nav aria-label="Research sections">
+            {Object.keys(headers).map((key) => (
+              <a href={`#${key}`} key={key}>
+                {key} (
+                {
+                  researchCatalog[
+                    key as 'concepts' | 'people' | 'institutions' | 'publications' | 'edges'
+                  ].length
+                }
+                )
+              </a>
             ))}
-        </section>
-      </div>
-    </main>
+            <a href="#discussion">Historical discussion</a>
+          </nav>
+          {(['concepts', 'people', 'institutions', 'publications', 'edges'] as const).map((key) => (
+            <section id={key} key={key}>
+              <h2>
+                {key[0].toUpperCase() + key.slice(1)} <small>({researchCatalog[key].length})</small>
+              </h2>
+              {key === 'concepts' && (
+                <p>
+                  Editorial scores (1–5): historical importance / influence on AI / current
+                  relevance / cross-disciplinary reach / theoretical importance / technological
+                  impact. These are judgments, not citation counts.
+                </p>
+              )}
+              <ResearchTable
+                kind={key}
+                rows={researchCatalog[key]}
+                headers={headers[key]}
+                locale={locale}
+              />
+            </section>
+          ))}
+          {unresolvedResearchEdges.length > 0 && (
+            <p role="note">
+              {unresolvedResearchEdges.length} relationship(s) refer to a concept absent from the
+              supplied concept table. They remain in this register but are excluded from graph
+              rendering until resolved.
+            </p>
+          )}
+          <section id="discussion">
+            <h2>Historical discussion and research notes</h2>
+            {sections
+              .filter(
+                (section) =>
+                  !/Core concept|Person nodes|Institution nodes|Publication nodes|Graph edges/i.test(
+                    section.title,
+                  ),
+              )
+              .map((section, index) => (
+                <details key={index}>
+                  <summary>{section.title}</summary>
+                  <Reading body={section.body} />
+                </details>
+              ))}
+          </section>
+        </div>
+      </main>
+    </>
   );
 }

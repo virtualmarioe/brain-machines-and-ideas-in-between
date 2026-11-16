@@ -51,6 +51,25 @@ export default function ComplexityControl({
           </button>
         ))}
       </div>
+      <details className="complexity-explanation">
+        <summary>
+          {
+            {
+              en: 'What do the levels include?',
+              de: 'Was enthalten die Stufen?',
+              es: '¿Qué incluyen los niveles?',
+            }[locale]
+          }
+        </summary>
+        <dl>
+          {copy.names.map((name, index) => (
+            <div key={name}>
+              <dt>{name}</dt>
+              <dd>{copy.descriptions[index]}</dd>
+            </div>
+          ))}
+        </dl>
+      </details>
     </section>
   );
 }

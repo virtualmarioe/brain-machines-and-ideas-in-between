@@ -49,15 +49,19 @@ test('scientist and conceptual searches offer contextual results and direct trac
   page,
 }) => {
   await page.goto('/en');
-  await page.getByRole('searchbox').fill('Cajal');
+  await page.getByRole('searchbox', { name: 'Search the atlas', exact: true }).fill('Cajal');
   const results = page.locator('.search-results');
   await expect(results.getByRole('heading', { name: 'People 1' })).toBeVisible();
   await expect(results).toContainText('recorded connections');
   await results.getByRole('button', { name: 'Trace this idea →' }).first().click();
   await expect(page.locator('.trace-journey')).toBeVisible();
-  await expect(page.getByRole('searchbox')).toHaveValue('');
+  await expect(page.getByRole('searchbox', { name: 'Search the atlas', exact: true })).toHaveValue(
+    '',
+  );
   await page.goBack();
-  await expect(page.getByRole('searchbox')).toHaveValue('Cajal');
+  await expect(page.getByRole('searchbox', { name: 'Search the atlas', exact: true })).toHaveValue(
+    'Cajal',
+  );
 });
 
 test('bubble placement preserves the source and reduced motion removes travel', async ({

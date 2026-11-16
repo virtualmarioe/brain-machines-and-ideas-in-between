@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import SectionHeader, { ResumeLink } from '@/components/navigation/SectionHeader';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { isLocale } from '@/lib/i18n';
@@ -81,59 +81,52 @@ export default async function About({ params }: Props) {
   if (!isLocale(locale)) notFound();
   const c = copy[locale];
   return (
-    <main className="about-page">
-      <Link href={`/${locale}`}>← {c.back}</Link>
-      <nav aria-label="Language">
-        <Link href="/en/about" lang="en">
-          English
-        </Link>
-        <Link href="/de/about" lang="de">
-          Deutsch
-        </Link>
-        <Link href="/es/about" lang="es">
-          Español
-        </Link>
-      </nav>
-      <h1>{c.title}</h1>
-      <h2>The Intelligence Atlas</h2>
-      <p>{c.intro}</p>
-      <p>
-        {c.accompanies}{' '}
-        <a href="https://archilaresearch.github.io/teaching.html#neuro-ai">{c.course}</a>{' '}
-        {c.researchIntro} <a href="https://archilaresearch.github.io/research.html">{c.research}</a>{' '}
-        {c.lead} {c.universityIntro}{' '}
-        <a href={locale === 'de' ? 'https://www.uni-jena.de/' : 'https://www.uni-jena.de/en'}>
-          {c.university}
-        </a>
-        , {c.country}.
-      </p>
-      <p>{c.evidence}</p>
-      <p className="muted">
-        {
+    <>
+      <SectionHeader locale={locale} section="about" />
+      <main className="about-page">
+        <ResumeLink locale={locale}>← {c.back}</ResumeLink>
+        <h1>{c.title}</h1>
+        <h2>The Intelligence Atlas</h2>
+        <p>{c.intro}</p>
+        <p>
+          {c.accompanies}{' '}
+          <a href="https://archilaresearch.github.io/teaching.html#neuro-ai">{c.course}</a>{' '}
+          {c.researchIntro}{' '}
+          <a href="https://archilaresearch.github.io/research.html">{c.research}</a> {c.lead}{' '}
+          {c.universityIntro}{' '}
+          <a href={locale === 'de' ? 'https://www.uni-jena.de/' : 'https://www.uni-jena.de/en'}>
+            {c.university}
+          </a>
+          , {c.country}.
+        </p>
+        <p>{c.evidence}</p>
+        <p className="muted">
           {
-            en: 'Nobel medal photograph',
-            de: 'Foto der Nobelmedaille',
-            es: 'Fotografía de la medalla Nobel',
-          }[locale]
-        }
-        :{' '}
-        <a href="https://mouseion.jax.org/snellmedals/1/">
-          The Jackson Laboratory, George Davis Snell collection
+            {
+              en: 'Nobel medal photograph',
+              de: 'Foto der Nobelmedaille',
+              es: 'Fotografía de la medalla Nobel',
+            }[locale]
+          }
+          :{' '}
+          <a href="https://mouseion.jax.org/snellmedals/1/">
+            The Jackson Laboratory, George Davis Snell collection
+          </a>
+          .
+        </p>
+        <h2>{c.source}</h2>
+        <a href="https://github.com/virtualmarioe/brain-machines-and-ideas-in-between">
+          GitHub: brain-machines-and-ideas-in-between
         </a>
-        .
-      </p>
-      <h2>{c.source}</h2>
-      <a href="https://github.com/virtualmarioe/brain-machines-and-ideas-in-between">
-        GitHub: brain-machines-and-ideas-in-between
-      </a>
-      <h2>{c.cite}</h2>
-      <p className="doi-placeholder">{c.pending}</p>
-      <p>{c.note}</p>
-      <p className="muted">
-        {t('map', locale)}:{' '}
-        <a href="https://www.naturalearthdata.com/about/terms-of-use/">Natural Earth</a>,{' '}
-        {t('publicDomain', locale)}.
-      </p>
-    </main>
+        <h2>{c.cite}</h2>
+        <p className="doi-placeholder">{c.pending}</p>
+        <p>{c.note}</p>
+        <p className="muted">
+          {t('map', locale)}:{' '}
+          <a href="https://www.naturalearthdata.com/about/terms-of-use/">Natural Earth</a>,{' '}
+          {t('publicDomain', locale)}.
+        </p>
+      </main>
+    </>
   );
 }

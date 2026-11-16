@@ -1,4 +1,7 @@
 'use client';
+import { focusReading } from '@/lib/reading-navigation';
+import { returnKey } from '@/lib/return-navigation';
+import { siteCopy } from '@/content/translations/site-experience';
 import LearningEntry from './exploration/LearningEntry';
 import ExperimentLibrary from './exploration/ExperimentLibrary';
 import RecentDiscoveries, { rememberDiscovery } from './exploration/RecentDiscoveries';
@@ -122,6 +125,17 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
     const url = explorationUrl(next, entities);
     if (push) window.history.pushState({ ...window.history.state, atlasNavigation: true }, '', url);
     else window.history.replaceState({ ...window.history.state, atlasNavigation: true }, '', url);
+  }
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(returnKey, explorationUrl(state, entities));
+    } catch {
+      /* Session resume is optional. */
+    }
+  }, [state]);
+  function selectForReading(id: string) {
+    select(id);
+    focusReading();
   }
   function select(id: string, openLab = false) {
     const entity = entities.find((e) => e.id === id);
@@ -292,7 +306,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
       level={state.level}
       entity={selected}
       locale={locale}
-      onSelect={select}
+      onSelect={selectForReading}
       onDemo={() => update({ lab: true }, true)}
       nobel={state.nobel}
     />
@@ -609,6 +623,7 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
               aria-pressed={state.view === 'reading'}
               onClick={() => {
                 update({ view: state.view === 'reading' ? undefined : 'reading' }, true);
+                if (state.view !== 'reading') focusReading();
               }}
             >
               {state.view === 'reading'
@@ -672,9 +687,10 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
         )}
         {state.query.trim() && filtered.length > 0 && (
           <SearchResults
+            key={`${state.query}-${locale}`}
             results={filtered}
             locale={locale}
-            onSelect={select}
+            onSelect={selectForReading}
             onTrace={(id) => switchMode('trace', id)}
             onQuery={(query) => update({ query, mode: 'explore' })}
           />
@@ -691,6 +707,18 @@ export default function Atlas({ initialState }: { initialState: ExplorationState
           />
         )}
         <RecentDiscoveries locale={locale} selected={selected?.id || ''} onSelect={select} />
+        {selected && (
+          <label className="discovery-picker">
+            {siteCopy.choose[locale]}
+            <select value={selected.id} onChange={(event) => selectForReading(event.target.value)}>
+              {(state.query ? filtered : chronological(filtered)).map((entity) => (
+                <option key={entity.id} value={entity.id}>
+                  {displayYear(entity)} · {entity.title[locale]}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
         <div className="atlas-workspace" id="discoveries">
           <aside className="discovery-sidebar">
             <div className="node-category">

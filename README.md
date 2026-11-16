@@ -54,6 +54,10 @@ Three entry actions lead to guided paths, the searchable library of all 33 exist
 
 Optional prediction checkpoints in the perceptron, convolution, backpropagation, entropy, and attention labs pair feedback with controlled experiments. Recent discoveries stay on the current device and can be cleared. No account or new dependency is required.
 
+Search groups can reveal every match, and smaller layouts include a complete discovery picker. Explicit reading actions bring the selected explanation into view. About and Research share language and theme controls and retain a session-local return to the current exploration. Guided paths show stop counts and position, and reading panels can copy their current view link with feedback.
+
+See the [site-wide review](docs/ux/SITE_WIDE_REVIEW.md) for the subsequent audit and validation.
+
 See the [learning experience audit and priorities](docs/ux/EXPERIENCE_REVIEW.md) and [validation report](docs/ux/VALIDATION.md) for implementation details, evidence, and remaining opportunities.
 
 ## Visual design system
